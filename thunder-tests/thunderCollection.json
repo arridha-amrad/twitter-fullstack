@@ -1,0 +1,29 @@
+[
+  {
+    "_id": "bcb73ccf-0b98-4822-9913-dd52b7cb4f18",
+    "colName": "twitter",
+    "created": "2023-05-07T08:07:12.446Z",
+    "sortNum": 10000,
+    "folders": [
+      {
+        "_id": "80843085-17fd-4d86-8f70-844a3d7d5878",
+        "name": "users",
+        "containerId": "",
+        "created": "2023-05-07T08:10:32.050Z",
+        "sortNum": 10000
+      },
+      {
+        "_id": "8218cd62-ce74-494c-ba1e-6c1bd4c5815a",
+        "name": "tweets",
+        "containerId": "",
+        "created": "2023-05-07T08:21:58.968Z",
+        "sortNum": 20000
+      }
+    ],
+    "settings": {
+      "options": {
+        "baseUrl": "http://localhost:5000"
+      }
+    }
+  }
+]

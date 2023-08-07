@@ -1,0 +1,13 @@
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+    ports:
+      - "3306:3306"
+    volumes:
+      - volume:/var/lib/mysql
+
+volumes:
+  volume:

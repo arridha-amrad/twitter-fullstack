@@ -1,0 +1,49 @@
+import { Request, Response } from "express";
+import prisma from "@/utils/prisma";
+import { loadParentTweet } from "../utils/loadParentTweet";
+import { getTweetData } from "../tweet.constants";
+
+const LIMIT = 10;
+
+export const getTweetDetail = async (req: Request, res: Response) => {
+	const { tweetId } = req.params;
+	const authenticatedUserId = req.app.locals.userId;
+	try {
+		const tweet = await prisma.tweet.findFirst({
+			where: { id: tweetId },
+			include: {
+				...getTweetData(authenticatedUserId),
+				children: {
+					include: { ...getTweetData(authenticatedUserId) },
+					orderBy: { createdAt: "desc" },
+					take: LIMIT,
+					skip: 0,
+				},
+			},
+		});
+
+		if (!tweet) return res.status(404).json({ message: "Tweet not found" });
+
+		if (tweet.isRetweet) {
+			const originalTweet = await prisma.tweet.findFirst({
+				where: { postId: tweet.postId, isRetweet: false },
+			});
+			const children = await prisma.tweet.findMany({
+				where: { parentId: originalTweet?.id, isRetweet: false },
+				include: { ...getTweetData(authenticatedUserId) },
+			});
+			tweet.children = children;
+		}
+
+		if (tweet.parentId) {
+			await loadParentTweet(tweet, authenticatedUserId);
+		}
+
+		return res.status(200).json(tweet);
+	} catch (err) {
+		console.log(err);
+		return res.sendStatus(500);
+	} finally {
+		await prisma.$disconnect();
+	}
+};

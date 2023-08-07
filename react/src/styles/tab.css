@@ -1,0 +1,22 @@
+.myTab {
+  position: relative;
+  transform: translateX(0);
+  transition: transform ease-in 1s;
+}
+
+.myTab::before {
+  content: "";
+  position: absolute;
+  bottom: -19px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: blue;
+}
+
+.myTab[data-value="on"]::before {
+  opacity: 1;
+}
+.myTab[data-value="off"]::before {
+  opacity: 0;
+}

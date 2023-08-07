@@ -1,0 +1,125 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  username      String    @unique
+  email         String    @unique
+  imageURL      String?   @db.Text
+  fullname      String
+  password      String    @db.Text
+  backgroundURL String?   @db.Text
+  tokens        Token[]
+  likes         Like[]
+  posts         Post[]
+  tweets        Tweet[]
+  retweets      Retweet[]
+  followers     User[]    @relation(name: "Followers")
+  followings    User[]    @relation(name: "Followers")
+  createdAt     DateTime? @default(now())
+  updatedAt     DateTime  @updatedAt
+  File          File[]
+
+  @@map("users")
+}
+
+model Token {
+  id     String @id @default(cuid())
+  value  String @db.Text
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  @@index([userId])
+  @@map("tokens")
+}
+
+model Like {
+  postId    String
+  userId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([postId, userId])
+  @@index([userId])
+  @@index([postId])
+  @@map("likes")
+}
+
+model Post {
+  id        String    @id @default(cuid())
+  body      String    @db.Text
+  authorId  String
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  likes     Like[]
+  files     File[]
+  tweets    Tweet[]
+  parentId  String?
+  parent    Post?     @relation("ParentChild", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children  Post[]    @relation("ParentChild")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  retweets  Retweet[]
+
+  @@index([parentId])
+  @@index([authorId])
+  @@map("posts")
+}
+
+model Tweet {
+  id        String   @id @default(cuid())
+  isEnabled Boolean  @default(true)
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: NoAction)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parentId  String?
+  parent    Tweet?   @relation("ParentChild", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children  Tweet[]  @relation("ParentChild")
+  postId    String?
+  userId    String
+  isRetweet Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([postId])
+  @@index([parentId])
+  @@map("tweets")
+}
+
+model File {
+  id        String   @id @default(cuid())
+  url       String   @db.Text
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([postId])
+  @@index([userId])
+  @@map("files")
+}
+
+model Retweet {
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@id([userId, postId])
+  @@index([userId])
+  @@index([postId])
+  @@map("retweets")
+}
