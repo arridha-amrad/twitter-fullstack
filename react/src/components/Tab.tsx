@@ -4,18 +4,22 @@ type Props = {
   index: number;
   setIndex: Dispatch<SetStateAction<number>>;
   tabList: string[];
+  callback?: VoidFunction;
 };
 
-export default function Tab({ index, setIndex, tabList }: Props) {
+export default function Tab({ index, setIndex, tabList, callback }: Props) {
   return (
     <Fragment>
       {tabList.map((tab, i) => (
         <button
           onClick={() => {
             setIndex(i);
+            if (callback) {
+              callback();
+            }
           }}
           key={i}
-          className="flex-1 hover:bg-gray-200/50 hover:backdrop-blur hover:dark:bg-gray-900/10"
+          className="flex-1 h-full hover:bg-gray-200/50 hover:backdrop-blur hover:dark:bg-gray-700/50"
         >
           <span
             className={`relative font-semibold ${

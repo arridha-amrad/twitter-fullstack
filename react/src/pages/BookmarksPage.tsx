@@ -1,7 +1,12 @@
+import LayoutCenter from '../layouts/LayoutCenter';
+import PageLayout from '../layouts/PageLayouts';
+
 export default function BookmarksPage() {
-	return (
-		<div>
-			<h1>Bookmarks Page</h1>
-		</div>
-	);
+  return (
+    <PageLayout>
+      <LayoutCenter>
+        <h1>Bookmarks Page</h1>
+      </LayoutCenter>
+    </PageLayout>
+  );
 }

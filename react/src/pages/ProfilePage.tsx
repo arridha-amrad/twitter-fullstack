@@ -2,7 +2,7 @@ import CalendarIcon from '@heroicons/react/24/outline/CalendarDaysIcon';
 import ArrowLeftIcon from '@heroicons/react/24/solid/ArrowLeftIcon';
 import { format } from 'date-fns';
 import { Fragment, useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import useMeasure from 'react-use-measure';
 import ButtonIcon from '../components/ButtonIcon';
 import Container from '../components/Container';
@@ -23,16 +23,49 @@ import Tab from '../components/Tab';
 const Profile = () => {
   const { data } = useMeQuery();
   const tabList = ['Tweets', 'Replies', 'Media', 'Likes'];
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = useParams();
+  const profileUsername = params.username;
+
+  const arrPath = location.pathname.split('/');
+  const pathname = arrPath.length === 2 ? 'tweets' : arrPath[2];
+
+  console.log('pathname', pathname);
+
+  const activeTabIndex = tabList.findIndex((t) => t.toLowerCase() === pathname);
 
   // const [params, setParam] = useSearchParams();
 
   // const tabIndex = tabList.findIndex((tab) => tab === params.get('tab'));
 
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(activeTabIndex);
 
-  // useEffect(() => {
-  //   setParam({ tab: tabList[index] });
-  // }, [index]);
+  useEffect(() => {
+    if (pathname === 'tweets') {
+      setIndex(0);
+    } else {
+      setIndex(activeTabIndex);
+    }
+    console.log('pathname changed');
+  }, [pathname]);
+
+  // const tabCallback = () => {
+  //   if (index === 0) {
+  //     navigate(`/${data?.username}`);
+  //   } else {
+  //     navigate(`/${data?.username}/${tabList[index].toLowerCase()}`);
+  //   }
+  // };
+
+  useEffect(() => {
+    if (index === 0) {
+      navigate(`/${profileUsername}`);
+    } else {
+      navigate(`/${profileUsername}/${tabList[index].toLowerCase()}`);
+    }
+    console.log('index : ', index);
+  }, [index]);
 
   return (
     <Fragment>
@@ -45,13 +78,15 @@ const Profile = () => {
         <LayoutCenter>
           <Header />
           <Overview />
-          <div className="flex h-14 w-full items-center border-b border-b-gray-600">
+          <div className="flex h-14 w-full items-center border-b dark:border-b-gray-600 border-b-gray-200">
             <Tab tabList={tabList} index={index} setIndex={setIndex} />
           </div>
           <Content index={index} />
         </LayoutCenter>
         <LayoutRight>
-          <SearchInput />
+          <div className="sticky top-0">
+            <SearchInput />
+          </div>
           <div className="mt-2 flex flex-col gap-4">
             <VerificationCard />
             <TrendsCard />
@@ -67,7 +102,7 @@ const Profile = () => {
 const Content = ({ index }: { index: number }) => {
   const content = [
     <GetAllMyTweetsFeature key={index} />,
-    <GetAllMyRepliesFeature key={index} index={index} />,
+    <GetAllMyRepliesFeature key={index} />,
     <p key={index}>Medias</p>,
     <p key={index}>Likes</p>
   ];

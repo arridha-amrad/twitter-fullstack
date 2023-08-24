@@ -9,15 +9,14 @@ import {
   WindowBasedVirtualContainer
 } from '../components/VirtualContainer';
 
-export default function GetAllMyRepliesFeature({ index }: { index: number }) {
+export default function GetAllMyRepliesFeature() {
   const args = store.getState().twitterApi.queries['getAllReplies']
     ?.originalArgs as { page: number } | undefined;
   const [page, setPage] = useState(args?.page ?? 1);
 
-  const { data, isLoading, isFetching } = tweetApi.useGetAllMyRepliesQuery(
-    { page },
-    { skip: index !== 1 }
-  );
+  const { data, isLoading, isFetching } = tweetApi.useGetAllMyRepliesQuery({
+    page
+  });
 
   const replies = data?.tweets ?? [];
 

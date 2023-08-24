@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
-import { sidebarLinks } from './Links';
 import { useMeQuery } from '../../redux/user-slice';
+import { sidebarLinks } from './Links';
 
 const SidebarLinks = () => {
   const { data } = useMeQuery();
