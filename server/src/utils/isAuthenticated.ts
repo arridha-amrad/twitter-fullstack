@@ -5,7 +5,7 @@ import { IVerifyTokenPayload, setDuration } from "./jwt";
 
 const publicKey = fs.readFileSync("./public.pem");
 
-export const authenticationGuard = (
+export const isAuthenticated = (
   req: Request,
   res: Response,
   next: NextFunction

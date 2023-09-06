@@ -1,4 +1,4 @@
-import { authenticationGuard } from "@/utils/authenticationGuard";
+import { isAuthenticated } from "@/utils/isAuthenticated";
 import express from "express";
 import createReply from "./controllers/createReplyController";
 import createTweet from "./controllers/createTweetController";
@@ -15,17 +15,17 @@ import getAllMyReplies from "./controllers/getAllMyRepliesController";
 
 const router = express.Router();
 
-router.get("/mine", authenticationGuard, getMyTweets);
+router.get("/mine", isAuthenticated, getMyTweets);
 router.get("/", optionalProtected, loadTweets);
-router.get("/replies/mine", authenticationGuard, getAllMyReplies);
+router.get("/replies/mine", isAuthenticated, getAllMyReplies);
 router.get("/replies/:tweetId", optionalProtected, getTweetReplies);
 router.get("/:tweetId", optionalProtected, getTweetDetail);
 
-router.delete("/:tweetId", authenticationGuard, deleteTweet);
+router.delete("/:tweetId", isAuthenticated, deleteTweet);
 
-router.post("/", sanitize, authenticationGuard, createTweet);
-router.post("/like", sanitize, authenticationGuard, likeTweet);
-router.post("/replies", sanitize, authenticationGuard, createReply);
-router.post("/retweet", authenticationGuard, retweet);
+router.post("/", sanitize, isAuthenticated, createTweet);
+router.post("/like", sanitize, isAuthenticated, likeTweet);
+router.post("/replies", sanitize, isAuthenticated, createReply);
+router.post("/retweet", isAuthenticated, retweet);
 
 export default router;

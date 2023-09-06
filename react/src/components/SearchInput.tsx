@@ -1,4 +1,4 @@
-import Icon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
+import Icon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 
 const SearchInput = () => {
   return (

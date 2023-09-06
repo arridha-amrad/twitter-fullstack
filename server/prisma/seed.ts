@@ -5,7 +5,7 @@ import { hash } from "argon2";
 const prisma = new PrismaClient();
 
 const seed = async () => {
-	const password = await hash("Powerranger77$");
+	const password = await hash("123");
 	const data = [...Array(100).keys()].map(() => ({
 		id: faker.string.nanoid(),
 		email: faker.internet.email(),
@@ -18,38 +18,43 @@ const seed = async () => {
 };
 
 const seedTweets = async () => {
-	const users = await prisma.user.findMany();
-	for (let i = 0; i < 50; i++) {
-		for (const user of users) {
-			const post = await prisma.post.create({
-				data: {
-					body: faker.lorem.sentences({ min: 1, max: 10 }),
-					authorId: user.id,
-				},
-			});
-			const saveImages = async () => {
-				const totalImage = Math.ceil(Math.random() * 4);
-				const urls: string[] = [];
-				for (let i = 0; i < totalImage; i++) {
-					const url = faker.image.urlLoremFlickr();
-					urls.push(url);
-				}
-				await prisma.file.createMany({
-					data: urls.map((url) => ({ postId: post.id, url, userId: user.id })),
+	try {
+		const users = await prisma.user.findMany();
+		await prisma.$transaction(async(tx) => {
+			for (let i = 0; i < 300; i++) {
+				const userId = users[Math.floor(Math.random() * users.length)].id
+				const post = await tx.post.create({
+					data: {
+						body: faker.lorem.sentences({ min: 1, max: 10 }),
+						authorId: userId,
+					},
 				});
-			};
-			const flipCoin = Math.ceil(Math.random() * 10);
-			if (flipCoin % 2 === 0) {
-				await saveImages();
+				const saveImages = async () => {
+					const totalImage = Math.ceil(Math.random() * 4);
+					const urls: string[] = [];
+					for (let i = 0; i < totalImage; i++) {
+						const url = faker.image.urlLoremFlickr();
+						urls.push(url);
+					}
+					await tx.file.createMany({
+						data: urls.map((url) => ({ postId: post.id, url, userId })),
+					});
+				};
+				const flipCoin = Math.ceil(Math.random() * 10);
+				if (flipCoin % 2 === 0) {
+					await saveImages();
+				}
+				await tx.tweet.create({
+					data: {
+						isRetweet: false,
+						userId,
+						postId: post.id,
+					},
+				});
 			}
-			await prisma.tweet.create({
-				data: {
-					isRetweet: false,
-					userId: user.id,
-					postId: post.id,
-				},
-			});
-		}
+		})
+	} catch (error) {
+		throw error
 	}
 };
 

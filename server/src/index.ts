@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-dotenv.config();
+dotenv.config({path: __dirname+'/./../.env.dev'});
 import express from "express";
 import cookieParser from "cookie-parser";
 import UserRoutes from "@/modules/user/user.routes";
@@ -8,8 +8,6 @@ import cors from "cors";
 import fileUpload from "express-fileupload";
 import cloudinary from "cloudinary";
 import prisma from "./utils/prisma";
-import { Prisma, User } from "@prisma/client";
-import { faker } from "@faker-js/faker";
 
 const runServer = () => {
 	const port = process.env.PORT;
@@ -30,7 +28,6 @@ const runServer = () => {
 	app.use(cookieParser());
 	app.use("/api/users", UserRoutes);
 	app.use("/api/tweets", TweetRoutes);
-	app.use("/api/test", (req, res) => res.send("Hello World"));
 
 	app.listen(port, () => {
 		cloudinary.v2.config({
@@ -38,14 +35,15 @@ const runServer = () => {
 			api_secret: process.env.CLOUDINARY_SECRET!,
 			cloud_name: process.env.CLOUDINARY_NAME!,
 		});
-		console.log(`Server running at http://localhost:${port} 👍`);
+		console.log('environment:',process.env.NODE_ENV)
+		console.log(`server: http://localhost:${port}`);
 	});
 };
 
 prisma
 	.$connect()
 	.then(() => {
-		console.log("db ready 👍");
+		console.log("db: mysql");
 		runServer();
 	})
 	.catch((err) => {

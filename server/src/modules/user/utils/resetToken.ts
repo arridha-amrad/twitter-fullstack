@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { REFRESH_TOKEN } from "../user.constants";
 import prisma from "@/utils/prisma";
 
-export const loginGuard = async (
+export const resetToken = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
