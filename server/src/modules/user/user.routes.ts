@@ -1,14 +1,14 @@
+import { sanitize } from "@/utils/sanitizeInput";
 import { Router } from "express";
+import isAuthenticated from "../middlewares/requireAuth";
 import login from "./controllers/loginController";
 import logout from "./controllers/logoutController";
 import me from "./controllers/meController";
 import refreshToken from "./controllers/refreshTokenController";
 import register from "./controllers/registerController";
-import { validateRegister } from "./validators/validateRegister";
-import { resetToken } from "./utils/resetToken";
-import { sanitize } from "@/utils/sanitizeInput";
-import { isAuthenticated } from "@/utils/isAuthenticated";
 import { searchUser } from "./controllers/searchUserController";
+import { resetToken } from "./utils/resetToken";
+import { validateRegister } from "./validators/validateRegister";
 
 const router = Router();
 
