@@ -1,16 +1,16 @@
 import { sanitize } from "@/utils/sanitizeInput";
 import express from "express";
 import requireAuth from "../middlewares/requireAuth";
-import createReply from "./controllers/createReplyController";
-import createTweet from "./controllers/createTweetController";
-import deleteTweet from "./controllers/deleteTweetController";
-import { getTweetDetail } from "./controllers/getTweetController";
-import likeTweet from "./controllers/likeTweetController";
+import createReply from "./controllers/createReply";
+import createTweet from "./controllers/createTweet";
+import deleteTweet from "./controllers/deleteTweet";
+import loadTweet from "./controllers/loadTweet";
+import likeTweet from "./controllers/likeTweet";
 import loadForYouTweets from "./controllers/loadForYouTweets";
 import loadReplies from "./controllers/loadReplies";
 import loadUserReplies from "./controllers/loadUserReplies";
 import loadUserTweets from "./controllers/loadUserTweets";
-import retweet from "./controllers/retweetController";
+import retweet from "./controllers/retweet";
 import optionalAuth from "./middlewares/optionalAuth";
 
 const router = express.Router();
@@ -22,7 +22,7 @@ router.get("/followings/:page", optionalAuth, (req, res) => {
 });
 router.get("/user/replies/:username/:page", optionalAuth, loadUserReplies);
 router.get("/replies/:tweetId/:page", optionalAuth, loadReplies);
-router.get("/detail/:tweetId", optionalAuth, getTweetDetail);
+router.get("/detail/:tweetId", optionalAuth, loadTweet);
 
 router.delete("/:tweetId", requireAuth, deleteTweet);
 

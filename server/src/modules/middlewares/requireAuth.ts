@@ -21,7 +21,7 @@ const isAuthenticated = async (
     next();
   } catch (error: any) {
     if (error.message === "jwt expired") {
-      const files = req.files?.images;
+      const files = req.files?.files;
       if (files) {
         removeIncomingFiles(files);
       }
