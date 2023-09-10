@@ -3,21 +3,27 @@ import prisma from "@/utils/prisma";
 import { getAuthId } from "@/utils/authId";
 
 const like = async (req: Request, res: Response) => {
-  const { postId } = req.body;
-  if (!postId) {
-    return res.status(400).json({ message: "postId is required" });
+  const { tweetId } = req.body;
+  if (!tweetId) {
+    return res.status(400).json({ message: "tweetId is required" });
   }
-  const userId = getAuthId();
-  if (!userId) {
-    return res.sendStatus(401);
-  }
+
+  const userId = getAuthId()!;
+
   try {
+    const tweet = await prisma.tweet.findFirst({ where: { id: tweetId } });
+    if (!tweet) {
+      return res.status(404).json({ message: "Tweet not found" });
+    }
+    const postId = tweet.postId;
+    if (!postId) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
     const message = await prisma.$transaction(async (tx) => {
-      const post = await tx.post.findFirst({ where: { id: postId } });
-      if (!post) {
-        return res.status(404).json({ message: "Post not found" });
-      }
-      const like = await tx.like.findFirst({ where: { postId, userId } });
+      const like = await tx.like.findFirst({
+        where: { postId, userId },
+      });
       let message = "";
       if (like) {
         await tx.like.delete({
@@ -33,9 +39,10 @@ const like = async (req: Request, res: Response) => {
         });
         message = "liked";
       }
+      return message;
     });
 
-    return res.status(201).json(message);
+    return res.status(201).json({ message });
   } catch (err) {
     console.log(err);
     return res.status(500).send("Server error");

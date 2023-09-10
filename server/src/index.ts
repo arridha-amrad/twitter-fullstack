@@ -24,6 +24,16 @@ const runServer = () => {
   app.use(
     fileUpload({
       useTempFiles: true,
+      limits: {
+        files: 4,
+        fileSize: 1 * 1024 * 1024,
+      },
+      limitHandler: (_, res) => {
+        return res
+          .status(413)
+          .json({ message: "File too large. 1MB is allowed" });
+      },
+      abortOnLimit: true,
     })
   );
   app.use(cookieParser());

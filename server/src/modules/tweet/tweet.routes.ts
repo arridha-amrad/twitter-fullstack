@@ -12,6 +12,7 @@ import loadUserReplies from "./controllers/loadUserReplies";
 import loadUserTweets from "./controllers/loadUserTweets";
 import retweet from "./controllers/retweet";
 import optionalAuth from "./middlewares/optionalAuth";
+import { checkReplyRequest } from "./middlewares/checkReplyRequest";
 
 const router = express.Router();
 
@@ -28,7 +29,7 @@ router.delete("/:tweetId", requireAuth, deleteTweet);
 
 router.post("/", sanitize, requireAuth, createTweet);
 router.post("/like", sanitize, requireAuth, likeTweet);
-router.post("/replies", sanitize, requireAuth, createReply);
+router.post("/replies", sanitize, requireAuth, checkReplyRequest, createReply);
 router.post("/retweet", requireAuth, retweet);
 
 export default router;

@@ -1,47 +1,43 @@
 import { Request, Response } from "express";
 import prisma from "@/utils/prisma";
-import { saveFiles } from "../services/filesServices";
 import { getTweetData } from "../tweet.constants";
 import { loadParentTweet } from "../utils/loadParentTweet";
+import { CheckReplyRequest } from "../middlewares/checkReplyRequest";
 
 const createReply = async (req: Request, res: Response) => {
-  const { description, postId } = req.body;
-  const authenticatedUserId = req.app.locals.userId;
-  const files = req.files?.files;
   try {
-    const parentTweet = await prisma.tweet.findFirst({
-      where: { postId, isRetweet: false },
+    const { description, fileUrls, parentTweet, postId, authenticatedUserId } =
+      req.app.locals as CheckReplyRequest;
+
+    const newTweet = await prisma.$transaction(async (tx) => {
+      const newPost = await tx.post.create({
+        data: {
+          body: description,
+          authorId: authenticatedUserId,
+          parentId: postId,
+        },
+      });
+      const newTweet = await tx.tweet.create({
+        data: {
+          postId: newPost.id,
+          userId: authenticatedUserId,
+          parentId: parentTweet.id,
+          isRetweet: false,
+        },
+        include: getTweetData(authenticatedUserId),
+      });
+      await tx.file.createMany({
+        data: fileUrls.map((url) => ({
+          postId: newPost.id,
+          url,
+          userId: authenticatedUserId,
+        })),
+      });
+      if (newTweet.parentId) {
+        await loadParentTweet(newTweet);
+      }
+      return newTweet;
     });
-
-    if (!parentTweet) {
-      return res.status(404).json({ message: "Tweet not found" });
-    }
-
-    const newPost = await prisma.post.create({
-      data: {
-        body: description,
-        authorId: authenticatedUserId,
-        parentId: postId,
-      },
-    });
-
-    if (files) {
-      await saveFiles(authenticatedUserId, newPost.id, files);
-    }
-
-    const newTweet = await prisma.tweet.create({
-      data: {
-        postId: newPost.id,
-        userId: authenticatedUserId,
-        parentId: parentTweet.id,
-        isRetweet: false,
-      },
-      include: getTweetData(authenticatedUserId),
-    });
-
-    if (newTweet.parentId) {
-      await loadParentTweet(newTweet);
-    }
 
     return res.status(201).json({ reply: newTweet });
   } catch (error) {
