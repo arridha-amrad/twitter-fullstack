@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config({ path: __dirname + "/./../.env.dev" });
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import UserRoutes from "@/modules/user/user.routes";
 import AuthRoutes from "@/modules/user/auth.routes";
@@ -40,6 +40,11 @@ const runServer = () => {
   app.use("/api/users", UserRoutes);
   app.use("/api/auth", AuthRoutes);
   app.use("/api/tweets", TweetRoutes);
+
+  app.use((err: any, _: Request, res: Response, __: NextFunction) => {
+    console.error(err.stack);
+    return res.status(500).json({ message: "Something went wrong" });
+  });
 
   app.listen(port, () => {
     cloudinary.v2.config({

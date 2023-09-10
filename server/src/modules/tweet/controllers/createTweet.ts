@@ -1,8 +1,8 @@
-import { getAuthId } from "@/utils/authId";
-import prisma from "@/utils/prisma";
-import { Request, Response } from "express";
-import { uploadFiles } from "../services/filesServices";
-import { getTweetData } from "../tweet.constants";
+import { getAuthId } from '@/utils/authId';
+import prisma from '@/utils/prisma';
+import { Request, Response } from 'express';
+import { uploadFiles } from '../repositories/filesServices';
+import { getTweetData } from '../tweet.constants';
 
 const createTweet = async (req: Request, res: Response) => {
   const postDescription = req.body.description;
@@ -19,8 +19,8 @@ const createTweet = async (req: Request, res: Response) => {
         const newPost = await tx.post.create({
           data: {
             body: postDescription,
-            authorId: authenticatedUserId,
-          },
+            authorId: authenticatedUserId
+          }
         });
 
         if (files) {
@@ -29,8 +29,8 @@ const createTweet = async (req: Request, res: Response) => {
             data: urls.map((url) => ({
               postId: newPost.id,
               url,
-              userId: authenticatedUserId,
-            })),
+              userId: authenticatedUserId
+            }))
           });
         }
 
@@ -38,9 +38,9 @@ const createTweet = async (req: Request, res: Response) => {
           data: {
             isRetweet: false,
             userId: authenticatedUserId,
-            postId: newPost.id,
+            postId: newPost.id
           },
-          include: getTweetData(authenticatedUserId),
+          include: getTweetData(authenticatedUserId)
         });
 
         return newTweet;
@@ -50,7 +50,7 @@ const createTweet = async (req: Request, res: Response) => {
 
     return res.status(201).json({ tweet: tweet });
   } catch (err) {
-    console.log("err : ", err);
+    console.log('err : ', err);
     return res.sendStatus(500);
   } finally {
     await prisma.$disconnect();

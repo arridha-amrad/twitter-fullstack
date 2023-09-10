@@ -1,15 +1,13 @@
-import { NextFunction, Request, Response } from "express";
-import prisma from "@/utils/prisma";
-import { uploadFiles } from "../services/filesServices";
-import { Tweet } from "@prisma/client";
-import { getAuthId } from "@/utils/authId";
+import { NextFunction, Request, Response } from 'express';
+import prisma from '@/utils/prisma';
+import { uploadFiles } from '../repositories/filesServices';
+import { Tweet } from '@prisma/client';
 
 export type CheckReplyRequest = {
   description: string;
   postId: string;
   parentTweet: Tweet;
   fileUrls: string[];
-  authenticatedUserId: string;
 };
 
 export const checkReplyRequest = async (
@@ -18,25 +16,24 @@ export const checkReplyRequest = async (
   next: NextFunction
 ) => {
   const { description, postId } = req.body;
+  const files = req.files?.files;
+
   if (!description) {
-    return res.status(200).json({ message: "description is required" });
+    return res.status(200).json({ message: 'description is required' });
   }
   if (!postId) {
-    return res.status(200).json({ message: "postId is required" });
+    return res.status(200).json({ message: 'postId is required' });
   }
-
-  const authenticatedUserId = getAuthId()!;
 
   try {
     const parentTweet = await prisma.tweet.findFirst({
-      where: { postId, isRetweet: false },
+      where: { postId, isRetweet: false }
     });
 
     if (!parentTweet) {
-      return res.status(404).json({ message: "Tweet not found" });
+      return res.status(404).json({ message: 'Tweet not found' });
     }
 
-    const files = req.files?.files;
     let fileUrls: string[] = [];
     if (files) {
       fileUrls = await uploadFiles(files);
@@ -46,8 +43,7 @@ export const checkReplyRequest = async (
       description,
       postId,
       parentTweet,
-      fileUrls,
-      authenticatedUserId,
+      fileUrls
     };
 
     req.app.locals = data;
