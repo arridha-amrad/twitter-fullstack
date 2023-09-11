@@ -1,6 +1,6 @@
-import { upload } from "@/utils/cloudinary";
-import { UploadedFile } from "express-fileupload";
-import prisma from "@/utils/prisma";
+import { upload } from '@/utils/cloudinary';
+import { UploadedFile } from 'express-fileupload';
+import prisma from '@/utils/prisma';
 
 export const saveFiles = async (
   userId: string,
@@ -18,7 +18,7 @@ export const saveFiles = async (
     filesUrls.push(result.secure_url);
   }
   await prisma.file.createMany({
-    data: filesUrls.map((url) => ({ postId, url, userId })),
+    data: filesUrls.map((url) => ({ postId, url, userId }))
   });
 };
 

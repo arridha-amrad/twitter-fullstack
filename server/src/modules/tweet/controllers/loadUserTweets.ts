@@ -1,43 +1,36 @@
-import { Request, Response } from "express";
-import prisma from "@/utils/prisma";
-import { TOTAL_TWEETS_LIMIT, getTweetData } from "../tweet.constants";
-import { FetchedTweets } from "../tweet.types";
-import { getAuthId } from "@/utils/authId";
+import prisma from '@/utils/prisma';
+import { Request, Response } from 'express';
+import { TOTAL_TWEETS_LIMIT } from '../tweet.constants';
+import { getEntities } from '../tweet.entities';
+import { FetchedTweets } from '../tweet.types';
 
 export default async function loadUserTweets(req: Request, res: Response) {
-  const authenticatedUserId = getAuthId();
   const { username, page } = req.params;
-
   const intPage = parseInt(page);
-
+  const { tweetRepository } = getEntities(prisma, ['tweet']);
   try {
-    const total = await prisma.tweet.count({
-      where: {
-        user: {
-          username,
-        },
-        isEnabled: true,
-        parentId: null,
+    const total = await tweetRepository.sumForYouTweets({
+      user: {
+        username
       },
-    });
-    const tweets = await prisma.tweet.findMany({
-      orderBy: { createdAt: "desc" },
-      take: TOTAL_TWEETS_LIMIT,
-      skip: (intPage - 1) * TOTAL_TWEETS_LIMIT,
-      include: getTweetData(authenticatedUserId),
-      where: {
-        user: { username },
-        isEnabled: true,
-        parentId: null,
-      },
+      parentId: null
     });
 
-    return res.status(200).json({
+    const tweets = await tweetRepository.pagingTweets(intPage, {
+      user: {
+        username
+      },
+      parentId: null
+    });
+
+    const result: FetchedTweets = {
       tweets,
       total,
       currentPage: intPage,
-      hasNextPage: total > intPage * TOTAL_TWEETS_LIMIT,
-    } as FetchedTweets);
+      hasNextPage: total > intPage * TOTAL_TWEETS_LIMIT
+    };
+
+    return res.status(200).json(result);
   } catch (error) {
     console.log(error);
   } finally {

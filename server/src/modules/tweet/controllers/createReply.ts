@@ -1,12 +1,8 @@
 import { Request, Response } from 'express';
 import prisma from '@/utils/prisma';
-import { getTweetData } from '../tweet.constants';
-import { loadParentTweet } from '../utils/loadParentTweet';
 import { CheckReplyRequest } from '../middlewares/checkReplyRequest';
-import TweetService from '../repositories/tweet.service';
 import { getAuthId } from '@/utils/authId';
-import PostService from '../repositories/post.service';
-import FileService from '../repositories/file.repositories';
+import { getEntities } from '../tweet.entities';
 
 const createReply = async (req: Request, res: Response) => {
   const { description, fileUrls, parentTweet, postId } = req.app
@@ -14,23 +10,24 @@ const createReply = async (req: Request, res: Response) => {
   const authenticatedUserId = getAuthId()!;
   try {
     const newTweet = await prisma.$transaction(async (tx) => {
-      const tweetService = new TweetService(tx['tweet']);
-      const postService = new PostService(tx.post);
-      const fileService = new FileService(tx.file);
+      const { fileRepository, postRepository, tweetRepository } = getEntities(
+        tx,
+        ['file', 'post', 'tweet']
+      );
 
-      const newPost = await postService.create({
+      const newPost = await postRepository.create({
         body: description,
         authorId: authenticatedUserId,
         parentId: postId
       });
 
-      await fileService.createMany({
+      await fileRepository.createMany({
         postId: newPost.id,
         urls: fileUrls,
         userId: authenticatedUserId
       });
 
-      const newTweet = await tweetService.create({
+      const newTweet = await tweetRepository.create({
         postId: newPost.id,
         userId: authenticatedUserId,
         parentId: parentTweet.id,

@@ -1,47 +1,31 @@
-import { Request, Response } from "express";
-import prisma from "@/utils/prisma";
-import { TOTAL_TWEETS_LIMIT, getTweetData } from "../tweet.constants";
-import { loadParentTweet } from "../utils/loadParentTweet";
-import { FetchedTweets } from "../tweet.types";
-import { getAuthId } from "@/utils/authId";
+import { Request, Response } from 'express';
+import prisma from '@/utils/prisma';
+import { FetchedTweets } from '../tweet.types';
+import { getEntities } from '../tweet.entities';
+import { TweetWithParents } from '../repositories/TweetRepository';
 
 const loadForYouTweets = async (req: Request, res: Response) => {
-  const pageParam = req.params.page || "1";
+  const pageParam = req.params.page || '1';
   const page = parseInt(pageParam);
-
-  const authenticatedUserId = getAuthId();
+  const { tweetRepository } = getEntities(prisma, ['tweet']);
   try {
-    const total = await prisma.tweet.count({
-      where: {
-        isEnabled: true,
-      },
-    });
+    const total = await tweetRepository.sumForYouTweets();
+    const tweets = await tweetRepository.pagingTweets(page);
 
-    const tweets = await prisma.tweet.findMany({
-      orderBy: { createdAt: "desc" },
-      take: TOTAL_TWEETS_LIMIT,
-      skip: (page - 1) * TOTAL_TWEETS_LIMIT,
-      include: getTweetData(authenticatedUserId),
-      where: {
-        isEnabled: true,
-      },
-    });
-
+    const tweetsWithParents: TweetWithParents[] = [];
     for (const tweet of tweets) {
-      if (tweet.parentId) {
-        await loadParentTweet(tweet);
-      }
+      const twp = await tweetRepository.loadWithParent(tweet);
+      tweetsWithParents.push(twp);
     }
-
     return res.status(200).json({
-      tweets,
+      tweets: tweetsWithParents,
       currentPage: page,
       hasNextPage: total > page * 10,
-      total,
+      total
     } as FetchedTweets);
   } catch (err) {
-    console.log("err : ", err);
-    return res.status(500).send("Server Error");
+    console.log('err : ', err);
+    return res.status(500).send('Server Error');
   } finally {
     await prisma.$disconnect();
   }

@@ -6,7 +6,7 @@ export type CreatePostDto = {
   parentId: string;
 };
 
-class PostService {
+class postService {
   constructor(private Post: PostEntity) {}
 
   async create(data: CreatePostDto) {
@@ -19,4 +19,4 @@ class PostService {
   }
 }
 
-export default PostService;
+export default postService;

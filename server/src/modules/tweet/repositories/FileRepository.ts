@@ -6,7 +6,7 @@ export type CreateFileDto = {
   urls: string[];
 };
 
-class FileService {
+class FileRepository {
   constructor(private File: FileEntity) {}
 
   async createMany(data: CreateFileDto) {
@@ -21,4 +21,4 @@ class FileService {
   }
 }
 
-export default FileService;
+export default FileRepository;
