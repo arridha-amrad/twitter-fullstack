@@ -1,46 +1,34 @@
-import { Request, Response } from "express";
-import prisma from "@/utils/prisma";
-import { deleteImage } from "@/utils/cloudinary";
+import { Request, Response } from 'express';
+import prisma from '@/utils/prisma';
+import { getAuthId } from '@/utils/authId';
+import { initRepositories } from '../repositories';
 const deleteTweet = async (req: Request, res: Response) => {
-	const { tweetId } = req.params;
-	const userId = req.app.locals.userId;
-	try {
-		const tweet = await prisma.tweet.findFirst({
-			where: { id: tweetId },
-			include: {
-				post: {
-					include: {
-						files: {
-							select: { url: true },
-						},
-					},
-				},
-			},
-		});
-		if (!tweet) return res.status(404).json({ error: "Tweet not found" });
-		if (tweet.userId !== userId)
-			return res.status(400).json({ message: "You are not authorized" });
-		if (!tweet.isRetweet) {
-			const files = tweet.post?.files;
-			if (files && files.length > 0) {
-				for (const file of files) {
-					await deleteImage(file.url);
-				}
-			}
-		}
+  const { tweetId } = req.params;
+  const authUserId = getAuthId()!;
 
-		await prisma.tweet.update({
-			where: { id: tweet.id },
-			data: { isEnabled: false },
-		});
+  try {
+    await prisma.$transaction(async (tx) => {
+      const { fileRepository, postRepository, tweetRepository } =
+        initRepositories(tx, ['file', 'post', 'tweet']);
+      const tweet = await tweetRepository.findById(tweetId);
+      if (!tweet) {
+        return res.sendStatus(404);
+      }
+      if (tweet.userId !== authUserId) {
+        return res.status(401);
+      }
+      if (!tweet.isRetweet) {
+        await tweetRepository.delete(tweet.id);
+      }
+    });
 
-		return res.status(200).json({ message: "Tweet deleted" });
-	} catch (err) {
-		console.log(err);
-		return res.sendStatus(500);
-	} finally {
-		await prisma.$disconnect();
-	}
+    return res.status(200).json({ message: 'Tweet deleted' });
+  } catch (err) {
+    console.log(err);
+    return res.sendStatus(500);
+  } finally {
+    await prisma.$disconnect();
+  }
 };
 
 export default deleteTweet;

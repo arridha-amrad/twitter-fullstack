@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
-import prisma from "@/utils/prisma";
-import { loadParentTweet } from "../utils/loadParentTweet";
-import { TOTAL_TWEETS_LIMIT, getTweetData } from "../tweet.constants";
-import { getAuthId } from "@/utils/authId";
+import { Request, Response } from 'express';
+import prisma from '@/utils/prisma';
+import { loadParentTweet } from '../utils/loadParentTweet';
+import { TOTAL_TWEETS_LIMIT, getTweetData } from '../constants';
+import { getAuthId } from '@/utils/authId';
 
 const loadTweet = async (req: Request, res: Response) => {
   const { tweetId } = req.params;
@@ -15,28 +15,28 @@ const loadTweet = async (req: Request, res: Response) => {
         ...getTweetData(authenticatedUserId),
         children: {
           include: { ...getTweetData(authenticatedUserId) },
-          orderBy: { createdAt: "desc" },
+          orderBy: { createdAt: 'desc' },
           take: TOTAL_TWEETS_LIMIT,
-          skip: 0,
-        },
-      },
+          skip: 0
+        }
+      }
     });
 
     if (!tweet) {
-      return res.status(404).json({ message: "Tweet not found" });
+      return res.status(404).json({ message: 'Tweet not found' });
     }
 
     if (!tweet.isEnabled) {
-      return res.status(400).json({ message: "This tweet is not available" });
+      return res.status(400).json({ message: 'This tweet is not available' });
     }
 
     if (tweet.isRetweet) {
       const originalTweet = await prisma.tweet.findFirst({
-        where: { postId: tweet.postId, isRetweet: false },
+        where: { postId: tweet.postId, isRetweet: false }
       });
       const children = await prisma.tweet.findMany({
         where: { parentId: originalTweet?.id, isRetweet: false },
-        include: { ...getTweetData(authenticatedUserId) },
+        include: { ...getTweetData(authenticatedUserId) }
       });
       tweet.children = children;
     }

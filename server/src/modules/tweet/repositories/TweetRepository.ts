@@ -1,7 +1,8 @@
-import { TweetEntity } from '../tweet.entities';
 import { getAuthId } from '@/utils/authId';
-import { TOTAL_TWEETS_LIMIT, getTweetData } from '../tweet.constants';
+import { TOTAL_TWEETS_LIMIT, getTweetData } from '../constants';
 import { Tweet as ITweet, Prisma } from '@prisma/client';
+import { TweetWithParents } from '../types';
+import { TweetEntity } from '../entities';
 
 export type CreateTweetDto = {
   postId: string;
@@ -9,8 +10,6 @@ export type CreateTweetDto = {
   parentId: string | null;
   isRetweet: boolean;
 };
-
-export type TweetWithParents = ITweet & { parents: ITweet[] };
 
 class TweetRepository {
   private authUserId?: string;
@@ -62,7 +61,15 @@ class TweetRepository {
     });
   }
 
-  async sumForYouTweets(filter?: Prisma.TweetWhereInput) {
+  async delete(id: string) {
+    return this.Tweet.delete({
+      where: {
+        id
+      }
+    });
+  }
+
+  async sumTweets(filter?: Prisma.TweetWhereInput) {
     return this.Tweet.count({
       where: {
         isEnabled: true,

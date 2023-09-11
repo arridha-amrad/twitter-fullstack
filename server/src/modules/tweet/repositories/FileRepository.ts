@@ -1,4 +1,4 @@
-import { FileEntity } from '../tweet.entities';
+import { FileEntity } from '../repositories';
 
 export type CreateFileDto = {
   postId: string;

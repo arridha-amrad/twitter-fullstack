@@ -1,15 +1,15 @@
 import prisma from '@/utils/prisma';
 import { Request, Response } from 'express';
-import { TOTAL_TWEETS_LIMIT } from '../tweet.constants';
-import { getEntities } from '../tweet.entities';
-import { FetchedTweets } from '../tweet.types';
+import { TOTAL_TWEETS_LIMIT } from '../constants';
+import { initRepositories } from '../repositories';
+import { PageableTweets } from '../types';
 
 export default async function loadUserTweets(req: Request, res: Response) {
   const { username, page } = req.params;
   const intPage = parseInt(page);
-  const { tweetRepository } = getEntities(prisma, ['tweet']);
+  const { tweetRepository } = initRepositories(prisma, ['tweet']);
   try {
-    const total = await tweetRepository.sumForYouTweets({
+    const total = await tweetRepository.sumTweets({
       user: {
         username
       },
@@ -23,7 +23,7 @@ export default async function loadUserTweets(req: Request, res: Response) {
       parentId: null
     });
 
-    const result: FetchedTweets = {
+    const result: PageableTweets = {
       tweets,
       total,
       currentPage: intPage,

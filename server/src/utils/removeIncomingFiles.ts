@@ -1,5 +1,5 @@
-import { UploadedFile } from "express-fileupload";
-import fs from "fs";
+import { UploadedFile } from 'express-fileupload';
+import fs from 'fs';
 
 const removeIncomingFiles = (files: UploadedFile | UploadedFile[]) => {
   if (files instanceof Array) {

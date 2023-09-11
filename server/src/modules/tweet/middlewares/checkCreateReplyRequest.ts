@@ -3,14 +3,14 @@ import prisma from '@/utils/prisma';
 import { uploadFiles } from '../repositories/filesServices';
 import { Tweet } from '@prisma/client';
 
-export type CheckReplyRequest = {
+export type CheckCreateReplyRequest = {
   description: string;
   postId: string;
   parentTweet: Tweet;
   fileUrls: string[];
 };
 
-export const checkReplyRequest = async (
+export const checkCreateReplyRequest = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -39,7 +39,7 @@ export const checkReplyRequest = async (
       fileUrls = await uploadFiles(files);
     }
 
-    const data: CheckReplyRequest = {
+    const data: CheckCreateReplyRequest = {
       description,
       postId,
       parentTweet,

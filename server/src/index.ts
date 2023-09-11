@@ -1,14 +1,16 @@
 import dotenv from 'dotenv';
 dotenv.config({ path: __dirname + '/./../.env.dev' });
-import express, { NextFunction, Request, Response } from 'express';
-import cookieParser from 'cookie-parser';
-import UserRoutes from '@/modules/user/user.routes';
+
+import TweetRoutes from '@/modules/tweet/routes';
 import AuthRoutes from '@/modules/user/auth.routes';
-import TweetRoutes from '@/modules/tweet/tweet.routes';
-import cors from 'cors';
-import fileUpload from 'express-fileupload';
+import UserRoutes from '@/modules/user/user.routes';
 import cloudinary from 'cloudinary';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import express, { NextFunction, Request, Response } from 'express';
+import fileUpload from 'express-fileupload';
 import prisma from './utils/prisma';
+import removeIncomingFiles from './utils/removeIncomingFiles';
 
 const runServer = () => {
   const port = process.env.PORT;
@@ -21,6 +23,7 @@ const runServer = () => {
     })
   );
   app.use(express.json());
+
   app.use(
     fileUpload({
       useTempFiles: true,
@@ -28,7 +31,11 @@ const runServer = () => {
         files: 4,
         fileSize: 1 * 1024 * 1024
       },
-      limitHandler: (_, res) => {
+      limitHandler: (req, res) => {
+        const files = req.files?.files;
+        if (files) {
+          removeIncomingFiles(files);
+        }
         return res
           .status(413)
           .json({ message: 'File too large. Maximum 1 MB allowed' });
@@ -36,6 +43,7 @@ const runServer = () => {
       abortOnLimit: true
     })
   );
+
   app.use(cookieParser());
   app.use('/api/users', UserRoutes);
   app.use('/api/auth', AuthRoutes);

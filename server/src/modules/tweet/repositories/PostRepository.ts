@@ -1,13 +1,17 @@
-import { PostEntity } from '../tweet.entities';
+import { getAuthId } from '@/utils/authId';
+import { PostEntity } from '../entities';
 
 export type CreatePostDto = {
   body: string;
   authorId: string;
-  parentId: string;
+  parentId?: string;
 };
 
 class postService {
-  constructor(private Post: PostEntity) {}
+  private authUserId;
+  constructor(private Post: PostEntity) {
+    this.authUserId = getAuthId();
+  }
 
   async create(data: CreatePostDto) {
     const newPost = await this.Post.create({
@@ -16,6 +20,13 @@ class postService {
       }
     });
     return newPost;
+  }
+  async delete(id: string) {
+    return this.Post.delete({
+      where: {
+        id
+      }
+    });
   }
 }
 

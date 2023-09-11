@@ -1,19 +1,17 @@
 import { Request, Response } from 'express';
 import prisma from '@/utils/prisma';
-import { CheckReplyRequest } from '../middlewares/checkReplyRequest';
+import { CheckCreateReplyRequest } from '../middlewares/checkCreateReplyRequest';
 import { getAuthId } from '@/utils/authId';
-import { getEntities } from '../tweet.entities';
+import { initRepositories } from '../repositories';
 
 const createReply = async (req: Request, res: Response) => {
   const { description, fileUrls, parentTweet, postId } = req.app
-    .locals as CheckReplyRequest;
+    .locals as CheckCreateReplyRequest;
   const authenticatedUserId = getAuthId()!;
   try {
     const newTweet = await prisma.$transaction(async (tx) => {
-      const { fileRepository, postRepository, tweetRepository } = getEntities(
-        tx,
-        ['file', 'post', 'tweet']
-      );
+      const { fileRepository, postRepository, tweetRepository } =
+        initRepositories(tx, ['file', 'post', 'tweet']);
 
       const newPost = await postRepository.create({
         body: description,

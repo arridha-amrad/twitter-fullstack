@@ -5,6 +5,7 @@
 		"fullname",
 		"headlessui",
 		"heroicons",
+		"Pageable",
 		"pinia",
 		"repost",
 		"reposted",

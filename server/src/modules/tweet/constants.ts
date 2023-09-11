@@ -1,10 +1,5 @@
 import { File, Prisma, User } from '@prisma/client';
-
-type AUTHOR = Pick<User, 'id' | 'fullname' | 'username' | 'imageURL'>;
-
-type POST_COUNTER = Omit<Prisma.PostCountOutputTypeSelect, 'tweets'>;
-
-type POST_FILE = Pick<File, 'url'>;
+import { AUTHOR, POST_COUNTER, POST_FILE } from './types';
 
 export const AUTHOR_SELECTED_DATA: Record<keyof AUTHOR, boolean> = {
   fullname: true,

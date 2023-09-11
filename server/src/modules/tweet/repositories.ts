@@ -1,18 +1,16 @@
-import prisma from '@/utils/prisma';
-import FileRepository from './repositories/FileRepository';
-import { PrismaClient, Prisma } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
+import { Entities } from './entities';
+import FileRepository from './repositories/FileRepository';
 import PostRepository from './repositories/PostRepository';
 import TweetRepository from './repositories/TweetRepository';
 
-type Entities = 'tweet' | 'post' | 'file';
-
-type Transaction = Omit<
+type DbClient = Omit<
   PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
   '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
 >;
 
-export const getEntities = (tx: Transaction, entities: Entities[]) => {
+export const initRepositories = (tx: DbClient, entities: Entities[]) => {
   var fileRepository!: FileRepository;
   var postRepository!: PostRepository;
   var tweetRepository!: TweetRepository;
@@ -38,7 +36,3 @@ export const getEntities = (tx: Transaction, entities: Entities[]) => {
     tweetRepository
   };
 };
-
-export type TweetEntity = typeof prisma.tweet;
-export type PostEntity = typeof prisma.post;
-export type FileEntity = typeof prisma.file;

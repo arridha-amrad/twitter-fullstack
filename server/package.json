@@ -3,7 +3,8 @@
 		"dev:linux": "export NODE_ENV=dev && tsx watch src",
 		"dev:unix": "SET NODE_ENV=dev && tsx watch src",
 		"db:push:mysql": "npx dotenv-cli -e .env.dev -- npx prisma db push",
-		"prisma:studio": "npx dotenv-cli -e .env.dev -- npx prisma studio"
+		"prisma:studio": "npx dotenv-cli -e .env.dev -- npx prisma studio",
+		"prisma:generate": "npx dotenv-cli -e .env.dev -- npx prisma generate"
 	},
 	"dependencies": {
 		"@prisma/client": "^5.2.0",

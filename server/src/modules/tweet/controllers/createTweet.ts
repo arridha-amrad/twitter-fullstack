@@ -1,46 +1,37 @@
 import { getAuthId } from '@/utils/authId';
 import prisma from '@/utils/prisma';
 import { Request, Response } from 'express';
-import { uploadFiles } from '../repositories/filesServices';
-import { getTweetData } from '../tweet.constants';
+import { CheckCreateTweetRequest } from '../middlewares/checkCreateTweetRequest';
+import { initRepositories } from '../repositories';
 
 const createTweet = async (req: Request, res: Response) => {
-  const postDescription = req.body.description;
-  const files = req.files?.files;
-  const authenticatedUserId = getAuthId();
-
-  if (!authenticatedUserId) {
-    return res.sendStatus(401);
-  }
+  const { description, fileUrls } = req.app.locals as CheckCreateTweetRequest;
+  const authUserId = getAuthId()!;
 
   try {
     const tweet = await prisma.$transaction(
       async (tx) => {
-        const newPost = await tx.post.create({
-          data: {
-            body: postDescription,
-            authorId: authenticatedUserId
-          }
+        const { fileRepository, postRepository, tweetRepository } =
+          initRepositories(tx, ['post', 'file', 'tweet']);
+
+        const newPost = await postRepository.create({
+          body: description,
+          authorId: authUserId
         });
 
-        if (files) {
-          const urls = await uploadFiles(files);
-          await tx.file.createMany({
-            data: urls.map((url) => ({
-              postId: newPost.id,
-              url,
-              userId: authenticatedUserId
-            }))
+        if (fileUrls.length > 0) {
+          await fileRepository.createMany({
+            postId: newPost.id,
+            urls: fileUrls,
+            userId: authUserId
           });
         }
 
-        const newTweet = await tx.tweet.create({
-          data: {
-            isRetweet: false,
-            userId: authenticatedUserId,
-            postId: newPost.id
-          },
-          include: getTweetData(authenticatedUserId)
+        const newTweet = await tweetRepository.create({
+          isRetweet: false,
+          parentId: null,
+          postId: newPost.id,
+          userId: authUserId
         });
 
         return newTweet;
@@ -48,7 +39,7 @@ const createTweet = async (req: Request, res: Response) => {
       { timeout: 10000, maxWait: 5000 }
     );
 
-    return res.status(201).json({ tweet: tweet });
+    return res.status(201).json({ tweet });
   } catch (err) {
     console.log('err : ', err);
     return res.sendStatus(500);

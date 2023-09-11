@@ -78,18 +78,19 @@ model Post {
 }
 
 model Tweet {
-  id        String   @id @default(cuid())
-  isEnabled Boolean  @default(true)
-  post      Post?    @relation(fields: [postId], references: [id], onDelete: NoAction)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String    @id @default(cuid())
+  isEnabled Boolean   @default(true)
   parentId  String?
-  parent    Tweet?   @relation("ParentChild", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  children  Tweet[]  @relation("ParentChild")
-  postId    String?
+  postId    String
   userId    String
   isRetweet Boolean
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+  updatedAt DateTime  @updatedAt
+  parent    Tweet?    @relation("ParentChild", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children  Tweet[]   @relation("ParentChild")
+  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([postId])

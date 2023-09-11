@@ -1,45 +1,46 @@
-import { Request, Response } from "express";
-import prisma from "@/utils/prisma";
-import { TOTAL_TWEETS_LIMIT, getTweetData } from "../tweet.constants";
-import { loadParentTweet } from "../utils/loadParentTweet";
-import { getAuthId } from "@/utils/authId";
+import prisma from '@/utils/prisma';
+import { Request, Response } from 'express';
+import { TOTAL_TWEETS_LIMIT } from '../constants';
+import { initRepositories } from '../repositories';
+import { PageableTweets, TweetWithParents } from '../types';
 
 export default async function loadUserReplies(req: Request, res: Response) {
-  const authenticatedUserId = getAuthId();
   const { username, page } = req.params;
   const intPage = parseInt(page);
+  const { tweetRepository } = initRepositories(prisma, ['tweet']);
   try {
-    const total = await prisma.tweet.count({
-      where: {
-        user: { username },
-        isEnabled: true,
-        parentId: { not: null },
+    const total = await tweetRepository.sumTweets({
+      user: {
+        username
       },
-    });
-    const tweets = await prisma.tweet.findMany({
-      orderBy: { createdAt: "desc" },
-      take: TOTAL_TWEETS_LIMIT,
-      skip: (intPage - 1) * TOTAL_TWEETS_LIMIT,
-      include: getTweetData(authenticatedUserId),
-      where: {
-        user: { username },
-        isEnabled: true,
-        parentId: { not: null },
-      },
+      parentId: {
+        not: null
+      }
     });
 
-    for (const tweet of tweets) {
-      if (tweet.parentId) {
-        await loadParentTweet(tweet);
+    const tweets = await tweetRepository.pagingTweets(intPage, {
+      user: {
+        username
+      },
+      parentId: {
+        not: null
       }
+    });
+
+    const tweetsWithParents: TweetWithParents[] = [];
+    for (const tweet of tweets) {
+      const twp = await tweetRepository.loadWithParent(tweet);
+      tweetsWithParents.push(twp);
     }
 
-    return res.status(200).json({
+    const result: PageableTweets = {
       tweets,
       total,
       currentPage: intPage,
-      hasNextPage: total > intPage * TOTAL_TWEETS_LIMIT,
-    });
+      hasNextPage: total > intPage * TOTAL_TWEETS_LIMIT
+    };
+
+    return res.status(200).json(result);
   } catch (err) {
     console.log(err);
     return res.sendStatus(500);
