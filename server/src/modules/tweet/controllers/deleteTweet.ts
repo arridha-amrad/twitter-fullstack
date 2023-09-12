@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import prisma from '@/utils/prisma';
+import prisma from '@/prisma';
 import { getAuthId } from '@/utils/authId';
 import { initRepositories } from '../repositories';
 const deleteTweet = async (req: Request, res: Response) => {

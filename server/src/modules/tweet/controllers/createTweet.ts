@@ -1,5 +1,5 @@
 import { getAuthId } from '@/utils/authId';
-import prisma from '@/utils/prisma';
+import prisma from '@/prisma';
 import { Request, Response } from 'express';
 import { CheckCreateTweetRequest } from '../middlewares/checkCreateTweetRequest';
 import { initRepositories } from '../repositories';

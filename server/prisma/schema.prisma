@@ -11,45 +11,53 @@ datasource db {
   relationMode = "prisma"
 }
 
+enum UserStrategy {
+  EMAIL
+  GOOGLE
+  FACEBOOK
+}
+
 model User {
-  id            String    @id @default(cuid())
-  username      String    @unique
-  email         String    @unique
-  imageURL      String?   @db.Text
-  fullname      String
-  password      String    @db.Text
-  backgroundURL String?   @db.Text
-  tokens        Token[]
-  likes         Like[]
-  posts         Post[]
-  tweets        Tweet[]
-  retweets      Retweet[]
-  followers     User[]    @relation(name: "Followers")
-  followings    User[]    @relation(name: "Followers")
-  File          File[]
-  createdAt     DateTime? @default(now())
-  updatedAt     DateTime  @updatedAt
+  id           String       @id @default(cuid())
+  username     String       @unique
+  email        String       @unique
+  avatarUrl    String?      @map("avatar_url") @db.Text
+  fullname     String
+  password     String       @db.Text
+  wallpaper    String?      @db.Text
+  userStrategy UserStrategy @map("user_strategy")
+  tokens       Token[]
+  likes        Like[]
+  posts        Post[]
+  tweets       Tweet[]
+  retweets     Repost[]
+  followers    User[]       @relation(name: "user_follows")
+  followings   User[]       @relation(name: "user_follows")
+  media        File[]
+  createdAt    DateTime?    @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
 
   @@map("users")
 }
 
 model Token {
-  id     String @id @default(cuid())
+  id     BigInt @id @default(autoincrement())
+  name   String @unique
   value  String @db.Text
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
+  userId String @map("user_id")
 
   @@index([userId])
   @@map("tokens")
 }
 
 model Like {
-  postId    String
-  userId    String
+  postId    String   @map("post_id")
+  userId    String   @map("user_id")
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@id([postId, userId])
   @@index([userId])
@@ -58,69 +66,75 @@ model Like {
 }
 
 model Post {
-  id        String    @id @default(cuid())
-  body      String    @db.Text
-  authorId  String
-  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  likes     Like[]
-  files     File[]
-  tweets    Tweet[]
-  parentId  String?
-  parent    Post?     @relation("ParentChild", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  children  Post[]    @relation("ParentChild")
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  retweets  Retweet[]
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  body         String   @db.Text
+  authorId     String   @map("author_id")
+  author       User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  quoteTweetId String?  @unique @map("quote_tweet_id")
+  quoteTweet   Tweet?   @relation(fields: [quoteTweetId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  likes        Like[]
+  files        File[]
+  tweets       Tweet[]  @relation("Tweets")
+  replies      Tweet[]  @relation("Replies")
+  reposts      Repost[]
 
-  @@index([parentId])
+  @@index([quoteTweetId])
   @@index([authorId])
   @@map("posts")
 }
 
-model Tweet {
-  id        String    @id @default(cuid())
-  isEnabled Boolean   @default(true)
-  parentId  String?
-  postId    String
-  userId    String
-  isRetweet Boolean
-  createdAt DateTime  @default(now())
-  deletedAt DateTime?
-  updatedAt DateTime  @updatedAt
-  parent    Tweet?    @relation("ParentChild", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  children  Tweet[]   @relation("ParentChild")
-  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+enum TweetType {
+  DEFAULT
+  REPLY
+  RETWEET
+  QUOTE
+}
 
+model Tweet {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now()) @map("created_at")
+  deletedAt   DateTime? @map("deleted_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  postId      String?   @map("post_id")
+  userId      String    @map("user_id")
+  type        TweetType @default(DEFAULT)
+  post        Post?     @relation("Tweets", fields: [postId], references: [id], onDelete: SetNull)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  replyPostId String?   @map("reply_post_id")
+  replyPost   Post?     @relation("Replies", fields: [replyPostId], references: [id])
+  quotePost   Post?
+
+  @@index([replyPostId])
   @@index([userId])
   @@index([postId])
-  @@index([parentId])
   @@map("tweets")
 }
 
 model File {
-  id        String   @id @default(cuid())
+  id        BigInt   @id @default(autoincrement())
   url       String   @db.Text
   post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId    String
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  postId    String   @map("post_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@index([postId])
   @@index([userId])
   @@map("files")
 }
 
-model Retweet {
-  userId String
+model Repost {
+  userId String @map("user_id")
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  postId String
+  postId String @map("post_id")
   post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@id([userId, postId])
   @@index([userId])
   @@index([postId])
-  @@map("retweets")
+  @@map("reposts")
 }

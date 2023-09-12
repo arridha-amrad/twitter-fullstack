@@ -1,4 +1,4 @@
-import prisma from '@/utils/prisma';
+import prisma from '@/prisma';
 import { Request, Response } from 'express';
 import { TOTAL_TWEETS_LIMIT } from '../constants';
 import { initRepositories } from '../repositories';

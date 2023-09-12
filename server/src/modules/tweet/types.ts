@@ -40,7 +40,3 @@ export type PageableTweets = {
   currentPage: number;
   hasNextPage: boolean;
 };
-export type AUTHOR = Pick<User, 'id' | 'fullname' | 'username' | 'imageURL'>;
-export type TweetWithParents = Tweet & { parents: Tweet[] };
-export type POST_COUNTER = Omit<Prisma.PostCountOutputTypeSelect, 'tweets'>;
-export type POST_FILE = Pick<File, 'url'>;

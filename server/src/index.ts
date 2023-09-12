@@ -1,18 +1,18 @@
 import dotenv from 'dotenv';
 dotenv.config({ path: __dirname + '/./../.env.dev' });
 
-import TweetRoutes from '@/modules/tweet/routes';
-import AuthRoutes from '@/modules/user/auth.routes';
-import UserRoutes from '@/modules/user/user.routes';
-import cloudinary from 'cloudinary';
+import TweetRoutes from '@/routes/tweet.routes';
+import AuthRoutes from '@/routes/auth.routes';
+import UserRoutes from '@/routes/user.routes';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import fileUpload from 'express-fileupload';
-import prisma from './utils/prisma';
-import removeIncomingFiles from './utils/removeIncomingFiles';
+import prisma from './prisma';
+import CloudinaryService from './services/CloudinaryService';
+import FileSystemService from './services/FileSystemService';
 
-const runServer = () => {
+const initServer = () => {
   const port = process.env.PORT;
 
   const app = express();
@@ -34,7 +34,7 @@ const runServer = () => {
       limitHandler: (req, res) => {
         const files = req.files?.files;
         if (files) {
-          removeIncomingFiles(files);
+          FileSystemService.removeIncomingFiles(files);
         }
         return res
           .status(413)
@@ -55,22 +55,25 @@ const runServer = () => {
   });
 
   app.listen(port, () => {
-    cloudinary.v2.config({
-      api_key: process.env.CLOUDINARY_KEY!,
-      api_secret: process.env.CLOUDINARY_SECRET!,
-      cloud_name: process.env.CLOUDINARY_NAME!
-    });
-    console.log('environment:', process.env.NODE_ENV);
-    console.log(`server: http://localhost:${port}`);
+    CloudinaryService.init();
+    console.info('environment:', process.env.NODE_ENV);
+    console.info(`server: http://localhost:${port}`);
   });
 };
 
-prisma
-  .$connect()
-  .then(() => {
-    console.log('db: mysql');
-    runServer();
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+const initPrisma = async () => {
+  await prisma.$connect();
+  console.info('db: mysql');
+};
+
+const run = async () => {
+  try {
+    await initPrisma();
+    initServer();
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
+};
+
+run();

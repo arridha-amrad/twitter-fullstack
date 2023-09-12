@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import prisma from '@/utils/prisma';
+import prisma from '@/prisma';
 import { uploadFiles } from '../repositories/filesServices';
 import { Tweet } from '@prisma/client';
 

@@ -1,5 +1,5 @@
-import prisma from "@/utils/prisma";
-import { Like } from "@prisma/client";
+import prisma from '@/prisma';
+import { Like } from '@prisma/client';
 
 export const findLike = async (
   postId: string,
@@ -8,8 +8,8 @@ export const findLike = async (
   const like = await prisma.like.findFirst({
     where: {
       postId,
-      userId,
-    },
+      userId
+    }
   });
   return like;
 };

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import prisma from '@/utils/prisma';
+import prisma from '@/prisma';
 import { PageableTweets, TweetWithParents } from '../types';
 import { initRepositories } from '../repositories';
 

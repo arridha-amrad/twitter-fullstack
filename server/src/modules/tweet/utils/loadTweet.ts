@@ -1,4 +1,4 @@
-import prisma from '@/utils/prisma';
+import prisma from '@/prisma';
 import { getTweetData } from '../constants';
 
 export const loadTweet = async (

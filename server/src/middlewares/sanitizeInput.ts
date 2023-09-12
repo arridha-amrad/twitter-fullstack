@@ -1,10 +1,10 @@
-import { NextFunction, Request, Response } from "express";
-import { escapeTag } from "./escapeTag";
+import { NextFunction, Request, Response } from 'express';
+import { escapeTag } from '../filters/escapeTag';
 
 const sanitizeData = (keys: string[], input: Record<string, any>) => {
   const incomingData = Object.values(input);
   const outputData = incomingData.map((data) =>
-    typeof data === "string" ? escapeTag(data) : data
+    typeof data === 'string' ? escapeTag(data) : data
   );
   const fixedData: any = {};
   keys.forEach((k, i) => {

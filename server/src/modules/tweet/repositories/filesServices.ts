@@ -1,6 +1,6 @@
 import { upload } from '@/utils/cloudinary';
 import { UploadedFile } from 'express-fileupload';
-import prisma from '@/utils/prisma';
+import prisma from '@/prisma';
 
 export const saveFiles = async (
   userId: string,

@@ -1,4 +1,4 @@
-import prisma from '@/utils/prisma';
+import prisma from '@/prisma';
 export type Entities = 'tweet' | 'post' | 'file';
 
 export type TweetEntity = typeof prisma.tweet;
