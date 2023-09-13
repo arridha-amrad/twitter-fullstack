@@ -9,6 +9,7 @@
 		"pinia",
 		"repost",
 		"reposted",
+		"reposts",
 		"tanstack",
 		"vueuse"
 	]

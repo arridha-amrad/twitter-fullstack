@@ -1,12 +1,12 @@
 import { sanitize } from '@/middlewares/sanitizeInput';
 import { Router } from 'express';
-import login from '../modules/user/auth-controllers/login';
+import login from '../controllers/auth/login';
 import logout from '../modules/user/auth-controllers/logout';
 import me from '../modules/user/auth-controllers/me';
 import refreshToken from '../modules/user/auth-controllers/refresh';
 import register from '../modules/user/auth-controllers/register';
-import { resetToken } from '../modules/user/utils/resetToken';
-import { validateRegister } from '../modules/user/validators/validateRegister';
+import { resetToken } from '../middlewares/resetToken';
+import { validateRegister } from '../validators/validateRegister';
 import Authentication from '../middlewares/Authentication';
 
 const router = Router();

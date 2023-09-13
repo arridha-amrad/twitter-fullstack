@@ -1,6 +1,6 @@
 import { sanitize } from '@/middlewares/sanitizeInput';
 import { Router } from 'express';
-import search from '../modules/user/user-controller/search';
+import search from '../controllers/user/search';
 
 const router = Router();
 
