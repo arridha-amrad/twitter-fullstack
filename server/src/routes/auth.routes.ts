@@ -1,13 +1,13 @@
+import logout from '@/controllers/auth/logout';
+import me from '@/controllers/auth/me';
+import refreshToken from '@/controllers/auth/refresh';
+import register from '@/controllers/auth/register';
 import { sanitize } from '@/middlewares/sanitizeInput';
 import { Router } from 'express';
 import login from '../controllers/auth/login';
-import logout from '../modules/user/auth-controllers/logout';
-import me from '../modules/user/auth-controllers/me';
-import refreshToken from '../modules/user/auth-controllers/refresh';
-import register from '../modules/user/auth-controllers/register';
+import Authentication from '../middlewares/Authentication';
 import { resetToken } from '../middlewares/resetToken';
 import { validateRegister } from '../validators/validateRegister';
-import Authentication from '../middlewares/Authentication';
 
 const router = Router();
 

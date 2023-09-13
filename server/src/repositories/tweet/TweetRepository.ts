@@ -3,6 +3,8 @@ import { TweetEntity } from '../../entities';
 import { TOTAL_TWEETS_LIMIT, getTweetData } from '@/constants/tweet.constants';
 import { CreateTweetDto } from './types';
 
+type FindOneTweet = Prisma.TweetWhereInput;
+
 class TweetRepository {
   constructor(private Tweet: TweetEntity, private authUserId?: string) {}
 
@@ -16,19 +18,31 @@ class TweetRepository {
     return newTweet;
   }
 
-  async findById(tweetId: string) {
+  async findOne(filter: FindOneTweet) {
+    return this.Tweet.findFirst({
+      where: {
+        ...filter
+      }
+    });
+  }
+
+  async findById(tweetId: string, isExtend: boolean = false) {
     return this.Tweet.findFirst({
       where: {
         id: tweetId
       },
-      include: getTweetData(this.authUserId)
+      include: isExtend ? getTweetData(this.authUserId) : undefined
     });
   }
 
   async delete(id: string) {
-    return this.Tweet.delete({
+    return this.Tweet.update({
       where: {
         id
+      },
+      data: {
+        deletedAt: new Date(),
+        postId: null
       }
     });
   }

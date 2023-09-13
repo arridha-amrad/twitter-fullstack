@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import prisma from '@/prisma';
 import { Tweet } from '@prisma/client';
 import FileService from '@/services/FileService';
+import { initRepositories } from '@/repositories/initRepository';
 
 export type CheckCreateReplyRequest = {
   description: string;
@@ -19,17 +20,22 @@ export const checkCreateReplyRequest = async (
   const { description, postId } = req.body;
   const files = req.files?.files;
   const authenticatedUserId = req.app.locals.userId;
+  const { tweetRepository } = initRepositories(prisma, ['tweet']);
 
   if (!description) {
     return res.status(200).json({ message: 'description is required' });
   }
+
   if (!postId) {
     return res.status(200).json({ message: 'postId is required' });
   }
 
   try {
-    const parentTweet = await prisma.tweet.findFirst({
-      where: { postId, type: { not: 'RETWEET' } }
+    const parentTweet = await tweetRepository.findOne({
+      postId,
+      type: {
+        not: 'RETWEET'
+      }
     });
 
     if (!parentTweet) {

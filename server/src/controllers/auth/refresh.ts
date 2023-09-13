@@ -1,10 +1,14 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import prisma from '@/prisma';
 import CookieService from '@/services/CookieService';
 import JwtService from '@/services/JwtService';
 import { initRepositories } from '@/repositories/initRepository';
 
-const refreshToken = async (req: Request, res: Response) => {
+const refreshToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const bearerRefToken = req.cookies[CookieService.refreshTokenCookie];
   if (!bearerRefToken) return res.sendStatus(500);
   const jwtService = new JwtService();
@@ -31,8 +35,7 @@ const refreshToken = async (req: Request, res: Response) => {
       return res.status(200).json({ token: accToken });
     });
   } catch (err) {
-    console.log(err);
-    return res.sendStatus(500);
+    next(err);
   } finally {
     await prisma.$disconnect();
   }

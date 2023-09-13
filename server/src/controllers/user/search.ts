@@ -1,28 +1,20 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import prisma from '@/prisma';
+import { initRepositories } from '@/repositories/initRepository';
 
-const search = async (req: Request, res: Response) => {
+const search = async (req: Request, res: Response, next: NextFunction) => {
   const search = (req.query.search as string | undefined) ?? '';
+  const { userRepository } = initRepositories(prisma, ['user']);
   try {
-    const users = await prisma.user.findMany({
-      where: {
-        OR: [
-          { username: { contains: search } },
-          { fullname: { contains: search } }
-        ]
-      },
-      select: {
-        email: true,
-        username: true,
-        id: true,
-        fullname: true,
-        imageURL: true
-      },
-      take: 10
+    const users = await userRepository.findMany({
+      OR: [
+        { username: { contains: search } },
+        { fullname: { contains: search } }
+      ]
     });
     return res.status(200).json(users);
   } catch (error) {
-    return res.sendStatus(500);
+    next(error);
   } finally {
     await prisma.$disconnect();
   }

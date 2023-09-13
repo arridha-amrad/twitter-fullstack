@@ -5,8 +5,8 @@ import { CheckCreateReplyRequest } from '../../middlewares/checkCreateReplyReque
 import { initRepositories } from '../../repositories/initRepository';
 
 const createReply = async (req: Request, res: Response) => {
-  const { description, fileUrls, parentTweet, postId, authenticatedUserId } =
-    req.app.locals as CheckCreateReplyRequest;
+  const { description, fileUrls, parentTweet, authenticatedUserId } = req.app
+    .locals as CheckCreateReplyRequest;
 
   try {
     const newTweet = await prisma.$transaction(async (tx) => {

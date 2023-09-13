@@ -7,6 +7,7 @@ class CookieService {
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production'
   };
+
   static refreshTokenCookie = 'REFRESH_TOKEN';
 }
 

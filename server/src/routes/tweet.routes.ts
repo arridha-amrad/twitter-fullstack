@@ -1,18 +1,20 @@
 import { sanitize } from '@/middlewares/sanitizeInput';
 import express from 'express';
 import createReply from '../controllers/tweet/createReply';
-import createTweet from '../controllers/createTweet';
-import deleteTweet from '../controllers/deleteTweet';
-import loadTweet from '../controllers/loadTweet';
-import likeTweet from '../controllers/likeTweet';
-import loadForYouTweets from '../controllers/loadForYouTweets';
-import loadReplies from '../controllers/loadReplies';
-import loadUserReplies from '../controllers/loadUserReplies';
-import loadUserTweets from '../controllers/loadUserTweets';
-import retweet from '../controllers/retweet';
+
+import createTweet from '@/controllers/tweet/createTweet';
+import deleteTweet from '@/controllers/tweet/deleteTweet';
+import likeTweet from '@/controllers/tweet/likeTweet';
+import loadForYouTweets from '@/controllers/tweet/loadForYouTweets';
+import loadReplies from '@/controllers/tweet/loadReplies';
+import loadTweet from '@/controllers/tweet/loadTweet';
+import loadUserReplies from '@/controllers/tweet/loadUserReplies';
+import loadUserTweets from '@/controllers/tweet/loadUserTweets';
+import retweet from '@/controllers/tweet/retweet';
+
+import Authentication from '../middlewares/Authentication';
 import { checkCreateReplyRequest } from '../middlewares/checkCreateReplyRequest';
 import { checkCreateTweetRequest } from '../middlewares/checkCreateTweetRequest';
-import Authentication from '../middlewares/Authentication';
 
 const router = express.Router();
 

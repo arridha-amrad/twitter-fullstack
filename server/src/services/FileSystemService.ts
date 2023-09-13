@@ -15,6 +15,7 @@ class FileSystemService {
   static getPrivateKey() {
     return fs.readFileSync('./private.pem');
   }
+
   static getPublicKey() {
     return fs.readFileSync('./public.pem');
   }

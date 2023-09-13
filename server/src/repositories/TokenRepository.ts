@@ -30,6 +30,16 @@ class TokenRepository {
       }
     });
   }
+
+  async create(name: string, value: string, userId: string) {
+    return this.Token.create({
+      data: {
+        name,
+        value,
+        userId
+      }
+    });
+  }
 }
 
 export default TokenRepository;

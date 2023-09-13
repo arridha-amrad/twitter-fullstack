@@ -1,13 +1,12 @@
 import { Request, Response } from 'express';
 import prisma from '@/prisma';
-import { loadParentTweet } from '../modules/tweet/utils/loadParentTweet';
-import { TOTAL_TWEETS_LIMIT, getTweetData } from '../modules/tweet/constants';
-import { getAuthId } from '@/utils/authId';
+import { initRepositories } from '@/repositories/initRepository';
+import { TOTAL_TWEETS_LIMIT, getTweetData } from '@/constants/tweet.constants';
 
 const loadTweet = async (req: Request, res: Response) => {
   const { tweetId } = req.params;
-  const authenticatedUserId = getAuthId();
-
+  const authenticatedUserId = req.app.locals.userId;
+  const { tweetRepository } = initRepositories(prisma, ['tweet']);
   try {
     const tweet = await prisma.tweet.findFirst({
       where: { id: tweetId },
@@ -15,6 +14,12 @@ const loadTweet = async (req: Request, res: Response) => {
         ...getTweetData(authenticatedUserId),
         children: {
           include: { ...getTweetData(authenticatedUserId) },
+          orderBy: { createdAt: 'desc' },
+          take: TOTAL_TWEETS_LIMIT,
+          skip: 0
+        },
+        parent: {
+          include: getTweetData(authenticatedUserId),
           orderBy: { createdAt: 'desc' },
           take: TOTAL_TWEETS_LIMIT,
           skip: 0
@@ -26,7 +31,7 @@ const loadTweet = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Tweet not found' });
     }
 
-    if (!tweet.isEnabled) {
+    if (tweet.deletedAt) {
       return res.status(400).json({ message: 'This tweet is not available' });
     }
 

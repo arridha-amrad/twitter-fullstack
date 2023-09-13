@@ -16,6 +16,9 @@ const deleteTweet = async (req: Request, res: Response) => {
       if (tweet.userId !== authUserId) {
         return res.status(401);
       }
+      if (tweet.postId) {
+        await postRepository.delete(tweet.postId);
+      }
       await tweetRepository.delete(tweet.id);
     });
 
