@@ -78,8 +78,7 @@ model Post {
   files        File[]
   reposts      Repost[]
   tweets       Tweet[]  @relation("Tweets")
-  parent       Tweet[]  @relation("Parents")
-  children     Tweet[]  @relation("Children")
+  replies      Tweet[]  @relation("Replies")
 
   @@index([quoteTweetId])
   @@index([authorId])
@@ -94,23 +93,20 @@ enum TweetType {
 }
 
 model Tweet {
-  id           String    @id @default(cuid())
-  createdAt    DateTime  @default(now()) @map("created_at")
-  deletedAt    DateTime? @map("deleted_at")
-  updatedAt    DateTime  @updatedAt @map("updated_at")
-  postId       String?   @map("post_id")
-  userId       String    @map("user_id")
-  type         TweetType @default(DEFAULT)
-  post         Post?     @relation("Tweets", fields: [postId], references: [id], onDelete: SetNull)
-  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  quotePost    Post?     @relation("Quote")
-  parentPost   Post?     @relation("Parents", fields: [parentPostId], references: [id])
-  parentPostId String?
-  childPost    Post?     @relation("Children", fields: [childPostId], references: [id])
-  childPostId  String?
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now()) @map("created_at")
+  deletedAt   DateTime? @map("deleted_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  postId      String?   @map("post_id")
+  userId      String    @map("user_id")
+  type        TweetType @default(DEFAULT)
+  post        Post?     @relation("Tweets", fields: [postId], references: [id], onDelete: SetNull)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quotePost   Post?     @relation("Quote")
+  replyPost   Post?     @relation("Replies", fields: [replyPostId], references: [id])
+  replyPostId String?
 
-  @@index([parentPostId])
-  @@index([childPostId])
+  @@index([replyPostId])
   @@index([userId])
   @@index([postId])
   @@map("tweets")

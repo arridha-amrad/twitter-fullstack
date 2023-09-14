@@ -30,33 +30,21 @@ const reTweet = async (req: Request, res: Response, next: NextFunction) => {
           userId: authenticatedUserId
         });
         const { id, createdAt, updatedAt, type, userId, ...rest } = tweet;
-        await tweetRepository.create({
+        const reTweet = await tweetRepository.create({
           ...rest,
           type: 'RETWEET',
           userId: authenticatedUserId
         });
         message = 'retweeted';
+        const tweetService = new TweetService(tweetRepository);
+        const tweetWithParents = await tweetService.loadWithParent(reTweet);
+        return res.status(200).json({ message, tweet: tweetWithParents });
       } else {
         await repostRepository.remove({ postId, userId: authenticatedUserId });
         await tweetRepository.hardDelete(isAlreadyRepost.id);
         message = 'unRetweeted';
+        return res.status(200).json({ message, tweet: null });
       }
-
-      const reTweet = await tweetRepository.findOne(
-        {
-          type: 'RETWEET',
-          userId: authenticatedUserId,
-          postId
-        },
-        true
-      );
-
-      if (!reTweet) {
-        throw new Error('Something went wrong');
-      }
-      const tweetService = new TweetService(tweetRepository);
-      const tweetWithParents = await tweetService.loadWithParent(reTweet);
-      return res.status(200).json({ message, tweet: tweetWithParents });
     });
   } catch (err) {
     next(err);

@@ -1,9 +1,9 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import prisma from '@/prisma';
 import CookieService from '@/services/CookieService';
 import { initRepositories } from '@/repositories/initRepository';
 
-const logout = async (req: Request, res: Response) => {
+const logout = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const bearerRefToken = req.cookies[CookieService.refreshTokenCookie];
     if (typeof bearerRefToken === 'string') {
@@ -19,8 +19,9 @@ const logout = async (req: Request, res: Response) => {
     res.clearCookie(CookieService.refreshTokenCookie, CookieService.options);
     return res.status(200).json({ message: 'logout' });
   } catch (err) {
-    console.log(err);
-    return res.sendStatus(500);
+    next(err);
+  } finally {
+    await prisma.$disconnect();
   }
 };
 

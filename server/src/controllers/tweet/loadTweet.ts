@@ -1,24 +1,20 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import prisma from '@/prisma';
 import { initRepositories } from '@/repositories/initRepository';
-import { TOTAL_TWEETS_LIMIT, getTweetData } from '@/constants/tweet.constants';
+import TweetService from '@/services/TweetService';
 
-const loadTweet = async (req: Request, res: Response) => {
+const loadTweet = async (req: Request, res: Response, next: NextFunction) => {
   const { tweetId } = req.params;
-  const authenticatedUserId = req.app.locals.userId;
-  const { tweetRepository } = initRepositories(prisma, ['tweet']);
+  const userId = req.app.locals.userId;
+  const { tweetRepository } = initRepositories(prisma, ['tweet'], userId);
+  const tweetService = new TweetService(tweetRepository);
   try {
-    const tweet = await prisma.tweet.findFirst({
-      where: { id: tweetId }
-    });
-
-    if (!tweet) {
+    const tweet = await tweetRepository.findById(tweetId, true);
+    if (!tweet || !tweet.postId) {
       return res.status(404).json({ message: 'Tweet not found' });
     }
-
-    if (tweet.deletedAt) {
-      return res.status(400).json({ message: 'This tweet is not available' });
-    }
+    const tweetWithParents = await tweetService.loadWithParent(tweet);
+    const children = await tweetRepository.loadReplies(tweet.postId, 1);
 
     // if (tweet.isRetweet) {
     //   const originalTweet = await prisma.tweet.findFirst({
@@ -35,10 +31,9 @@ const loadTweet = async (req: Request, res: Response) => {
     //   await loadParentTweet(tweet, authenticatedUserId);
     // }
 
-    return res.status(200).json(tweet);
+    return res.status(200).json({ tweet: tweetWithParents, children });
   } catch (err) {
-    console.log(err);
-    return res.sendStatus(500);
+    next(err);
   } finally {
     await prisma.$disconnect();
   }

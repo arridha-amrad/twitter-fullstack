@@ -1,12 +1,26 @@
+import { TOTAL_TWEETS_LIMIT, getTweetData } from '@/constants/tweet.constants';
 import { Prisma } from '@prisma/client';
 import { TweetEntity } from '../../entities';
-import { TOTAL_TWEETS_LIMIT, getTweetData } from '@/constants/tweet.constants';
 import { CreateTweetDto } from './types';
 
 type FindOneTweet = Prisma.TweetWhereInput;
 
 class TweetRepository {
   constructor(private Tweet: TweetEntity, private authUserId?: string) {}
+
+  async loadReplies(replyPostId: string, page: number) {
+    return this.Tweet.findMany({
+      where: {
+        replyPostId
+      },
+      orderBy: {
+        createdAt: 'desc'
+      },
+      take: TOTAL_TWEETS_LIMIT,
+      skip: (page - 1) * TOTAL_TWEETS_LIMIT,
+      include: getTweetData(this.authUserId)
+    });
+  }
 
   async create(data: CreateTweetDto) {
     const newTweet = await this.Tweet.create({
@@ -28,10 +42,10 @@ class TweetRepository {
     });
   }
 
-  async findParent(parentPostId: string) {
+  async findParent(replyPostId: string) {
     return this.Tweet.findMany({
       where: {
-        parentPostId
+        replyPostId
       },
       include: getTweetData(this.authUserId)
     });

@@ -3,16 +3,9 @@ import JwtService from '@/services/JwtService';
 import { NextFunction, Request, Response } from 'express';
 
 class Authentication {
-  private static getToken(req: Request) {
-    const [bearer, token] = req.headers.authorization?.split(' ') ?? ['', ''];
-    return {
-      bearer,
-      token
-    };
-  }
-  static async require(req: Request, res: Response, next: NextFunction) {
-    const { bearer, token } = this.getToken(req);
-    if (bearer !== 'Bearer' || !token) {
+  static async required(req: Request, res: Response, next: NextFunction) {
+    const [type, token] = req.headers.authorization?.split(' ') ?? ['', ''];
+    if (type !== 'Bearer' || !token) {
       return res.sendStatus(401);
     }
     try {
@@ -43,7 +36,7 @@ class Authentication {
   static async optional(req: Request, _: Response, next: NextFunction) {
     try {
       const jwtService = new JwtService();
-      const { bearer, token } = this.getToken(req);
+      const [bearer, token] = req.headers.authorization?.split(' ') ?? ['', ''];
       if (bearer !== 'Bearer' || !token) return;
       const { type, userId } = await jwtService.verifyToken(
         token,

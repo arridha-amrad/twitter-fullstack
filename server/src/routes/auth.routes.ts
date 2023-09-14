@@ -1,6 +1,6 @@
 import logout from '@/controllers/auth/logout';
 import me from '@/controllers/auth/me';
-import refreshToken from '@/controllers/auth/refresh';
+import refreshToken from '@/controllers/auth/refreshToken';
 import register from '@/controllers/auth/register';
 import { sanitize } from '@/middlewares/sanitizeInput';
 import { Router } from 'express';
@@ -19,6 +19,6 @@ router.get('/refresh-token', refreshToken);
 
 router.get('/logout', logout);
 
-router.get('/me', Authentication.require, me);
+router.get('/me', Authentication.required, me);
 
 export default router;

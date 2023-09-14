@@ -1,11 +1,9 @@
 import { Request, Response } from 'express';
 import prisma from '@/prisma';
 
-export default async function getAllMyLikes(req: Request, res: Response) {
+const loadUserLikedTweets = async (req: Request, res: Response) => {
   const authenticatedUserId = req.app.locals.userId;
-  const { page = '1' } = req.query as {
-    page: string;
-  };
+  const { username, page } = req.params;
   try {
     const likes = await prisma.like.findMany({
       where: {
@@ -19,4 +17,6 @@ export default async function getAllMyLikes(req: Request, res: Response) {
   } finally {
     await prisma.$disconnect();
   }
-}
+};
+
+export default loadUserLikedTweets;

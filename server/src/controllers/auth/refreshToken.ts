@@ -10,9 +10,11 @@ const refreshToken = async (
   next: NextFunction
 ) => {
   const bearerRefToken = req.cookies[CookieService.refreshTokenCookie];
-  if (!bearerRefToken) return res.sendStatus(500);
-  const jwtService = new JwtService();
   try {
+    if (!bearerRefToken) {
+      throw new Error('Refresh token not exists');
+    }
+    const jwtService = new JwtService();
     const token = bearerRefToken.split(' ')[1];
     const { userId } = await jwtService.verifyToken(token, 'RefreshToken');
     await prisma.$transaction(async (tx) => {

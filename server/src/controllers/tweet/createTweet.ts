@@ -1,11 +1,12 @@
 import { CheckCreateTweetRequest } from '@/middlewares/createTweetRequest';
 import prisma from '@/prisma';
 import { initRepositories } from '@/repositories/initRepository';
+import CloudinaryService from '@/services/CloudinaryService';
 import { NextFunction, Request, Response } from 'express';
 
 const createTweet = async (req: Request, res: Response, next: NextFunction) => {
-  const { description, fileUrls } = req.app.locals as CheckCreateTweetRequest;
-  const authUserId = req.app.locals.userId;
+  const { description, fileUrls, authUserId } = req.app
+    .locals as CheckCreateTweetRequest;
 
   try {
     const tweet = await prisma.$transaction(
@@ -39,6 +40,9 @@ const createTweet = async (req: Request, res: Response, next: NextFunction) => {
 
     return res.status(201).json({ tweet });
   } catch (err) {
+    for (const url of fileUrls) {
+      await CloudinaryService.remove(url);
+    }
     next(err);
   } finally {
     await prisma.$disconnect();

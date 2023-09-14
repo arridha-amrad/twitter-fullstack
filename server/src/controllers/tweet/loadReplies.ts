@@ -1,37 +1,26 @@
-import { Request, Response } from 'express';
+import { TOTAL_TWEETS_LIMIT } from '@/constants/tweet.constants';
 import prisma from '@/prisma';
-import { TOTAL_TWEETS_LIMIT, getTweetData } from '@/constants/tweet.constants';
+import { initRepositories } from '@/repositories/initRepository';
 import { PageableTweets } from '@/types/tweet.types';
+import { Request, Response } from 'express';
 
 const loadReplies = async (req: Request, res: Response) => {
-  const { tweetId, page } = req.params;
+  const { postId, page } = req.params;
   const authenticatedUserId = req.app.locals.userId;
   const intPage = parseInt(page);
+  const { tweetRepository } = initRepositories(
+    prisma,
+    ['tweet'],
+    authenticatedUserId
+  );
   try {
-    let tweet = await prisma.tweet.findFirst({
-      where: { id: tweetId },
-      include: {
-        _count: {
-          select: { children: true }
-        },
-        children: {
-          skip: (intPage - 1) * TOTAL_TWEETS_LIMIT,
-          take: TOTAL_TWEETS_LIMIT,
-          include: getTweetData(authenticatedUserId)
-        }
-      }
-    });
-
-    if (!tweet) {
-      return res.status(404).json({ message: 'Tweet not found' });
-    }
-
-    const total = tweet._count.children;
+    const tweets = await tweetRepository.loadReplies(postId, intPage);
+    const total = await tweetRepository.sumTweets({ replyPostId: postId });
 
     const result: PageableTweets = {
-      tweets: tweet.children,
+      tweets,
       currentPage: intPage,
-      hasNextPage: tweet._count.children > intPage * TOTAL_TWEETS_LIMIT,
+      hasNextPage: total > intPage * TOTAL_TWEETS_LIMIT,
       total
     };
 

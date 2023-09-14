@@ -7,8 +7,9 @@ import { Request, Response } from 'express';
 
 export default async function loadUserReplies(req: Request, res: Response) {
   const { username, page } = req.params;
+  const authUserId = req.app.locals.userId as string | undefined;
   const intPage = parseInt(page);
-  const { tweetRepository } = initRepositories(prisma, ['tweet']);
+  const { tweetRepository } = initRepositories(prisma, ['tweet'], authUserId);
   try {
     const total = await tweetRepository.sumTweets({
       type: 'REPLY',

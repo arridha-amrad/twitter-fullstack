@@ -15,6 +15,8 @@ import retweet from '@/controllers/tweet/retweet';
 import Authentication from '../middlewares/Authentication';
 import { checkCreateReplyRequest } from '../middlewares/createReplyRequest';
 import { checkCreateTweetRequest } from '../middlewares/createTweetRequest';
+import loadUserLikedTweets from '@/controllers/tweet/loadUserLikedTweets';
+import loadUserTweetsWithMedia from '@/controllers/tweet/loadUserTweetsWithMedia';
 
 const router = express.Router();
 
@@ -23,7 +25,7 @@ router.get('/user/:username/:page', Authentication.optional, loadUserTweets);
 router.get('/for-you/:page', Authentication.optional, loadForYouTweets);
 
 router.get('/followings/:page', Authentication.optional, (req, res) => {
-  res.send('Followings tweets');
+  res.status(200).send('Followings tweets');
 });
 
 router.get(
@@ -32,29 +34,42 @@ router.get(
   loadUserReplies
 );
 
-router.get('/replies/:tweetId/:page', Authentication.optional, loadReplies);
+router.get('/replies/:postId/:page', Authentication.optional, loadReplies);
 
 router.get('/detail/:tweetId', Authentication.optional, loadTweet);
 
-router.delete('/:tweetId', Authentication.require, deleteTweet);
+router.get(
+  '/likes/:username/:page',
+  Authentication.required,
+  loadUserLikedTweets
+);
+
+router.get(
+  '/media/:username/:page',
+  Authentication.required,
+  loadUserTweetsWithMedia
+);
+
+router.delete('/:tweetId', Authentication.required, deleteTweet);
 
 router.post(
   '/',
   sanitize,
-  Authentication.require,
+  Authentication.required,
   checkCreateTweetRequest,
   createTweet
 );
-router.post('/like', sanitize, Authentication.require, likeTweet);
+
+router.post('/like', sanitize, Authentication.required, likeTweet);
 
 router.post(
   '/replies',
   sanitize,
-  Authentication.require,
+  Authentication.required,
   checkCreateReplyRequest,
   createReply
 );
 
-router.post('/retweet', Authentication.require, retweet);
+router.post('/retweet', Authentication.required, retweet);
 
 export default router;

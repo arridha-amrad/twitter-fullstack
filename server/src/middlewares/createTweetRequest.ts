@@ -4,6 +4,7 @@ import FileService from '@/services/FileService';
 export type CheckCreateTweetRequest = {
   description: string;
   fileUrls: string[];
+  authUserId: string;
 };
 
 export const checkCreateTweetRequest = async (
@@ -13,6 +14,7 @@ export const checkCreateTweetRequest = async (
 ) => {
   const { description } = req.body as { description: string };
   const files = req.files?.files;
+  const authUserId = req.app.locals.userId;
 
   if (!description || !description.trim()) {
     return res.status(200).json({ message: 'description is required' });
@@ -27,7 +29,8 @@ export const checkCreateTweetRequest = async (
 
     const data: CheckCreateTweetRequest = {
       description,
-      fileUrls
+      fileUrls,
+      authUserId
     };
 
     req.app.locals = data;
