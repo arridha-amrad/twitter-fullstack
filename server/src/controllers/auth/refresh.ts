@@ -21,11 +21,15 @@ const refreshToken = async (
         'token'
       ]);
       const user = await userRepository.findById(userId);
-      if (!user) return res.sendStatus(404);
+      if (!user) {
+        throw new Error('user not found');
+      }
       const accToken = await jwtService.create(user.id, 'AccessToken');
       const refToken = await jwtService.create(user.id, 'RefreshToken');
       const storedToken = await tokenRepository.find(token);
-      if (!storedToken) throw new Error('stored token not found');
+      if (!storedToken) {
+        throw new Error('stored token not found');
+      }
       await tokenRepository.update(storedToken.id, refToken);
       res.cookie(
         CookieService.refreshTokenCookie,

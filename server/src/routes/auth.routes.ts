@@ -7,7 +7,7 @@ import { Router } from 'express';
 import login from '../controllers/auth/login';
 import Authentication from '../middlewares/Authentication';
 import { resetToken } from '../middlewares/resetToken';
-import { validateRegister } from '../validators/validateRegister';
+import { validateRegister } from '../middlewares/user/registerRequest';
 
 const router = Router();
 

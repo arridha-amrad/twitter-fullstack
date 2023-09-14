@@ -11,7 +11,9 @@ export const AUTHOR_SELECTED_DATA: Record<keyof AUTHOR, boolean> = {
 export const POST_COUNT_SELECTED_DATA: Record<keyof POST_COUNTER, boolean> = {
   files: true,
   likes: true,
-  reposts: true
+  reposts: true,
+  children: true,
+  parent: true
 };
 
 export const POST_FILE_SELECTED_DATA: Record<keyof POST_FILE, boolean> = {

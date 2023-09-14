@@ -7,6 +7,7 @@ import TweetRepository from './tweet/TweetRepository';
 import LikeRepository from './LikeRepository';
 import TokenRepository from './TokenRepository';
 import UserRepository from './UserRepository';
+import RepostRepository from './repost/RepostRepository';
 
 type DbClient = Omit<
   PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
@@ -24,6 +25,7 @@ export const initRepositories = (
   var likeRepository!: LikeRepository;
   var tokenRepository!: TokenRepository;
   var userRepository!: UserRepository;
+  var repostRepository!: RepostRepository;
 
   for (const entity of entities) {
     switch (entity) {
@@ -41,6 +43,8 @@ export const initRepositories = (
         tokenRepository = new TokenRepository(tx['token']);
       case 'user':
         userRepository = new UserRepository(tx['user']);
+      case 'repost':
+        repostRepository = new RepostRepository(tx['repost']);
       default:
         break;
     }
@@ -52,6 +56,7 @@ export const initRepositories = (
     tweetRepository,
     likeRepository,
     tokenRepository,
-    userRepository
+    userRepository,
+    repostRepository
   };
 };

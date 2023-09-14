@@ -73,11 +73,13 @@ model Post {
   authorId     String   @map("author_id")
   author       User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   quoteTweetId String?  @unique @map("quote_tweet_id")
-  quoteTweet   Tweet?   @relation(fields: [quoteTweetId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  quoteTweet   Tweet?   @relation("Quote", fields: [quoteTweetId], references: [id], onUpdate: NoAction, onDelete: NoAction)
   likes        Like[]
   files        File[]
-  tweets       Tweet[]  @relation("Tweets")
   reposts      Repost[]
+  tweets       Tweet[]  @relation("Tweets")
+  parent       Tweet[]  @relation("Parents")
+  children     Tweet[]  @relation("Children")
 
   @@index([quoteTweetId])
   @@index([authorId])
@@ -92,20 +94,23 @@ enum TweetType {
 }
 
 model Tweet {
-  id        String    @id @default(cuid())
-  createdAt DateTime  @default(now()) @map("created_at")
-  deletedAt DateTime? @map("deleted_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  postId    String?   @map("post_id")
-  userId    String    @map("user_id")
-  type      TweetType @default(DEFAULT)
-  post      Post?     @relation("Tweets", fields: [postId], references: [id], onDelete: SetNull)
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  quotePost Post?
-  parent    Tweet[]   @relation("ParentChild")
-  parentId  String?   @map("parent_id")
-  children  Tweet[]   @relation("ParentChild")
+  id           String    @id @default(cuid())
+  createdAt    DateTime  @default(now()) @map("created_at")
+  deletedAt    DateTime? @map("deleted_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  postId       String?   @map("post_id")
+  userId       String    @map("user_id")
+  type         TweetType @default(DEFAULT)
+  post         Post?     @relation("Tweets", fields: [postId], references: [id], onDelete: SetNull)
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quotePost    Post?     @relation("Quote")
+  parentPost   Post?     @relation("Parents", fields: [parentPostId], references: [id])
+  parentPostId String?
+  childPost    Post?     @relation("Children", fields: [childPostId], references: [id])
+  childPostId  String?
 
+  @@index([parentPostId])
+  @@index([childPostId])
   @@index([userId])
   @@index([postId])
   @@map("tweets")

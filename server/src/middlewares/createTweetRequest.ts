@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express';
-import CloudinaryService from '@/services/CloudinaryService';
 import FileService from '@/services/FileService';
 
 export type CheckCreateTweetRequest = {
@@ -21,6 +20,7 @@ export const checkCreateTweetRequest = async (
 
   try {
     let fileUrls: string[] = [];
+
     if (files) {
       fileUrls = await FileService.upload(files);
     }

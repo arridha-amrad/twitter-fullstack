@@ -12,7 +12,6 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
   const { userRepository } = initRepositories(prisma, ['user']);
   try {
     const hashedPassword = await hash(password.trim());
-
     await userRepository.create({
       userStrategy: 'EMAIL',
       fullname,
@@ -20,7 +19,6 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
       password: hashedPassword,
       username
     });
-
     return res
       .status(201)
       .json({ message: 'Congratulations! Registration successful' });

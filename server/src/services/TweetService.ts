@@ -5,12 +5,9 @@ import { Tweet } from '@prisma/client';
 class TweetService {
   constructor(private tweetRepository: TweetRepository) {}
   private async loadParent(tweet: Tweet, parents: Tweet[]) {
-    if (tweet.parentId) {
-      const parent = await this.tweetRepository.findById(tweet.parentId);
-      if (parent) {
-        parents.push(parent);
-        await this.loadParent(parent, parents);
-      }
+    if (tweet.parentPostId) {
+      const tweets = await this.tweetRepository.findParent(tweet.parentPostId);
+      parents = tweets;
     }
     return parents;
   }

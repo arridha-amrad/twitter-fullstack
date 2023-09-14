@@ -9,22 +9,7 @@ const loadTweet = async (req: Request, res: Response) => {
   const { tweetRepository } = initRepositories(prisma, ['tweet']);
   try {
     const tweet = await prisma.tweet.findFirst({
-      where: { id: tweetId },
-      include: {
-        ...getTweetData(authenticatedUserId),
-        children: {
-          include: { ...getTweetData(authenticatedUserId) },
-          orderBy: { createdAt: 'desc' },
-          take: TOTAL_TWEETS_LIMIT,
-          skip: 0
-        },
-        parent: {
-          include: getTweetData(authenticatedUserId),
-          orderBy: { createdAt: 'desc' },
-          take: TOTAL_TWEETS_LIMIT,
-          skip: 0
-        }
-      }
+      where: { id: tweetId }
     });
 
     if (!tweet) {
@@ -35,20 +20,20 @@ const loadTweet = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'This tweet is not available' });
     }
 
-    if (tweet.isRetweet) {
-      const originalTweet = await prisma.tweet.findFirst({
-        where: { postId: tweet.postId, isRetweet: false }
-      });
-      const children = await prisma.tweet.findMany({
-        where: { parentId: originalTweet?.id, isRetweet: false },
-        include: { ...getTweetData(authenticatedUserId) }
-      });
-      tweet.children = children;
-    }
+    // if (tweet.isRetweet) {
+    //   const originalTweet = await prisma.tweet.findFirst({
+    //     where: { postId: tweet.postId, isRetweet: false }
+    //   });
+    //   const children = await prisma.tweet.findMany({
+    //     where: { parentId: originalTweet?.id, isRetweet: false },
+    //     include: { ...getTweetData(authenticatedUserId) }
+    //   });
+    //   tweet.children = children;
+    // }
 
-    if (tweet.parentId) {
-      await loadParentTweet(tweet, authenticatedUserId);
-    }
+    // if (tweet.parentId) {
+    //   await loadParentTweet(tweet, authenticatedUserId);
+    // }
 
     return res.status(200).json(tweet);
   } catch (err) {

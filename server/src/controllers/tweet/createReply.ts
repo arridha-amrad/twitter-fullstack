@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import prisma from '@/prisma';
-import { CheckCreateReplyRequest } from '../../middlewares/checkCreateReplyRequest';
+import { CheckCreateReplyRequest } from '../../middlewares/createReplyRequest';
 
 import { initRepositories } from '../../repositories/initRepository';
 
 const createReply = async (req: Request, res: Response) => {
-  const { description, fileUrls, parentTweet, authenticatedUserId } = req.app
+  const { description, fileUrls, postId, authenticatedUserId } = req.app
     .locals as CheckCreateReplyRequest;
 
   try {
@@ -27,7 +27,7 @@ const createReply = async (req: Request, res: Response) => {
       const newTweet = await tweetRepository.create({
         postId: newPost.id,
         userId: authenticatedUserId,
-        parentId: parentTweet.id,
+        parentPostId: postId,
         type: 'REPLY'
       });
 

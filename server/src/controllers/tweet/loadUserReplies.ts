@@ -1,8 +1,9 @@
+import { TOTAL_TWEETS_LIMIT } from '@/constants/tweet.constants';
 import prisma from '@/prisma';
+import { initRepositories } from '@/repositories/initRepository';
+import TweetService from '@/services/TweetService';
+import { PageableTweets, TweetWithParents } from '@/types/tweet.types';
 import { Request, Response } from 'express';
-import { TOTAL_TWEETS_LIMIT } from '../modules/tweet/constants';
-import { initRepositories } from '../modules/tweet/repositories';
-import { PageableTweets, TweetWithParents } from '../modules/tweet/types';
 
 export default async function loadUserReplies(req: Request, res: Response) {
   const { username, page } = req.params;
@@ -10,11 +11,9 @@ export default async function loadUserReplies(req: Request, res: Response) {
   const { tweetRepository } = initRepositories(prisma, ['tweet']);
   try {
     const total = await tweetRepository.sumTweets({
+      type: 'REPLY',
       user: {
         username
-      },
-      parentId: {
-        not: null
       }
     });
 
@@ -22,14 +21,15 @@ export default async function loadUserReplies(req: Request, res: Response) {
       user: {
         username
       },
-      parentId: {
-        not: null
+      type: {
+        equals: 'REPLY'
       }
     });
 
     const tweetsWithParents: TweetWithParents[] = [];
+    const tweetService = new TweetService(tweetRepository);
     for (const tweet of tweets) {
-      const twp = await tweetRepository.loadWithParent(tweet);
+      const twp = await tweetService.loadWithParent(tweet);
       tweetsWithParents.push(twp);
     }
 

@@ -1,9 +1,9 @@
-import { CheckCreateTweetRequest } from '@/middlewares/checkCreateTweetRequest';
+import { CheckCreateTweetRequest } from '@/middlewares/createTweetRequest';
 import prisma from '@/prisma';
 import { initRepositories } from '@/repositories/initRepository';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-const createTweet = async (req: Request, res: Response) => {
+const createTweet = async (req: Request, res: Response, next: NextFunction) => {
   const { description, fileUrls } = req.app.locals as CheckCreateTweetRequest;
   const authUserId = req.app.locals.userId;
 
@@ -39,8 +39,7 @@ const createTweet = async (req: Request, res: Response) => {
 
     return res.status(201).json({ tweet });
   } catch (err) {
-    console.log('err : ', err);
-    return res.sendStatus(500);
+    next(err);
   } finally {
     await prisma.$disconnect();
   }

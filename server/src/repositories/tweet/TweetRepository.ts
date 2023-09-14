@@ -18,18 +18,30 @@ class TweetRepository {
     return newTweet;
   }
 
-  async findOne(filter: FindOneTweet) {
+  async findOne(filter: FindOneTweet, isExtend: boolean = false) {
     return this.Tweet.findFirst({
       where: {
-        ...filter
-      }
+        ...filter,
+        deletedAt: null
+      },
+      include: isExtend ? getTweetData(this.authUserId) : undefined
+    });
+  }
+
+  async findParent(parentPostId: string) {
+    return this.Tweet.findMany({
+      where: {
+        parentPostId
+      },
+      include: getTweetData(this.authUserId)
     });
   }
 
   async findById(tweetId: string, isExtend: boolean = false) {
     return this.Tweet.findFirst({
       where: {
-        id: tweetId
+        id: tweetId,
+        deletedAt: null
       },
       include: isExtend ? getTweetData(this.authUserId) : undefined
     });
@@ -47,12 +59,17 @@ class TweetRepository {
     });
   }
 
+  async hardDelete(id: string) {
+    return this.Tweet.delete({
+      where: {
+        id
+      }
+    });
+  }
+
   async sumTweets(filter?: Prisma.TweetWhereInput) {
     return this.Tweet.count({
       where: {
-        postId: {
-          not: null
-        },
         ...filter
       }
     });

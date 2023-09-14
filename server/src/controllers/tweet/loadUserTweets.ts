@@ -1,8 +1,8 @@
+import { TOTAL_TWEETS_LIMIT } from '@/constants/tweet.constants';
 import prisma from '@/prisma';
+import { initRepositories } from '@/repositories/initRepository';
+import { PageableTweets } from '@/types/tweet.types';
 import { Request, Response } from 'express';
-import { TOTAL_TWEETS_LIMIT } from '../modules/tweet/constants';
-import { initRepositories } from '../modules/tweet/repositories';
-import { PageableTweets } from '../modules/tweet/types';
 
 export default async function loadUserTweets(req: Request, res: Response) {
   const { username, page } = req.params;
@@ -13,14 +13,18 @@ export default async function loadUserTweets(req: Request, res: Response) {
       user: {
         username
       },
-      parentId: null
+      type: {
+        not: 'REPLY'
+      }
     });
 
     const tweets = await tweetRepository.pagingTweets(intPage, {
       user: {
         username
       },
-      parentId: null
+      type: {
+        not: 'REPLY'
+      }
     });
 
     const result: PageableTweets = {

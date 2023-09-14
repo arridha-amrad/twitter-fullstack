@@ -1,75 +1,67 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import prisma from '@/prisma';
-import { getTweetData } from '../modules/tweet/constants';
-import { loadParentTweet } from '../modules/tweet/utils/loadParentTweet';
+import { initRepositories } from '@/repositories/initRepository';
+import TweetService from '@/services/TweetService';
 
-const reTweet = async (req: Request, res: Response) => {
+const reTweet = async (req: Request, res: Response, next: NextFunction) => {
   const { postId } = req.body;
   const authenticatedUserId = req.app.locals.userId;
 
   try {
-    const tweet = await prisma.tweet.findFirst({
-      where: { postId, isRetweet: false }
-    });
-
-    if (!tweet) return res.sendStatus(404);
-
-    let message = '';
-
-    const rtByMe = await prisma.tweet.findFirst({
-      where: {
+    await prisma.$transaction(async (tx) => {
+      const { tweetRepository, repostRepository } = initRepositories(tx, [
+        'tweet',
+        'repost'
+      ]);
+      const tweet = await tweetRepository.findOne({
         postId,
-        isRetweet: true,
-        userId: authenticatedUserId
-      }
-    });
-
-    if (!rtByMe) {
-      await prisma.retweet.create({
-        data: { postId, userId: authenticatedUserId }
+        type: { not: 'RETWEET' }
       });
-      await prisma.tweet.create({
-        data: {
-          parentId: tweet.parentId,
-          isRetweet: true,
-          postId,
-          userId: authenticatedUserId
-        }
-      });
-      message = 'retweeted';
-    } else {
-      await prisma.retweet.delete({
-        where: {
-          userId_postId: {
-            postId,
-            userId: authenticatedUserId
-          }
-        }
-      });
-      await prisma.tweet.delete({
-        where: {
-          id: rtByMe.id
-        }
-      });
-      message = 'unRetweeted';
-    }
-
-    const rtTweet = await prisma.tweet.findFirst({
-      where: {
+      if (!tweet) return res.sendStatus(404);
+      let message = '';
+      const isAlreadyRepost = await tweetRepository.findOne({
         postId,
         userId: authenticatedUserId,
-        isRetweet: true
-      },
-      include: { ...getTweetData(authenticatedUserId) }
+        type: 'RETWEET'
+      });
+      if (!isAlreadyRepost) {
+        await repostRepository.create({
+          postId,
+          userId: authenticatedUserId
+        });
+        const { id, createdAt, updatedAt, type, userId, ...rest } = tweet;
+        await tweetRepository.create({
+          ...rest,
+          type: 'RETWEET',
+          userId: authenticatedUserId
+        });
+        message = 'retweeted';
+      } else {
+        await repostRepository.remove({ postId, userId: authenticatedUserId });
+        await tweetRepository.hardDelete(isAlreadyRepost.id);
+        message = 'unRetweeted';
+      }
+
+      const reTweet = await tweetRepository.findOne(
+        {
+          type: 'RETWEET',
+          userId: authenticatedUserId,
+          postId
+        },
+        true
+      );
+
+      if (!reTweet) {
+        throw new Error('Something went wrong');
+      }
+      const tweetService = new TweetService(tweetRepository);
+      const tweetWithParents = await tweetService.loadWithParent(reTweet);
+      return res.status(200).json({ message, tweet: tweetWithParents });
     });
-
-    if (rtTweet?.parentId) {
-      await loadParentTweet(rtTweet);
-    }
-
-    return res.status(200).json({ message: message, tweet: rtTweet });
   } catch (err) {
-    return res.sendStatus(500);
+    next(err);
+  } finally {
+    await prisma.$disconnect();
   }
 };
 

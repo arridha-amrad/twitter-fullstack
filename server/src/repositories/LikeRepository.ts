@@ -1,8 +1,8 @@
-import { Like, Prisma } from '@prisma/client';
-import { DefaultArgs } from '@prisma/client/runtime/library';
+import { LikeEntity } from '@/entities';
+import { Like } from '@prisma/client';
 
 class LikeRepository {
-  constructor(private Like: Prisma.LikeDelegate<DefaultArgs>) {}
+  constructor(private Like: LikeEntity) {}
   async findLike(postId: string, userId: string): Promise<Like | null> {
     const like = await this.Like.findFirst({
       where: {

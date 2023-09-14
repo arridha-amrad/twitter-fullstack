@@ -13,8 +13,8 @@ import loadUserTweets from '@/controllers/tweet/loadUserTweets';
 import retweet from '@/controllers/tweet/retweet';
 
 import Authentication from '../middlewares/Authentication';
-import { checkCreateReplyRequest } from '../middlewares/checkCreateReplyRequest';
-import { checkCreateTweetRequest } from '../middlewares/checkCreateTweetRequest';
+import { checkCreateReplyRequest } from '../middlewares/createReplyRequest';
+import { checkCreateTweetRequest } from '../middlewares/createTweetRequest';
 
 const router = express.Router();
 

@@ -50,8 +50,12 @@ const initServer = () => {
   app.use('/api/auth', AuthRoutes);
   app.use('/api/tweets', TweetRoutes);
 
-  app.use((err: any, _: Request, res: Response, __: NextFunction) => {
+  app.use((err: any, req: Request, res: Response, __: NextFunction) => {
     console.error(err.stack);
+    const files = req.files?.files;
+    if (files) {
+      FileSystemService.removeIncomingFiles(files);
+    }
     return res.status(500).json({ message: 'Something went wrong' });
   });
 

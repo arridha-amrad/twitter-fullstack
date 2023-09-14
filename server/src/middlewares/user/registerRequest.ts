@@ -1,5 +1,3 @@
-import { NextFunction, Request, Response } from 'express';
-import { RegisterDTO } from '../user.types';
 import {
   emailRegExp,
   firstNameRegExp,
@@ -7,13 +5,17 @@ import {
   passwordRegExp,
   usernameRegExp
 } from '@/constants/regexp';
+import prisma from '@/prisma';
+import { initRepositories } from '@/repositories/initRepository';
+import { RegisterDTO } from '@/types/user.types';
+import { NextFunction, Request, Response } from 'express';
 
 type ErrorField = {
   field: string;
   message: string;
 };
 
-export const validateRegister = (
+export const validateRegister = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -64,8 +66,20 @@ export const validateRegister = (
       }
     ];
   }
-
   if (errors.length === 0) {
+    const { userRepository } = initRepositories(prisma, ['user']);
+    try {
+      const isEmailExists = await userRepository.findOne({ email });
+      if (isEmailExists) {
+        return res.status(400).json({ message: 'Email has been registered' });
+      }
+      const isUsernameExists = await userRepository.findOne({ username });
+      if (isUsernameExists) {
+        return res.status(400).json({ message: 'Username already taken' });
+      }
+    } catch (err) {
+      next(err);
+    }
     next();
   } else {
     return res.status(400).json({ errors });

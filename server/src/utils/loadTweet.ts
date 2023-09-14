@@ -1,5 +1,5 @@
+import { getTweetData } from '@/constants/tweet.constants';
 import prisma from '@/prisma';
-import { getTweetData } from '../modules/tweet/constants';
 
 export const loadTweet = async (
   tweetId: string,
