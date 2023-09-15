@@ -36,7 +36,7 @@ export const initRepositories = (
         tweetRepository = new TweetRepository(tx['tweet'], authUserId);
         break;
       case 'post':
-        postRepository = new PostRepository(tx['post']);
+        postRepository = new PostRepository(tx['post'], authUserId);
       case 'like':
         likeRepository = new LikeRepository(tx['like']);
       case 'token':

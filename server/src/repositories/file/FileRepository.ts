@@ -1,5 +1,6 @@
 import { FileEntity } from '@/entities';
 import { CreateFileDto } from './type';
+import { Prisma } from '@prisma/client';
 
 class FileRepository {
   constructor(private File: FileEntity) {}
@@ -12,6 +13,12 @@ class FileRepository {
         url,
         userId
       }))
+    });
+  }
+
+  async sum(filter: Prisma.FileWhereInput) {
+    return this.File.count({
+      where: filter
     });
   }
 }

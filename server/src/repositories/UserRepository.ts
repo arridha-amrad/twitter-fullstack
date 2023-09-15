@@ -15,6 +15,16 @@ const selectedData: Select = {
 class UserRepository {
   constructor(private User: Prisma.UserDelegate<DefaultArgs>) {}
 
+  async update(
+    filter: Prisma.UserWhereUniqueInput,
+    data: Prisma.UserUpdateInput
+  ) {
+    return this.User.update({
+      where: filter,
+      data: data
+    });
+  }
+
   async findById(id: string) {
     return this.User.findFirst({
       where: {
@@ -23,10 +33,14 @@ class UserRepository {
     });
   }
 
-  async findOne(filter: Filter) {
+  async findOne(filter: Filter, include?: Prisma.UserInclude<DefaultArgs>) {
     return this.User.findFirst({
       where: {
         ...filter
+      },
+      include: {
+        ...include,
+        _count: { select: { followers: true, followings: true } }
       }
     });
   }

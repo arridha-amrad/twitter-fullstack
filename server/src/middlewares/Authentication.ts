@@ -34,6 +34,7 @@ class Authentication {
   }
 
   static async optional(req: Request, _: Response, next: NextFunction) {
+    let authUserId = '';
     try {
       const jwtService = new JwtService();
       const [bearer, token] = req.headers.authorization?.split(' ') ?? ['', ''];
@@ -43,13 +44,14 @@ class Authentication {
         'AccessToken'
       );
       if (type !== 'AccessToken') return;
-      req.app.locals = {
-        userId
-      };
+      authUserId = userId;
     } catch (error: any) {
-      throw new Error(`Optional Authenticated Error : ${error}`);
+      return;
     } finally {
       next();
+      req.app.locals = {
+        userId: authUserId
+      };
     }
   }
 }

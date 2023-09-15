@@ -24,7 +24,11 @@ model User {
   avatarUrl    String?      @map("avatar_url") @db.Text
   fullname     String
   password     String       @db.Text
-  wallpaper    String?      @db.Text
+  wallpaperUrl String?      @map("wallpaper_url") @db.Text
+  bio          String?      @db.Text
+  location     String?      @db.VarChar(50)
+  birthDate    DateTime?    @map("birth_date")
+  website      String?      @db.VarChar(100)
   userStrategy UserStrategy @map("user_strategy")
   tokens       Token[]
   likes        Like[]

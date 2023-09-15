@@ -3,6 +3,7 @@ import prisma from '@/prisma';
 import { initRepositories } from '@/repositories/initRepository';
 import { PageableTweets, TweetWithParents } from '@/types/tweet.types';
 import TweetService from '@/services/TweetService';
+import { TOTAL_TWEETS_LIMIT } from '@/constants/tweet.constants';
 
 const loadForYouTweets = async (req: Request, res: Response) => {
   const pageParam = req.params.page || '1';
@@ -22,7 +23,7 @@ const loadForYouTweets = async (req: Request, res: Response) => {
     const result: PageableTweets = {
       tweets: tweetsWithParents,
       currentPage: page,
-      hasNextPage: total > page * 10,
+      hasNextPage: total > page * TOTAL_TWEETS_LIMIT,
       total
     };
 
