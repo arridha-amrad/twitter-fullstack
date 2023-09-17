@@ -14,6 +14,9 @@ import ListBulletFilled from "@heroicons/react/24/solid/ListBulletIcon";
 import Bookmark from "@heroicons/react/24/outline/BookmarkIcon";
 import BookmarkFilled from "@heroicons/react/24/solid/BookmarkIcon";
 
+import UserGroupFilledIcon from "@heroicons/react/24/solid/UserGroupIcon";
+import UserGroupIcon from "@heroicons/react/24/outline/UserGroupIcon";
+
 export const sidebarLinks = [
   {
     name: "Home",
@@ -46,10 +49,10 @@ export const sidebarLinks = [
     filledIcon: <ListBulletFilled className="w-full h-full" />,
   },
   {
-    name: "Bookmarks",
-    link: "/bookmarks",
-    icon: <Bookmark className="w-full h-full" />,
-    filledIcon: <BookmarkFilled className="w-full h-full" />,
+    name: "Communities",
+    link: "/communities",
+    icon: <UserGroupIcon className="w-full h-full" />,
+    filledIcon: <UserGroupFilledIcon className="w-full h-full" />,
   },
   {
     name: "Verified",

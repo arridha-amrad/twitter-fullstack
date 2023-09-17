@@ -1,38 +1,68 @@
 "use client";
 
+import { getFromCookie } from "@/utils/getFromCookie";
 import { cookies } from "next/headers";
-import { ReactNode, createContext, useEffect, useState } from "react";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
-const AppContext = createContext({
+type Theme = "light" | "dark";
+
+const AppContext = createContext<{
+  theme: Theme;
+  setTheme: Dispatch<SetStateAction<Theme>> | undefined;
+}>({
   theme: "light",
+  setTheme: undefined,
 });
 
+const toDarkMode = (setTheme: (v: string) => void) => {
+  setTheme("dark");
+  document.cookie = "theme=dark";
+  document.documentElement.classList.add("dark");
+};
+
+const toLightMode = (setTheme: (v: string) => void) => {
+  setTheme("light");
+  document.cookie = "theme=light";
+  document.documentElement.classList.remove("dark");
+};
+
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState<Theme>("dark");
 
   useEffect(() => {
-    document.cookie = "theme=dark";
+    const themeCookie = getFromCookie("theme");
+    if (themeCookie) {
+      const isDark = themeCookie.split("=")[1] === "dark";
+      if (isDark) {
+        toDarkMode(() => setTheme("dark"));
+      } else {
+        toLightMode(() => setTheme("light"));
+      }
+    } else {
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        toDarkMode(() => setTheme("dark"));
+      } else {
+        toLightMode(() => setTheme("light"));
+      }
+    }
   }, []);
 
-  // useEffect(() => {
-  //   if (
-  //     localStorage.theme === "dark" ||
-  //     (!("theme" in localStorage) &&
-  //       window.matchMedia("(prefers-color-scheme: dark)").matches)
-  //   ) {
-  //     setTheme("dark");
-  //     // localStorage.setItem("theme", "dark");
-  //     document.cookie = "theme=dark";
-  //     document.documentElement.classList.add("dark");
-  //   } else {
-  //     setTheme("light");
-  //     document.cookie = "theme=light";
-  //     // localStorage.setItem("theme", "light");
-  //     document.documentElement.classList.remove("dark");
-  //   }
-  // }, []);
-
   return (
-    <AppContext.Provider value={{ theme }}>{children}</AppContext.Provider>
+    <AppContext.Provider value={{ theme, setTheme }}>
+      {children}
+    </AppContext.Provider>
   );
+};
+
+export const useTheme = () => {
+  const ctx = useContext(AppContext);
+  return ctx;
 };

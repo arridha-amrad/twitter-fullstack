@@ -14,6 +14,7 @@ import SunIcon from "@heroicons/react/24/solid/SunIcon";
 import MoonIcon from "@heroicons/react/24/solid/MoonIcon";
 import LogoutIcon from "@heroicons/react/24/solid/ArrowLeftOnRectangleIcon";
 import { mergeRefs } from "react-merge-refs";
+import { useTheme } from "@/context/AppContext";
 
 const ProfileMenu = () => {
   const [ref, { width }] = useMeasure();
@@ -45,6 +46,9 @@ const ProfileMenu = () => {
       },
     ],
   });
+
+  const { theme, setTheme } = useTheme();
+
   const menu = [
     {
       label: `Logout @arridhaamrad`,
@@ -52,14 +56,12 @@ const ProfileMenu = () => {
     },
     {
       label: "Switch Theme",
-      fn: () => switchTheme(),
+      fn: () => {
+        switchTheme(theme);
+        theme === "dark" ? setTheme!("light") : setTheme!("dark");
+      },
     },
   ];
-
-  const [isMounted, setIsMounted] = useState(false);
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   return (
     <Menu>
@@ -85,7 +87,7 @@ const ProfileMenu = () => {
                       ref={setPopperElement}
                       className="relative z-20 outline-none"
                     >
-                      <div className="absolute inset-0 -z-10 bg-slate-300 blur dark:bg-slate-500" />
+                      <div className="absolute inset-0 -z-10 bg-slate-300 blur dark:bg-neutral-600" />
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
