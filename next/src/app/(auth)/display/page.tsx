@@ -21,66 +21,99 @@ const DisplayPage = () => {
   const [bgIndex, setBgIndex] = useState(0);
 
   const colors = [
-    "bg-blue-500",
-    "bg-orange-500",
-    "bg-pink-500",
-    "bg-green-500",
-    "bg-purple-500",
-    "bg-red-500",
+    { name: "fill-blue", color: "rgb(29,155,240)" },
+    { name: "fill-yellow", color: "rgb(255,212,0)" },
+    { name: "fill-pink", color: "rgb(249,24,128)" },
+    { name: "fill-purple", color: "rgb(120,86,255)" },
+    { name: "fill-orange", color: "rgb(255,122,0)" },
+    { name: "fill-green", color: "rgb(0,186,124)" },
   ];
 
   const backgrounds = [
-    { bg: "bg-white", name: "Default" },
-    { bg: "bg-slate-600", name: "Dim" },
-    { bg: "bg-black", name: "Light out" },
+    { bg: "#fff", name: "Default" },
+    { bg: "rgb(21,32,43)", name: "Dim" },
+    { bg: "#000", name: "Light out" },
   ];
 
+  const setBackgroundColor = (index: number) => {
+    setBgIndex(index);
+    document.documentElement.classList.remove("dim", "light-out");
+    switch (index) {
+      case 1:
+        document.documentElement.classList.add("dim");
+        break;
+      case 2:
+        document.documentElement.classList.add("light-out");
+      default:
+        return;
+    }
+  };
+  const setColor = (index: number) => {
+    setActiveColorIndex(index);
+    document.documentElement.classList.remove(
+      "fill-yellow",
+      "fill-green",
+      "fill-orange",
+      "fill-purple",
+      "fill-pink"
+    );
+    document.documentElement.classList.add(colors[index].name);
+  };
+
   return (
-    <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-      <div className="fixed inset-0 bg-slate-700 bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
-        <Dialog.Panel className="max-w-xl w-full dark:bg-black rounded-xl py-6 px-8">
+    <Dialog
+      className="relative z-50"
+      open={isOpen}
+      onClose={() => setIsOpen(false)}
+    >
+      <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+      <div className="fixed inset-0 flex items-center justify-center">
+        <Dialog.Panel className="max-w-xl w-full bg-skin-base border border-skin-base rounded-xl py-6 px-8">
           <div className="space-y-1">
-            <Dialog.Title className="text-2xl text-neutral-300 font-bold text-center">
+            <Dialog.Title className="text-2xl text-skin-base font-bold text-center">
               Customize your view
             </Dialog.Title>
-            <Dialog.Description className="text-neutral-500 text-center">
+            <Dialog.Description className="text-skin-accent text-sm text-center">
               These settings affect all the X accounts on this browser.
             </Dialog.Description>
           </div>
 
-          <div className="border gap-2 my-6 border-neutral-600 rounded-lg p-4 flex items-start max-w-md mx-auto">
+          <div className="border border-skin-base gap-2 my-6 rounded-lg p-4 flex items-start max-w-md mx-auto">
             <Image
               src={DefaultAvatar}
               alt="avatar"
-              className="w-12 aspect-square rounded-full object-cover"
+              className="w-12 aspect-square rounded-full object-cover border border-skin-base"
             />
             <div className="">
               <div className="flex items-center gap-1">
-                <h1 className="font-semibold">Default User</h1>
+                <h1 className="font-semibold text-sm">Default User</h1>
                 <CheckBadgeIcon className="w-5 aspect-square text-blue-500" />
-                <span className=" text-neutral-500">@user · 39m</span>
+                <span className=" text-skin-base text-sm">@user · 39m</span>
               </div>
-              <p className="text-neutral-200">
+              <p className="text-skin-accent text-sm">
                 At the heart of X are short messages called posts — just like
                 this one — which can include photos, videos, links, text,
                 hashtags, and mentions like
-                <span className="text-blue-500"> @X</span>.
+                <span className="text-skin-fill"> @X</span>.
               </p>
             </div>
           </div>
 
           <div>
-            <h1 className="font-semibold text-sm leading-10 text-neutral-500">
+            <h1 className="font-semibold text-sm leading-10 text-skin-accent">
               Color
             </h1>
-            <div className="w-full h-16 rounded-lg flex items-center justify-evenly bg-slate-800">
+            <div className="w-full h-16 rounded-lg flex items-center justify-evenly bg-skin-accent">
               {colors.map((color, i) => (
                 <button
-                  onClick={() => setActiveColorIndex(i)}
-                  key={color}
-                  className={`w-10 h-10 flex items-center justify-center ${color} rounded-full`}
+                  onClick={() => setColor(i)}
+                  style={{ backgroundColor: color.color }}
+                  key={color.color}
+                  className={`w-10 h-10 flex items-center justify-center rounded-full`}
                 >
-                  {i === activeColorIndex && <CheckIcon className="w-7 h-7" />}
+                  {i === activeColorIndex && (
+                    <CheckIcon className="w-7 h-7 text-white" />
+                  )}
                 </button>
               ))}
             </div>
@@ -90,14 +123,15 @@ const DisplayPage = () => {
             <h1 className="font-semibold text-sm leading-10 text-neutral-500">
               Background
             </h1>
-            <div className="w-full h-16 gap-4 px-3 py-1 rounded-lg flex items-center justify-evenly bg-slate-800">
+            <div className="w-full h-16 gap-4 px-3 py-1 rounded-lg flex items-center justify-evenly bg-skin-accent">
               {backgrounds.map((bg, i) => (
                 <button
-                  onClick={() => setBgIndex(i)}
+                  onClick={() => setBackgroundColor(i)}
                   key={bg.bg}
-                  className={`w-full h-full flex items-center gap-3 justify-center ${
-                    bg.bg
-                  } ${bg.name === "Default" ? "text-black" : ""} rounded-lg`}
+                  style={{ backgroundColor: bg.bg }}
+                  className={`w-full ${
+                    bg.name === "Default" ? "text-skin-base" : "text-white"
+                  } rounded-lg text-skin-base h-full flex items-center gap-3 justify-center`}
                 >
                   {i === bgIndex ? (
                     <span
@@ -107,12 +141,16 @@ const DisplayPage = () => {
                     </span>
                   ) : (
                     <span
-                      className={`rounded-full w-5 h-5 border-2 ${
-                        bg.name === "Default" ? "border-neutral-500" : ""
-                      }`}
+                      className={`rounded-full w-5 h-5 border-2 border-skin-base`}
                     />
                   )}
-                  <span className="font-semibold text-sm">{bg.name}</span>
+                  <span
+                    className={`font-semibold text-sm ${
+                      bg.name === "Default" ? "text-black" : "text-white"
+                    }`}
+                  >
+                    {bg.name}
+                  </span>
                 </button>
               ))}
             </div>
@@ -121,7 +159,7 @@ const DisplayPage = () => {
           <div className="w-full flex items-center">
             <button
               onClick={() => setIsOpen(false)}
-              className="bg-blue-500 px-4 py-2 rounded-full font-bold mt-8 inline-flex justify-center mx-auto"
+              className="bg-skin-fill text-white px-4 py-2 rounded-full font-bold mt-8 inline-flex justify-center mx-auto"
             >
               Done
             </button>

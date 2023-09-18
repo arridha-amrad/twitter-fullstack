@@ -16,9 +16,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const theme = cookies().get("theme");
+  const background = cookies().get("background");
+  const color = cookies().get("color");
   return (
-    <html lang="en" className="fill-orange">
+    <html lang="en">
       <body className={`${inter.className}`}>
         <AppContextProvider>{children}</AppContextProvider>
       </body>

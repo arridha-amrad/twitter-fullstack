@@ -18,9 +18,10 @@ import { usePopper } from "react-popper";
 import {
   ArrowDownRightIcon,
   ChartBarSquareIcon,
-  ChevronDownIcon,
 } from "@heroicons/react/24/solid";
 import DisplayMenu from "./DisplayMenu";
+
+import ChevronDownIcon from "@heroicons/react/24/outline/ChevronDownIcon";
 
 const MoreDropDown = () => {
   const dataOne = [
@@ -53,10 +54,9 @@ const MoreDropDown = () => {
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
     null
   );
-  const [arrowElement, setArrowElement] = useState<HTMLElement | null>(null);
 
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    placement: "right",
+    placement: "left",
     modifiers: [
       {
         name: "offset",
@@ -67,12 +67,6 @@ const MoreDropDown = () => {
       {
         name: "flip",
       },
-      {
-        name: "arrow",
-        options: {
-          element: arrowElement,
-        },
-      },
     ],
   });
   return (
@@ -81,7 +75,7 @@ const MoreDropDown = () => {
         <>
           <Menu.Button
             ref={setReferenceElement}
-            className="h-[50px] gap-4 hover:bg-gray-50 hover:dark:bg-neutral-900 flex items-center justify-center xl:px-4 aspect-square xl:aspect-auto rounded-full"
+            className="h-[50px] gap-4 hover:bg-skin-hover flex items-center justify-center xl:px-4 aspect-square xl:aspect-auto rounded-full"
           >
             <div className="w-7 h-7 flex">
               <EllipsisHorizontalCircleIcon className="w-full h-full" />
@@ -106,10 +100,8 @@ const MoreDropDown = () => {
                         <Menu.Item key={i}>
                           {({ active }) => (
                             <Link
-                              className={`flex text-lg font-semibold h-[55px] px-4 py-3 items-center gap-4 ${
-                                active
-                                  ? "bg-neutral-900 text-white"
-                                  : " dark:text-white text-black"
+                              className={`flex text-lg text-skin-base font-semibold h-[55px] px-4 py-3 items-center gap-4 ${
+                                active ? "bg-skin-hover" : ""
                               }`}
                               href={data.url}
                               key={data.name}
@@ -120,7 +112,7 @@ const MoreDropDown = () => {
                           )}
                         </Menu.Item>
                       ))}
-                      <hr className="w-[90%] mx-auto my-1 border-neutral-600" />
+                      <hr className="w-[90%] mx-auto my-1 border-skin-base" />
                       <Menu.Item>
                         {({ close, active }) => (
                           <Disclosure
@@ -132,7 +124,7 @@ const MoreDropDown = () => {
                               <>
                                 <Disclosure.Button
                                   className={`py-2 inline-flex h-[50px] w-full px-4 items-center justify-between ${
-                                    active ? "bg-neutral-900" : ""
+                                    active ? "bg-skin-hover" : ""
                                   }`}
                                 >
                                   <span className="font-semibold">
@@ -140,7 +132,7 @@ const MoreDropDown = () => {
                                   </span>
                                   <ChevronDownIcon
                                     className={`w-5 h-5 ${
-                                      open ? "rotate-180 text-blue-500" : ""
+                                      open ? "rotate-180 text-skin-fill" : ""
                                     }`}
                                   />
                                 </Disclosure.Button>
@@ -169,7 +161,7 @@ const MoreDropDown = () => {
                               <>
                                 <Disclosure.Button
                                   className={`py-2 inline-flex h-[50px] w-full px-4 items-center justify-between ${
-                                    active ? "bg-neutral-900" : ""
+                                    active ? "bg-skin-hover" : ""
                                   }`}
                                 >
                                   <span className="font-semibold">
@@ -204,7 +196,7 @@ const MoreDropDown = () => {
                               <>
                                 <Disclosure.Button
                                   className={`py-2 inline-flex h-[50px] w-full cursor-pointer px-4 items-center justify-between ${
-                                    active ? "bg-neutral-900" : ""
+                                    active ? "bg-skin-hover" : ""
                                   }`}
                                 >
                                   <span className="font-semibold">
@@ -218,7 +210,7 @@ const MoreDropDown = () => {
                                 </Disclosure.Button>
                                 <Disclosure.Panel
                                   onClick={close}
-                                  className="flex h-[50px] hover:bg-neutral-900 cursor-pointer items-center px-4 space-x-2"
+                                  className="flex h-[50px] hover:bg-skin-hover cursor-pointer items-center px-4 space-x-2"
                                 >
                                   <SettingsIcon className="w-5 h-5" />
                                   <span className="font-semibold">
@@ -227,7 +219,7 @@ const MoreDropDown = () => {
                                 </Disclosure.Panel>
                                 <Disclosure.Panel
                                   onClick={close}
-                                  className="flex h-[50px] hover:bg-neutral-900 cursor-pointer items-center px-4 space-x-2"
+                                  className="flex h-[50px] hover:bg-skin-hover cursor-pointer items-center px-4 space-x-2"
                                 >
                                   <HelpIcon className="w-5 h-5" />
                                   <span className="font-semibold">
@@ -237,7 +229,7 @@ const MoreDropDown = () => {
                                 <DisplayMenu close={close} />
                                 <Disclosure.Panel
                                   onClick={close}
-                                  className="flex h-[50px] hover:bg-neutral-900 cursor-pointer items-center px-4 space-x-2"
+                                  className="flex h-[50px] hover:bg-skin-hover cursor-pointer items-center px-4 space-x-2"
                                 >
                                   <UserCircleIcon className="w-5 h-5" />
                                   <span className="font-semibold">

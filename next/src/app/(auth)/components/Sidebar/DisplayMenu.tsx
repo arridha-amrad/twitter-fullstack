@@ -24,7 +24,7 @@ const DisplayMenu: FC<Props> = ({ close }) => {
     <>
       <Disclosure.Panel
         onClick={triggerModal}
-        className="flex h-[50px] hover:bg-neutral-900 cursor-pointer items-center px-4 space-x-2"
+        className="flex h-[50px] hover:bg-skin-hover cursor-pointer items-center px-4 space-x-2"
       >
         <PencilSquareIcon className="w-5 h-5" />
         <span className="font-semibold">Display</span>

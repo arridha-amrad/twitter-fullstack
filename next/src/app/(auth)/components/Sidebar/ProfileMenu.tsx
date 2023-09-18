@@ -101,7 +101,7 @@ const ProfileMenu = () => {
                           style={{
                             minWidth: width < 228 ? "max-content" : width,
                           }}
-                          className="p2 overflow-hidden rounded-lg border-slate-300 bg-white dark:border-slate-700 dark:bg-red-500"
+                          className="p2 overflow-hidden rounded-lg"
                         >
                           {menu.map((item, i) => (
                             <Menu.Item key={i}>
@@ -109,7 +109,7 @@ const ProfileMenu = () => {
                                 <button
                                   className={`flex h-14 min-w-full cursor-pointer items-center justify-start gap-3 px-5 ${
                                     active
-                                      ? "bg-blue-500 text-white"
+                                      ? "bg-skin-hover text-skin-base"
                                       : "bg-white dark:bg-neutral-900 dark:text-white text-black"
                                   }`}
                                   onClick={() => {

@@ -18,10 +18,16 @@ export default {
   ],
   theme: {
     extend: {
+      borderColor: {
+        skin: {
+          base: withOpacity("var(--color-border)")
+        }
+      },
       textColor: {
         skin: {
-          base: "var(--color-text)",
-          accent: "var(--color-text-accent)",
+          base: withOpacity("var(--color-text)"),
+          accent: withOpacity("var(--color-text-accent)"),
+          fill: withOpacity("var(--color-fill)")
         },
       },
       backgroundColor: {
