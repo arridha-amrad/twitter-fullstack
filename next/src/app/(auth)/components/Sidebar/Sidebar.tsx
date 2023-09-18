@@ -3,7 +3,7 @@ import SidebarLogo from "./Logo";
 import SidebarMore from "./SidebarMore";
 import ProfileMenu from "./ProfileMenu";
 import CreatePostButton from "./CreatePostButton";
-import MoreDropDown from "./MoreDropDown";
+import MoreDropDown from "./MoreDropDown/MoreDropDown";
 
 const Sidebar = () => {
   return (

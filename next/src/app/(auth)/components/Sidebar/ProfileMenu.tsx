@@ -87,7 +87,7 @@ const ProfileMenu = () => {
                       ref={setPopperElement}
                       className="relative z-20 outline-none"
                     >
-                      <div className="absolute inset-0 -z-10 bg-slate-300 blur dark:bg-neutral-600" />
+                      <div className="absolute inset-0 -z-10 blur bg-skin-shadow" />
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
@@ -110,7 +110,7 @@ const ProfileMenu = () => {
                                   className={`flex h-14 min-w-full cursor-pointer items-center justify-start gap-3 px-5 ${
                                     active
                                       ? "bg-skin-hover text-skin-base"
-                                      : "bg-white dark:bg-neutral-900 dark:text-white text-black"
+                                      : "bg-skin-base text-skin-base"
                                   }`}
                                   onClick={() => {
                                     item.fn();
@@ -133,7 +133,7 @@ const ProfileMenu = () => {
                         </div>
                         <div
                           ref={setArrowElement}
-                          className={`absolute -bottom-2 -z-10 h-5 w-5 rotate-45 bg-white shadow-sm shadow-gray-300 dark:bg-black dark:shadow-gray-500 ${
+                          className={`absolute -bottom-2 -z-10 h-5 w-5 rotate-45 bg-skin-base shadow-sm shadow-gray-600 ${
                             width < 228 ? "left-5" : "left-1/2 -translate-x-1/2"
                           }`}
                         />
@@ -161,7 +161,7 @@ const ProfileCard = () => {
     username: "arridhaamrad",
   };
   return (
-    <div className="flex h-full w-full items-center overflow-hidden p-2 hover:bg-gray-50 hover:dark:bg-neutral-900 rounded-full">
+    <div className="flex h-full bg-skin-base w-full items-center overflow-hidden p-2 hover:bg-skin-hover rounded-full">
       <div className="flex flex-1 items-center gap-2">
         <div className="h-11 w-11 overflow-hidden rounded-full">
           <Image

@@ -17,24 +17,27 @@
     --color-text-accent: 83, 100, 113;
     --color-text: 15, 20, 25;
     --color-border: 239,243,244;
+    --color-shadow: 226, 232, 240;
   }
 
   .dim {
-    --color-bg: rgb(21,32,43);
+    --color-bg: 21,32,43;
     --color-bg-accent: 30,39,50;
     --color-bg-hover: 28,39,50;
     --color-text-accent: 139, 152, 165;
     --color-text: 247, 249, 249;
     --color-border: 56,68,77;
+    --color-shadow: 71, 85, 105;
   }
 
   .light-out {
-    --color-bg: rgb(0, 0, 0);
+    --color-bg: 0, 0, 0;
     --color-bg-accent: 22,24,28;
-    --color-bg-hover: 8,8,8;
+    --color-bg-hover: 20,20,20;
     --color-text-accent: 113, 118, 123;
     --color-text: 231, 233, 234;
     --color-border: 47,51,54;
+    --color-shadow: 71, 85, 105;
   }
 
   .fill-green {

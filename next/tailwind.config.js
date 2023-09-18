@@ -20,14 +20,14 @@ export default {
     extend: {
       borderColor: {
         skin: {
-          base: withOpacity("var(--color-border)")
-        }
+          base: withOpacity("var(--color-border)"),
+        },
       },
       textColor: {
         skin: {
           base: withOpacity("var(--color-text)"),
           accent: withOpacity("var(--color-text-accent)"),
-          fill: withOpacity("var(--color-fill)")
+          fill: withOpacity("var(--color-fill)"),
         },
       },
       backgroundColor: {
@@ -36,6 +36,7 @@ export default {
           hover: withOpacity("var(--color-bg-hover)"),
           accent: withOpacity("var(--color-bg-accent)"),
           fill: withOpacity("var(--color-fill)"),
+          shadow: withOpacity("var(--color-shadow)"),
         },
       },
     },

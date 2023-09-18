@@ -4,13 +4,7 @@ import { Disclosure, Menu } from "@headlessui/react";
 import EllipsisHorizontalCircleIcon from "@heroicons/react/24/outline/EllipsisHorizontalCircleIcon";
 import SettingsIcon from "@heroicons/react/24/outline/Cog6ToothIcon";
 import HelpIcon from "@heroicons/react/24/outline/QuestionMarkCircleIcon";
-import {
-  AtSymbolIcon,
-  BookmarkIcon,
-  CurrencyDollarIcon,
-  UserCircleIcon,
-  UserPlusIcon,
-} from "@heroicons/react/24/outline";
+import { UserCircleIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useState } from "react";
 import { createPortal } from "react-dom";
@@ -19,44 +13,20 @@ import {
   ArrowDownRightIcon,
   ChartBarSquareIcon,
 } from "@heroicons/react/24/solid";
-import DisplayMenu from "./DisplayMenu";
+import DisplayMenu from "../DisplayMenu";
 
 import ChevronDownIcon from "@heroicons/react/24/outline/ChevronDownIcon";
+import LinkGroupOne from "./LinkGroupOne";
+import { LinkGroupTwo } from "./LinkGroupTwo";
 
 const MoreDropDown = () => {
-  const dataOne = [
-    {
-      url: "/bookmarks",
-      name: "Bookmarks",
-      icon: <BookmarkIcon className="w-full h-full" />,
-      type: "link",
-    },
-    {
-      url: "/connect",
-      name: "Connect",
-      icon: <AtSymbolIcon className="w-full h-full" />,
-      type: "link",
-    },
-    {
-      url: "/monetization",
-      name: "Monetization",
-      icon: <CurrencyDollarIcon className="w-full h-full" />,
-      type: "link",
-    },
-    {
-      url: "/follower_requests",
-      name: "Follower Requests",
-      icon: <UserPlusIcon className="w-full h-full" />,
-      type: "link",
-    },
-  ];
   const [referenceElement, setReferenceElement] = useState<any | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
     null
   );
 
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    placement: "left",
+    placement: "right",
     modifiers: [
       {
         name: "offset",
@@ -94,9 +64,9 @@ const MoreDropDown = () => {
                     ref={setPopperElement}
                     className="relative z-20 outline-none w-[300px]"
                   >
-                    <div className="absolute inset-0 -z-10 bg-slate-300 blur dark:bg-neutral-600" />
-                    <div className="dark:bg-black bg-white overflow-hidden rounded-lg">
-                      {dataOne.map((data, i) => (
+                    <div className="absolute  inset-0 -z-10 blur bg-skin-shadow" />
+                    <div className="bg-skin-base overflow-hidden rounded-lg border-skin-base">
+                      {LinkGroupOne.map((data, i) => (
                         <Menu.Item key={i}>
                           {({ active }) => (
                             <Link
@@ -113,7 +83,10 @@ const MoreDropDown = () => {
                         </Menu.Item>
                       ))}
                       <hr className="w-[90%] mx-auto my-1 border-skin-base" />
-                      <Menu.Item>
+                      {LinkGroupTwo.map((data, i) => (
+                        <Menu.Item></Menu.Item>
+                      ))}
+                      {/* <Menu.Item>
                         {({ close, active }) => (
                           <Disclosure
                             as="div"
@@ -138,7 +111,7 @@ const MoreDropDown = () => {
                                 </Disclosure.Button>
                                 <Disclosure.Panel
                                   onClick={close}
-                                  className="flex h-[50px] items-center px-4 space-x-2"
+                                  className="flex h-[50px] hover:bg-skin-hover cursor-pointer items-center px-4 space-x-2"
                                 >
                                   <ChartBarSquareIcon className="w-5 h-5" />
                                   <span className="font-semibold">
@@ -169,7 +142,7 @@ const MoreDropDown = () => {
                                   </span>
                                   <ChevronDownIcon
                                     className={`w-5 h-5 ${
-                                      open ? "rotate-180 text-blue-500" : ""
+                                      open ? "rotate-180 text-skin-fill" : ""
                                     }`}
                                   />
                                 </Disclosure.Button>
@@ -204,7 +177,7 @@ const MoreDropDown = () => {
                                   </span>
                                   <ChevronDownIcon
                                     className={`w-5 h-5 ${
-                                      open ? "rotate-180 text-blue-500" : ""
+                                      open ? "rotate-180 text-skin-fill" : ""
                                     }`}
                                   />
                                 </Disclosure.Button>
@@ -240,7 +213,7 @@ const MoreDropDown = () => {
                             )}
                           </Disclosure>
                         )}
-                      </Menu.Item>
+                      </Menu.Item> */}
                     </div>
                   </Menu.Items>
                 </>,
