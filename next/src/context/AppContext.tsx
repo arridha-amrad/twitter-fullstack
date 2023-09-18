@@ -38,21 +38,21 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState<Theme>("dark");
 
   useEffect(() => {
-    const themeCookie = getFromCookie("theme");
-    if (themeCookie) {
-      const isDark = themeCookie.split("=")[1] === "dark";
-      if (isDark) {
-        toDarkMode(() => setTheme("dark"));
-      } else {
-        toLightMode(() => setTheme("light"));
-      }
-    } else {
-      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        toDarkMode(() => setTheme("dark"));
-      } else {
-        toLightMode(() => setTheme("light"));
-      }
-    }
+    // const themeCookie = getFromCookie("theme");
+    // if (themeCookie) {
+    //   const isDark = themeCookie.split("=")[1] === "dark";
+    //   if (isDark) {
+    //     toDarkMode(() => setTheme("dark"));
+    //   } else {
+    //     toLightMode(() => setTheme("light"));
+    //   }
+    // } else {
+    //   if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    //     toDarkMode(() => setTheme("dark"));
+    //   } else {
+    //     toLightMode(() => setTheme("light"));
+    //   }
+    // }
   }, []);
 
   return (

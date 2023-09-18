@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   const theme = cookies().get("theme");
   return (
-    <html lang="en" className={`${theme?.value === "dark" ? "dark" : ""}`}>
+    <html lang="en" className="fill-orange">
       <body className={`${inter.className}`}>
         <AppContextProvider>{children}</AppContextProvider>
       </body>

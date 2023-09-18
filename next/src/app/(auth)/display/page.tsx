@@ -14,6 +14,7 @@ const DisplayPage = () => {
     if (!isOpen) {
       router.back();
     }
+    // eslint-disable-next-line
   }, [isOpen]);
 
   const [activeColorIndex, setActiveColorIndex] = useState(0);
@@ -106,7 +107,7 @@ const DisplayPage = () => {
                     </span>
                   ) : (
                     <span
-                      className={`rounded-full w-5 h-5 border ${
+                      className={`rounded-full w-5 h-5 border-2 ${
                         bg.name === "Default" ? "border-neutral-500" : ""
                       }`}
                     />
