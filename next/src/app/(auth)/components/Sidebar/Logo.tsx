@@ -9,7 +9,7 @@ const Logo = () => {
       onClick={() => router.push("/home")}
       className="flex items-center justify-center w-12 h-12 xl:ml-2 rounded-full cursor-pointer"
     >
-      <div className="w-12 h-12 p-[4px] text-orange-500 dark:text-white">
+      <div className="w-12 h-12 p-[4px] text-orange-500 dark:text-blue-500">
         <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M9.03999 8.43C9.12999 8.3 9.21999 8.18 9.31999 8.06V8.05C10.06 7.13 10.99 6.37 12.04 5.82C11.68 5.32 11.09 5 10.43 5C9.32999 5 8.42999 5.9 8.42999 7C8.42999 7.56 8.65999 8.07 9.03999 8.43Z"

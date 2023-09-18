@@ -2,18 +2,25 @@
 
 import { Disclosure, Menu } from "@headlessui/react";
 import EllipsisHorizontalCircleIcon from "@heroicons/react/24/outline/EllipsisHorizontalCircleIcon";
+import SettingsIcon from "@heroicons/react/24/outline/Cog6ToothIcon";
+import HelpIcon from "@heroicons/react/24/outline/QuestionMarkCircleIcon";
 import {
   AtSymbolIcon,
   BookmarkIcon,
   CurrencyDollarIcon,
+  UserCircleIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
-import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
-import { data } from "autoprefixer";
+import {
+  ArrowDownRightIcon,
+  ChartBarSquareIcon,
+  ChevronDownIcon,
+} from "@heroicons/react/24/solid";
+import DisplayMenu from "./DisplayMenu";
 
 const MoreDropDown = () => {
   const dataOne = [
@@ -41,12 +48,6 @@ const MoreDropDown = () => {
       icon: <UserPlusIcon className="w-full h-full" />,
       type: "link",
     },
-    {
-      url: "/",
-      name: "Creator Studio",
-      icon: <UserPlusIcon className="w-full h-full" />,
-      type: "",
-    },
   ];
   const [referenceElement, setReferenceElement] = useState<any | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
@@ -60,7 +61,7 @@ const MoreDropDown = () => {
       {
         name: "offset",
         options: {
-          offset: [-150, -120],
+          offset: [-170, -120],
         },
       },
       {
@@ -100,60 +101,154 @@ const MoreDropDown = () => {
                     className="relative z-20 outline-none w-[300px]"
                   >
                     <div className="absolute inset-0 -z-10 bg-slate-300 blur dark:bg-neutral-600" />
-                    <div className="space-y-2 dark:bg-black bg-white overflow-hidden rounded-lg">
-                      {dataOne.map((data, i) =>
-                        data.type === "link" ? (
-                          // <Menu.Item
-                          //   key={i}
-                          //   as="ul"
-                          //   className="text-lg font-semibold"
-                          // >
-                          //   {({ active }) => (
-                          //     <li>
-                          //       <Link
-                          //         className={`flex h-[55px] px-4 py-3 items-center gap-4 ${
-                          //           active
-                          //             ? "bg-neutral-900 text-white"
-                          //             : " dark:text-white text-black"
-                          //         }`}
-                          //         href={data.url}
-                          //         key={data.name}
-                          //       >
-                          //         <div className="w-7 h-7">{data.icon}</div>
-                          //         <span>{data.name}</span>
-                          //       </Link>
-                          //     </li>
-                          //   )}
-                          // </Menu.Item>
-                          <Menu.Item
-                            className="text-lg font-semibold"
-                            key={i}
-                            as="ul"
+                    <div className="dark:bg-black bg-white overflow-hidden rounded-lg">
+                      {dataOne.map((data, i) => (
+                        <Menu.Item key={i}>
+                          {({ active }) => (
+                            <Link
+                              className={`flex text-lg font-semibold h-[55px] px-4 py-3 items-center gap-4 ${
+                                active
+                                  ? "bg-neutral-900 text-white"
+                                  : " dark:text-white text-black"
+                              }`}
+                              href={data.url}
+                              key={data.name}
+                            >
+                              <div className="w-7 h-7">{data.icon}</div>
+                              <span>{data.name}</span>
+                            </Link>
+                          )}
+                        </Menu.Item>
+                      ))}
+                      <hr className="w-[90%] mx-auto my-1 border-neutral-600" />
+                      <Menu.Item>
+                        {({ close, active }) => (
+                          <Disclosure
+                            as="div"
+                            className="text-sm outline-none"
+                            onClick={(e) => e.preventDefault()}
                           >
-                            {({ active, close }) => <li>{data.name}</li>}
-                          </Menu.Item>
-                        ) : (
-                          <Menu.Item
-                            className="text-lg font-semibold"
-                            key={i}
-                            as="ul"
-                          >
-                            {({ active, close }) => (
-                              <li>
-                                <Disclosure as="div">
-                                  <Disclosure.Button className="py-2">
-                                    Is team pricing available?
-                                  </Disclosure.Button>
-                                  <Disclosure.Panel className="text-gray-500">
-                                    Yes! You can purchase a license that you can
-                                    share with your entire team.
-                                  </Disclosure.Panel>
-                                </Disclosure>
-                              </li>
+                            {({ open }) => (
+                              <>
+                                <Disclosure.Button
+                                  className={`py-2 inline-flex h-[50px] w-full px-4 items-center justify-between ${
+                                    active ? "bg-neutral-900" : ""
+                                  }`}
+                                >
+                                  <span className="font-semibold">
+                                    Creator Studio
+                                  </span>
+                                  <ChevronDownIcon
+                                    className={`w-5 h-5 ${
+                                      open ? "rotate-180 text-blue-500" : ""
+                                    }`}
+                                  />
+                                </Disclosure.Button>
+                                <Disclosure.Panel
+                                  onClick={close}
+                                  className="flex h-[50px] items-center px-4 space-x-2"
+                                >
+                                  <ChartBarSquareIcon className="w-5 h-5" />
+                                  <span className="font-semibold">
+                                    Analytics
+                                  </span>
+                                </Disclosure.Panel>
+                              </>
                             )}
-                          </Menu.Item>
-                        )
-                      )}
+                          </Disclosure>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ close, active }) => (
+                          <Disclosure
+                            as="div"
+                            className="text-sm outline-none"
+                            onClick={(e) => e.preventDefault()}
+                          >
+                            {({ open }) => (
+                              <>
+                                <Disclosure.Button
+                                  className={`py-2 inline-flex h-[50px] w-full px-4 items-center justify-between ${
+                                    active ? "bg-neutral-900" : ""
+                                  }`}
+                                >
+                                  <span className="font-semibold">
+                                    Professional Tools
+                                  </span>
+                                  <ChevronDownIcon
+                                    className={`w-5 h-5 ${
+                                      open ? "rotate-180 text-blue-500" : ""
+                                    }`}
+                                  />
+                                </Disclosure.Button>
+                                <Disclosure.Panel
+                                  onClick={close}
+                                  className="flex h-[50px] items-center px-4 space-x-2"
+                                >
+                                  <ArrowDownRightIcon className="w-5 h-5 -rotate-90" />
+                                  <span className="font-semibold">Ads</span>
+                                </Disclosure.Panel>
+                              </>
+                            )}
+                          </Disclosure>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ close, active }) => (
+                          <Disclosure
+                            as="div"
+                            className="text-sm outline-none"
+                            onClick={(e) => e.preventDefault()}
+                          >
+                            {({ open }) => (
+                              <>
+                                <Disclosure.Button
+                                  className={`py-2 inline-flex h-[50px] w-full cursor-pointer px-4 items-center justify-between ${
+                                    active ? "bg-neutral-900" : ""
+                                  }`}
+                                >
+                                  <span className="font-semibold">
+                                    Settings and Support
+                                  </span>
+                                  <ChevronDownIcon
+                                    className={`w-5 h-5 ${
+                                      open ? "rotate-180 text-blue-500" : ""
+                                    }`}
+                                  />
+                                </Disclosure.Button>
+                                <Disclosure.Panel
+                                  onClick={close}
+                                  className="flex h-[50px] hover:bg-neutral-900 cursor-pointer items-center px-4 space-x-2"
+                                >
+                                  <SettingsIcon className="w-5 h-5" />
+                                  <span className="font-semibold">
+                                    Settings and Privacy
+                                  </span>
+                                </Disclosure.Panel>
+                                <Disclosure.Panel
+                                  onClick={close}
+                                  className="flex h-[50px] hover:bg-neutral-900 cursor-pointer items-center px-4 space-x-2"
+                                >
+                                  <HelpIcon className="w-5 h-5" />
+                                  <span className="font-semibold">
+                                    Help Center
+                                  </span>
+                                </Disclosure.Panel>
+                                <DisplayMenu close={close} />
+                                <Disclosure.Panel
+                                  onClick={close}
+                                  className="flex h-[50px] hover:bg-neutral-900 cursor-pointer items-center px-4 space-x-2"
+                                >
+                                  <UserCircleIcon className="w-5 h-5" />
+                                  <span className="font-semibold">
+                                    Keyboard Shortcuts
+                                  </span>
+                                </Disclosure.Panel>
+                              </>
+                            )}
+                          </Disclosure>
+                        )}
+                      </Menu.Item>
                     </div>
                   </Menu.Items>
                 </>,

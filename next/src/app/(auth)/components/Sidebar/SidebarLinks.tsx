@@ -12,7 +12,7 @@ const SidebarLinks = () => {
         const isActive = pathname === link.link;
         return (
           <Link
-            className="h-[50px] hover:bg-gray-50 hover:dark:bg-neutral-900  flex items-center justify-center xl:px-4 aspect-square xl:aspect-auto rounded-full"
+            className="h-[50px] hover:bg-gray-50 hover:dark:bg-neutral-900 flex items-center justify-center xl:px-4 aspect-square xl:aspect-auto rounded-full"
             key={link.name}
             href={`${link.link}`}
           >
