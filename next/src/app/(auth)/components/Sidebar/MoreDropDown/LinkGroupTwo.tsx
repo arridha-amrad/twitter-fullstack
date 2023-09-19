@@ -45,7 +45,7 @@ export const LinkGroupTwo = [
       },
       {
         name: "Display",
-        url: "/i/display",
+        url: "/display",
         icon: <PencilSquareIcon className={className} />,
       },
       {

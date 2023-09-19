@@ -7,6 +7,22 @@ import React, { useEffect, useState } from "react";
 import DefaultAvatar from "@/images/default.png";
 import { CheckBadgeIcon, CheckIcon } from "@heroicons/react/24/solid";
 import { getFromCookie } from "@/utils/getFromCookie";
+import Cookies from "js-cookie";
+
+const colors = [
+  { name: "fill-blue", color: "rgb(29,155,240)" },
+  { name: "fill-yellow", color: "rgb(255,212,0)" },
+  { name: "fill-pink", color: "rgb(249,24,128)" },
+  { name: "fill-purple", color: "rgb(120,86,255)" },
+  { name: "fill-orange", color: "rgb(255,122,0)" },
+  { name: "fill-green", color: "rgb(0,186,124)" },
+];
+
+const backgrounds = [
+  { bg: "#fff", name: "Default", class: "default" },
+  { bg: "rgb(21,32,43)", name: "Dim", class: "dim" },
+  { bg: "#000", name: "Light out", class: "light-out" },
+];
 
 const DisplayPage = () => {
   let [isOpen, setIsOpen] = useState(true);
@@ -21,68 +37,40 @@ const DisplayPage = () => {
   const [activeColorIndex, setActiveColorIndex] = useState(0);
   const [bgIndex, setBgIndex] = useState(0);
 
-  const colors = [
-    { name: "fill-blue", color: "rgb(29,155,240)" },
-    { name: "fill-yellow", color: "rgb(255,212,0)" },
-    { name: "fill-pink", color: "rgb(249,24,128)" },
-    { name: "fill-purple", color: "rgb(120,86,255)" },
-    { name: "fill-orange", color: "rgb(255,122,0)" },
-    { name: "fill-green", color: "rgb(0,186,124)" },
-  ];
-
-  const backgrounds = [
-    { bg: "#fff", name: "Default", class: "default" },
-    { bg: "rgb(21,32,43)", name: "Dim", class: "dim" },
-    { bg: "#000", name: "Light out", class: "light-out" },
-  ];
-
   useEffect(() => {
-    const bgFromCookie = getFromCookie("background");
-
+    const bgFromCookie = Cookies.get("background");
     if (bgFromCookie) {
-      const bg = bgFromCookie.split("=")[1];
-      console.log("bg : ", bg);
-
       const index = backgrounds.findIndex((data) =>
-        data.class.toLowerCase().includes(bg)
+        data.class.toLowerCase().includes(bgFromCookie)
       );
       if (index >= 0) {
         setBgIndex(index);
       } else {
         setBgIndex(0);
       }
-
-      setBgIndex(index);
     }
-    const colorFromCookie = getFromCookie("color");
+    const colorFromCookie = Cookies.get("color");
 
     if (colorFromCookie) {
-      const color = colorFromCookie.split("=")[1];
-      console.log("color", color);
-      const index = colors.findIndex((data) => data.name.includes(color));
-      console.log("color index", index);
-
-      setActiveColorIndex(index);
+      const index = colors.findIndex((data) =>
+        data.name.includes(colorFromCookie)
+      );
+      if (index >= 0) {
+        setActiveColorIndex(index);
+      } else {
+        setActiveColorIndex(0);
+      }
     }
   }, []);
 
   const setBackgroundColor = (index: number) => {
     setBgIndex(index);
     document.documentElement.classList.remove("dim", "light-out");
-    switch (index) {
-      case 1:
-        document.documentElement.classList.add("dim");
-        document.cookie = "background=dim";
-        break;
-      case 2:
-        document.documentElement.classList.add("light-out");
-        document.cookie = "background=light-out";
-        break;
-      default:
-        document.cookie = "background=default";
-        return;
-    }
+    const bg = backgrounds[index].class;
+    Cookies.set("background", bg, { domain: "localhost", path: "/" });
+    document.documentElement.classList.add(bg);
   };
+
   const setColor = (index: number) => {
     setActiveColorIndex(index);
     document.documentElement.classList.remove(
@@ -94,7 +82,7 @@ const DisplayPage = () => {
     );
     const color = colors[index].name;
     document.documentElement.classList.add(color);
-    document.cookie = `color=${color}`;
+    Cookies.set("color", color, { domain: "localhost", path: "/" });
   };
 
   return (

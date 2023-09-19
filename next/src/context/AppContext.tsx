@@ -10,6 +10,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import Cookies from "js-cookie";
 
 type Theme = "light" | "light-out" | "dim";
 
@@ -21,39 +22,36 @@ const AppContext = createContext<{
   setBg: undefined,
 });
 
-const toDarkMode = (setTheme: (v: string) => void) => {
-  setTheme("light-out");
-  document.cookie = "background=light-out";
-  document.documentElement.classList.remove("dim");
-  document.documentElement.classList.add("light-out");
-};
-
-const toLightMode = (setTheme: (v: string) => void) => {
-  setTheme("light");
-  document.cookie = "background=light";
-  document.documentElement.classList.remove("light-out", "dim");
+const setAppBackground = (background: string) => {
+  Cookies.set("background", background, {
+    path: "/",
+    domain: "localhost",
+  });
+  document.documentElement.classList.add(background);
 };
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [bg, setBg] = useState<Theme>("light");
 
   useEffect(() => {
-    const bgFromCookie = getFromCookie("background");
-    const colorCookie = getFromCookie("color");
+    const bgFromCookie = Cookies.get("background") as Theme;
+    const colorFromCookie = Cookies.get("color");
 
-    if (colorCookie) {
-      const color = colorCookie.split("=")[1];
-      document.documentElement.classList.add(color);
+    console.log({ bgFromCookie, colorFromCookie });
+
+    if (colorFromCookie) {
+      document.documentElement.classList.add(colorFromCookie);
     }
     if (bgFromCookie) {
-      const bg = bgFromCookie.split("=")[1] as Theme;
-      setBg(bg);
-      document.documentElement.classList.add(bg);
+      setBg(bgFromCookie);
+      document.documentElement.classList.add(bgFromCookie);
     } else {
       if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        toDarkMode(() => setBg("light-out"));
+        setBg("light-out");
+        setAppBackground("light-out");
       } else {
-        toLightMode(() => setBg("light"));
+        setBg("light");
+        setAppBackground("light");
       }
     }
   }, []);
