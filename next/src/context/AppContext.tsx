@@ -1,7 +1,6 @@
 "use client";
 
 import { getFromCookie } from "@/utils/getFromCookie";
-import { cookies } from "next/headers";
 import {
   Dispatch,
   ReactNode,
@@ -12,53 +11,55 @@ import {
   useState,
 } from "react";
 
-type Theme = "light" | "dark";
+type Theme = "light" | "light-out" | "dim";
 
 const AppContext = createContext<{
-  theme: Theme;
-  setTheme: Dispatch<SetStateAction<Theme>> | undefined;
+  bg: Theme;
+  setBg: Dispatch<SetStateAction<Theme>> | undefined;
 }>({
-  theme: "light",
-  setTheme: undefined,
+  bg: "light",
+  setBg: undefined,
 });
 
 const toDarkMode = (setTheme: (v: string) => void) => {
-  setTheme("dark");
-  document.cookie = "theme=dark";
-  document.documentElement.classList.add("dark");
+  setTheme("light-out");
+  document.cookie = "background=light-out";
+  document.documentElement.classList.remove("dim");
+  document.documentElement.classList.add("light-out");
 };
 
 const toLightMode = (setTheme: (v: string) => void) => {
   setTheme("light");
-  document.cookie = "theme=light";
-  document.documentElement.classList.remove("dark");
+  document.cookie = "background=light";
+  document.documentElement.classList.remove("light-out", "dim");
 };
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [bg, setBg] = useState<Theme>("light");
 
   useEffect(() => {
-    // const themeCookie = getFromCookie("theme");
-    // if (themeCookie) {
-    //   const isDark = themeCookie.split("=")[1] === "dark";
-    //   if (isDark) {
-    //     toDarkMode(() => setTheme("dark"));
-    //   } else {
-    //     toLightMode(() => setTheme("light"));
-    //   }
-    // } else {
-    //   if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-    //     toDarkMode(() => setTheme("dark"));
-    //   } else {
-    //     toLightMode(() => setTheme("light"));
-    //   }
-    // }
+    const bgFromCookie = getFromCookie("background");
+    const colorCookie = getFromCookie("color");
+
+    if (colorCookie) {
+      const color = colorCookie.split("=")[1];
+      document.documentElement.classList.add(color);
+    }
+    if (bgFromCookie) {
+      const bg = bgFromCookie.split("=")[1] as Theme;
+      setBg(bg);
+      document.documentElement.classList.add(bg);
+    } else {
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        toDarkMode(() => setBg("light-out"));
+      } else {
+        toLightMode(() => setBg("light"));
+      }
+    }
   }, []);
 
   return (
-    <AppContext.Provider value={{ theme, setTheme }}>
-      {children}
-    </AppContext.Provider>
+    <AppContext.Provider value={{ bg, setBg }}>{children}</AppContext.Provider>
   );
 };
 

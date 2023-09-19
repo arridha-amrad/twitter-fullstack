@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import DefaultAvatar from "@/images/default.png";
 import { CheckBadgeIcon, CheckIcon } from "@heroicons/react/24/solid";
+import { getFromCookie } from "@/utils/getFromCookie";
 
 const DisplayPage = () => {
   let [isOpen, setIsOpen] = useState(true);
@@ -30,10 +31,40 @@ const DisplayPage = () => {
   ];
 
   const backgrounds = [
-    { bg: "#fff", name: "Default" },
-    { bg: "rgb(21,32,43)", name: "Dim" },
-    { bg: "#000", name: "Light out" },
+    { bg: "#fff", name: "Default", class: "default" },
+    { bg: "rgb(21,32,43)", name: "Dim", class: "dim" },
+    { bg: "#000", name: "Light out", class: "light-out" },
   ];
+
+  useEffect(() => {
+    const bgFromCookie = getFromCookie("background");
+
+    if (bgFromCookie) {
+      const bg = bgFromCookie.split("=")[1];
+      console.log("bg : ", bg);
+
+      const index = backgrounds.findIndex((data) =>
+        data.class.toLowerCase().includes(bg)
+      );
+      if (index >= 0) {
+        setBgIndex(index);
+      } else {
+        setBgIndex(0);
+      }
+
+      setBgIndex(index);
+    }
+    const colorFromCookie = getFromCookie("color");
+
+    if (colorFromCookie) {
+      const color = colorFromCookie.split("=")[1];
+      console.log("color", color);
+      const index = colors.findIndex((data) => data.name.includes(color));
+      console.log("color index", index);
+
+      setActiveColorIndex(index);
+    }
+  }, []);
 
   const setBackgroundColor = (index: number) => {
     setBgIndex(index);
@@ -41,10 +72,14 @@ const DisplayPage = () => {
     switch (index) {
       case 1:
         document.documentElement.classList.add("dim");
+        document.cookie = "background=dim";
         break;
       case 2:
         document.documentElement.classList.add("light-out");
+        document.cookie = "background=light-out";
+        break;
       default:
+        document.cookie = "background=default";
         return;
     }
   };
@@ -57,7 +92,9 @@ const DisplayPage = () => {
       "fill-purple",
       "fill-pink"
     );
-    document.documentElement.classList.add(colors[index].name);
+    const color = colors[index].name;
+    document.documentElement.classList.add(color);
+    document.cookie = `color=${color}`;
   };
 
   return (

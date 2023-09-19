@@ -19,7 +19,7 @@ export default function RootLayout({
   const background = cookies().get("background");
   const color = cookies().get("color");
   return (
-    <html lang="en">
+    <html lang="en" className={`${color?.value} ${background?.value}`}>
       <body className={`${inter.className}`}>
         <AppContextProvider>{children}</AppContextProvider>
       </body>

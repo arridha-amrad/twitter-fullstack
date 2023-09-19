@@ -4,10 +4,10 @@ import { Menu } from "@headlessui/react";
 import DefaultAvatar from "@/images/default.png";
 import Image from "next/image";
 import EllipsisHorizontalIcon from "@heroicons/react/20/solid/EllipsisHorizontalIcon";
-import switchTheme from "../ChangeThemeFeature/switchTheme";
+
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { usePopper } from "react-popper";
 import useMeasure from "react-use-measure";
 import SunIcon from "@heroicons/react/24/solid/SunIcon";
@@ -47,8 +47,6 @@ const ProfileMenu = () => {
     ],
   });
 
-  const { theme, setTheme } = useTheme();
-
   const menu = [
     {
       label: `Logout @arridhaamrad`,
@@ -56,10 +54,7 @@ const ProfileMenu = () => {
     },
     {
       label: "Switch Theme",
-      fn: () => {
-        switchTheme(theme);
-        theme === "dark" ? setTheme!("light") : setTheme!("dark");
-      },
+      fn: () => {},
     },
   ];
 
@@ -133,7 +128,7 @@ const ProfileMenu = () => {
                         </div>
                         <div
                           ref={setArrowElement}
-                          className={`absolute -bottom-2 -z-10 h-5 w-5 rotate-45 bg-skin-base shadow-sm shadow-gray-600 ${
+                          className={`absolute -bottom-2 -z-10 h-5 w-5 rotate-45 bg-skin-base shadow-sm shadow-skin-base ${
                             width < 228 ? "left-5" : "left-1/2 -translate-x-1/2"
                           }`}
                         />
@@ -161,8 +156,8 @@ const ProfileCard = () => {
     username: "arridhaamrad",
   };
   return (
-    <div className="flex h-full bg-skin-base w-full items-center overflow-hidden p-2 hover:bg-skin-hover rounded-full">
-      <div className="flex flex-1 items-center gap-2">
+    <div className="flex h-full bg-skin-base w-full aspect-square xl:aspect-auto justify-center items-center overflow-hidden xl:p-2 hover:bg-skin-hover rounded-full">
+      <div className="flex flex-1 justify-center xl:justify-normal items-center gap-2">
         <div className="h-11 w-11 overflow-hidden rounded-full">
           <Image
             className="h-full w-full object-cover object-center"

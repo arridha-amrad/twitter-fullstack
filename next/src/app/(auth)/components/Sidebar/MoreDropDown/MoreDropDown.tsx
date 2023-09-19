@@ -2,19 +2,10 @@
 
 import { Disclosure, Menu } from "@headlessui/react";
 import EllipsisHorizontalCircleIcon from "@heroicons/react/24/outline/EllipsisHorizontalCircleIcon";
-import SettingsIcon from "@heroicons/react/24/outline/Cog6ToothIcon";
-import HelpIcon from "@heroicons/react/24/outline/QuestionMarkCircleIcon";
-import { UserCircleIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
-import {
-  ArrowDownRightIcon,
-  ChartBarSquareIcon,
-} from "@heroicons/react/24/solid";
-import DisplayMenu from "../DisplayMenu";
-
 import ChevronDownIcon from "@heroicons/react/24/outline/ChevronDownIcon";
 import LinkGroupOne from "./LinkGroupOne";
 import { LinkGroupTwo } from "./LinkGroupTwo";
@@ -24,14 +15,13 @@ const MoreDropDown = () => {
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
     null
   );
-
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: "right",
     modifiers: [
       {
         name: "offset",
         options: {
-          offset: [-170, -120],
+          offset: [-180, -0],
         },
       },
       {
@@ -84,136 +74,52 @@ const MoreDropDown = () => {
                       ))}
                       <hr className="w-[90%] mx-auto my-1 border-skin-base" />
                       {LinkGroupTwo.map((data, i) => (
-                        <Menu.Item></Menu.Item>
+                        <Menu.Item key={i}>
+                          {({ close, active }) => (
+                            <Disclosure
+                              as="div"
+                              className="text-sm outline-none"
+                              onClick={(e) => e.preventDefault()}
+                            >
+                              {({ open }) => (
+                                <>
+                                  <Disclosure.Button
+                                    className={`py-2 inline-flex h-[50px] w-full px-4 items-center justify-between ${
+                                      active ? "bg-skin-hover" : ""
+                                    }`}
+                                  >
+                                    <span className="font-semibold">
+                                      {data.name}
+                                    </span>
+                                    <ChevronDownIcon
+                                      className={`w-5 h-5 stroke-[2px] transition-transform duration-200 ease-in ${
+                                        open ? "rotate-180 text-skin-fill" : ""
+                                      }`}
+                                    />
+                                  </Disclosure.Button>
+                                  {data.links.map((link) => (
+                                    <Disclosure.Panel
+                                      key={link.name}
+                                      className="hover:bg-skin-hover cursor-pointer px-4 space-x-2"
+                                    >
+                                      <Link
+                                        onClick={close}
+                                        className="flex h-[50px] items-center gap-2"
+                                        href={link.url}
+                                      >
+                                        {link.icon}
+                                        <span className="font-semibold">
+                                          {link.name}
+                                        </span>
+                                      </Link>
+                                    </Disclosure.Panel>
+                                  ))}
+                                </>
+                              )}
+                            </Disclosure>
+                          )}
+                        </Menu.Item>
                       ))}
-                      {/* <Menu.Item>
-                        {({ close, active }) => (
-                          <Disclosure
-                            as="div"
-                            className="text-sm outline-none"
-                            onClick={(e) => e.preventDefault()}
-                          >
-                            {({ open }) => (
-                              <>
-                                <Disclosure.Button
-                                  className={`py-2 inline-flex h-[50px] w-full px-4 items-center justify-between ${
-                                    active ? "bg-skin-hover" : ""
-                                  }`}
-                                >
-                                  <span className="font-semibold">
-                                    Creator Studio
-                                  </span>
-                                  <ChevronDownIcon
-                                    className={`w-5 h-5 ${
-                                      open ? "rotate-180 text-skin-fill" : ""
-                                    }`}
-                                  />
-                                </Disclosure.Button>
-                                <Disclosure.Panel
-                                  onClick={close}
-                                  className="flex h-[50px] hover:bg-skin-hover cursor-pointer items-center px-4 space-x-2"
-                                >
-                                  <ChartBarSquareIcon className="w-5 h-5" />
-                                  <span className="font-semibold">
-                                    Analytics
-                                  </span>
-                                </Disclosure.Panel>
-                              </>
-                            )}
-                          </Disclosure>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ close, active }) => (
-                          <Disclosure
-                            as="div"
-                            className="text-sm outline-none"
-                            onClick={(e) => e.preventDefault()}
-                          >
-                            {({ open }) => (
-                              <>
-                                <Disclosure.Button
-                                  className={`py-2 inline-flex h-[50px] w-full px-4 items-center justify-between ${
-                                    active ? "bg-skin-hover" : ""
-                                  }`}
-                                >
-                                  <span className="font-semibold">
-                                    Professional Tools
-                                  </span>
-                                  <ChevronDownIcon
-                                    className={`w-5 h-5 ${
-                                      open ? "rotate-180 text-skin-fill" : ""
-                                    }`}
-                                  />
-                                </Disclosure.Button>
-                                <Disclosure.Panel
-                                  onClick={close}
-                                  className="flex h-[50px] items-center px-4 space-x-2"
-                                >
-                                  <ArrowDownRightIcon className="w-5 h-5 -rotate-90" />
-                                  <span className="font-semibold">Ads</span>
-                                </Disclosure.Panel>
-                              </>
-                            )}
-                          </Disclosure>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ close, active }) => (
-                          <Disclosure
-                            as="div"
-                            className="text-sm outline-none"
-                            onClick={(e) => e.preventDefault()}
-                          >
-                            {({ open }) => (
-                              <>
-                                <Disclosure.Button
-                                  className={`py-2 inline-flex h-[50px] w-full cursor-pointer px-4 items-center justify-between ${
-                                    active ? "bg-skin-hover" : ""
-                                  }`}
-                                >
-                                  <span className="font-semibold">
-                                    Settings and Support
-                                  </span>
-                                  <ChevronDownIcon
-                                    className={`w-5 h-5 ${
-                                      open ? "rotate-180 text-skin-fill" : ""
-                                    }`}
-                                  />
-                                </Disclosure.Button>
-                                <Disclosure.Panel
-                                  onClick={close}
-                                  className="flex h-[50px] hover:bg-skin-hover cursor-pointer items-center px-4 space-x-2"
-                                >
-                                  <SettingsIcon className="w-5 h-5" />
-                                  <span className="font-semibold">
-                                    Settings and Privacy
-                                  </span>
-                                </Disclosure.Panel>
-                                <Disclosure.Panel
-                                  onClick={close}
-                                  className="flex h-[50px] hover:bg-skin-hover cursor-pointer items-center px-4 space-x-2"
-                                >
-                                  <HelpIcon className="w-5 h-5" />
-                                  <span className="font-semibold">
-                                    Help Center
-                                  </span>
-                                </Disclosure.Panel>
-                                <DisplayMenu close={close} />
-                                <Disclosure.Panel
-                                  onClick={close}
-                                  className="flex h-[50px] hover:bg-skin-hover cursor-pointer items-center px-4 space-x-2"
-                                >
-                                  <UserCircleIcon className="w-5 h-5" />
-                                  <span className="font-semibold">
-                                    Keyboard Shortcuts
-                                  </span>
-                                </Disclosure.Panel>
-                              </>
-                            )}
-                          </Disclosure>
-                        )}
-                      </Menu.Item> */}
                     </div>
                   </Menu.Items>
                 </>,

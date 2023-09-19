@@ -30,6 +30,11 @@ export default {
           fill: withOpacity("var(--color-fill)"),
         },
       },
+      shadow: {
+        skin: {
+          base: withOpacity("var(--color-shadow)")
+        }
+      },
       backgroundColor: {
         skin: {
           base: withOpacity("var(--color-bg)"),
