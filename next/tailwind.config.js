@@ -18,6 +18,11 @@ export default {
   ],
   theme: {
     extend: {
+      ringColor: {
+        skin: {
+          base: withOpacity("var(--color-fill)")
+        }
+      },
       borderColor: {
         skin: {
           base: withOpacity("var(--color-border)"),

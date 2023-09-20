@@ -14,7 +14,6 @@ import SunIcon from "@heroicons/react/24/solid/SunIcon";
 import MoonIcon from "@heroicons/react/24/solid/MoonIcon";
 import LogoutIcon from "@heroicons/react/24/solid/ArrowLeftOnRectangleIcon";
 import { mergeRefs } from "react-merge-refs";
-import { useTheme } from "@/context/AppContext";
 
 const ProfileMenu = () => {
   const [ref, { width }] = useMeasure();

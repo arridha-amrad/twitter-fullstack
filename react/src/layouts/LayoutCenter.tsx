@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import { FC, ReactNode } from 'react';
 
 const LayoutCenter: FC<{ children: ReactNode }> = ({ children }) => {
   return (

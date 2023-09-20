@@ -1,6 +1,4 @@
 "use client";
-
-import { getFromCookie } from "@/utils/getFromCookie";
 import {
   Dispatch,
   ReactNode,
