@@ -1,5 +1,5 @@
-import { ChangeEvent, FormEvent, useState } from "react";
-import { TAlert } from "../components/Alert";
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { TAlert } from '../components/Alert';
 
 const useForm = <T>(initState: T, submitFunction: () => Promise<void>) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -9,7 +9,7 @@ const useForm = <T>(initState: T, submitFunction: () => Promise<void>) => {
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setState({
       ...state,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
@@ -33,7 +33,7 @@ const useForm = <T>(initState: T, submitFunction: () => Promise<void>) => {
     setAlert,
     isShowPassword,
     setIsShowPassword,
-    resetState,
+    resetState
   };
 };
 

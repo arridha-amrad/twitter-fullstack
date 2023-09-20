@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import HomeTab from "./components/tab";
+import CreateTweetFeature from "./components/CreateTweetFeatures/CreateTweetFeature";
 
 export const metadata: Metadata = {
   title: "Home / X",
@@ -7,12 +8,14 @@ export const metadata: Metadata = {
 
 const HomePage = () => {
   return (
-    <section className="sticky top-0 z-20 flex h-full w-full flex-col bg-skin-base bg-opacity-30 backdrop-blur">
-      <div className="flex h-14 items-center px-5 text-xl font-semibold">
+    <>
+      <div className="flex h-14 items-center px-5 text-xl font-semibold backdrop-blur sticky top-0 z-10">
         Home
       </div>
-      <HomeTab />
-    </section>
+      <HomeTab>
+        <CreateTweetFeature />
+      </HomeTab>
+    </>
   );
 };
 

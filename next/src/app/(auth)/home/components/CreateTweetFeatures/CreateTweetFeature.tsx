@@ -1,11 +1,8 @@
+"use client";
+
 import { ElementRef, FC, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import useMeasure from "react-use-measure";
-import ButtonFilesPickers from "../../components/Buttons/ButtonFilesPickers";
-import ButtonTweetComposer from "../../components/Buttons/ButtonTweetComposer";
-import useFormData from "../../hooks/useFormData";
-import { useCreateTweetMutation } from "../../redux/tweet-slice";
-import { useMeQuery } from "../../redux/user-slice";
 import ButtonAudience from "./components/ButtonAudience";
 import ButtonRepliers from "./components/ButtonRepliers";
 import Divider from "./components/Divider";
@@ -13,15 +10,15 @@ import ImageView from "./components/ImageView";
 import Indicator from "./components/Indicator";
 import TextArea from "./components/TextArea";
 import Avatar from "@/app/components/Avatar";
+import ButtonFilesPickers from "@/app/components/Buttons/ButtonFilesPickers";
+import ButtonTweetComposer from "@/app/components/Buttons/ButtonTweetComposer";
+import useFormData from "@/app/hooks/useFormData";
 
 type Props = {
   closeModal?: VoidFunction;
 };
 
 const CreateTweetFeature: FC<Props> = ({ closeModal }) => {
-  const [createMutation, { isLoading }] = useCreateTweetMutation();
-  const { data: auth } = useMeQuery();
-
   const create = async () => {
     formData.append("description", state.tweet);
     if (filesToUpload) {
@@ -30,7 +27,6 @@ const CreateTweetFeature: FC<Props> = ({ closeModal }) => {
       }
     }
     try {
-      await createMutation(formData).unwrap();
       resetForm();
       closeModal && closeModal();
     } catch (error) {
@@ -63,10 +59,10 @@ const CreateTweetFeature: FC<Props> = ({ closeModal }) => {
       onClick={() => {
         textAreaRef.current?.getFocus();
       }}
-      className="relative flex w-full gap-4 border-b px-2 pt-4 dark:border-gray-700 xl:px-4"
+      className="relative flex w-full gap-4 border-b border-skin-base px-2 pt-4  xl:px-4"
     >
       <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full">
-        <Avatar src={auth?.imageURL} />
+        <Avatar />
       </div>
       <div className="w-full">
         {show && (
@@ -86,7 +82,7 @@ const CreateTweetFeature: FC<Props> = ({ closeModal }) => {
           <button ref={btnFormRef} type="submit" className="hidden"></button>
         </form>
         <ImageView urls={filesToPreview} remove={removeFiles} />
-        <div className="sticky bottom-0 bg-white py-2 dark:bg-black">
+        <div className="sticky bottom-0 bg-skin-base">
           {show && (
             <div
               className="w-max"
@@ -97,7 +93,7 @@ const CreateTweetFeature: FC<Props> = ({ closeModal }) => {
               <ButtonRepliers />
             </div>
           )}
-          {show && <hr className="my-2 border-gray-300 dark:border-gray-700" />}
+          {show && <hr className="my-2 border-skin-base" />}
           <div ref={ref} className="-ml-2 flex h-10 w-full items-center">
             <ButtonFilesPickers onFileChange={onFileChange} />
             <Indicator
@@ -107,11 +103,13 @@ const CreateTweetFeature: FC<Props> = ({ closeModal }) => {
             />
             <Divider text={state.tweet} />
             <ButtonTweetComposer
-              isLoading={isLoading}
+              label="Post"
+              isLoading={false}
               state={state.tweet}
               submitFn={() => btnFormRef.current?.click()}
             />
           </div>
+          <div className="h-2 w-full" />
         </div>
       </div>
     </div>

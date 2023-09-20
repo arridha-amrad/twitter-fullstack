@@ -1,5 +1,5 @@
-import { ChangeEvent, useRef, useState } from 'react';
-import useForm from './useForm';
+import { ChangeEvent, useRef, useState } from "react";
+import useForm from "./useForm";
 
 type Props<T> = {
   initialData: T;
@@ -51,7 +51,7 @@ const useFormData = <T>(args: Props<T>) => {
     filesToUpload,
     formData,
     resetForm,
-    removeFiles
+    removeFiles,
   };
 };
 

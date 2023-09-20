@@ -10,7 +10,7 @@ const Divider = ({ text }: { text: string }) => {
           exit={{ opacity: 0 }}
           className="w-fit h-full flex items-center justify-center"
         >
-          <div className="w-0.5 h-5 mx-2 bg-gray-500" />
+          <div className="w-0.5 h-5 mx-2 bg-skin-border" />
         </motion.div>
       )}
     </AnimatePresence>

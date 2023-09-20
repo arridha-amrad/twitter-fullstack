@@ -26,15 +26,14 @@ const Indicator = (props: Props) => {
 
   const strokeColor =
     progress < 90
-      ? "stroke-blue-500"
+      ? "stroke-skin-base"
       : progress >= 100
       ? "stroke-red-500"
       : "stroke-yellow-500";
 
   const textColor = progress < 100 ? "text-yellow-500" : "text-red-500";
 
-  const trackColor =
-    progress >= 100 ? "stroke-red-500" : "dark:stroke-gray-500 stroke-gray-300";
+  const trackColor = progress >= 100 ? "stroke-red-500" : "stroke-skin-accent";
 
   return (
     <AnimatePresence>

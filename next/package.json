@@ -24,6 +24,7 @@
     "postcss": "8.4.30",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hot-toast": "^2.4.1",
     "react-merge-refs": "^2.0.2",
     "react-popper": "^2.3.0",
     "react-use-measure": "^2.1.1",

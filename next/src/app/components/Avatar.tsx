@@ -9,7 +9,7 @@ type Props = {
 const Avatar: FC<Props> = ({ src }) => {
   const imgSrc = src ? src : Default;
   return (
-    <div className="h-10 w-10 overflow-hidden rounded-full border border-gray-200 dark:border-gray-700">
+    <div className="h-10 w-10 overflow-hidden rounded-full border border-skin-base">
       <Image className="h-full w-full object-cover" src={imgSrc} alt="avatar" />
     </div>
   );

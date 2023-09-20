@@ -12,7 +12,7 @@ import {
 import { twMerge } from "tailwind-merge";
 
 const className =
-  "z-0 mt-2 w-full overflow-auto border-none bg-white text-lg outline-none ring-0 dark:bg-black placeholder:text-xl";
+  "z-0 mt-2 w-full overflow-auto border-none bg-skin-base text-lg outline-none ring-0 placeholder:text-xl";
 
 function updateTextAreaSize(textArea: HTMLTextAreaElement | null) {
   if (textArea == null) return;

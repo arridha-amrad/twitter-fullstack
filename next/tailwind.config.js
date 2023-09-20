@@ -18,10 +18,16 @@ export default {
   ],
   theme: {
     extend: {
+      stroke: {
+        skin: {
+          base: withOpacity("var(--color-fill)"),
+          accent: withOpacity("var(--color-border)"),
+        },
+      },
       ringColor: {
         skin: {
-          base: withOpacity("var(--color-fill)")
-        }
+          base: withOpacity("var(--color-fill)"),
+        },
       },
       borderColor: {
         skin: {
@@ -37,12 +43,13 @@ export default {
       },
       shadow: {
         skin: {
-          base: withOpacity("var(--color-shadow)")
-        }
+          base: withOpacity("var(--color-shadow)"),
+        },
       },
       backgroundColor: {
         skin: {
           base: withOpacity("var(--color-bg)"),
+          border: withOpacity("var(--color-border)"),
           hover: withOpacity("var(--color-bg-hover)"),
           accent: withOpacity("var(--color-bg-accent)"),
           fill: withOpacity("var(--color-fill)"),
