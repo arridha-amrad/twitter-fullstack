@@ -1,6 +1,5 @@
 import SidebarLinks from "./SidebarLinks";
 import SidebarLogo from "./Logo";
-import SidebarMore from "./SidebarMore";
 import ProfileMenu from "./ProfileMenu";
 import CreatePostButton from "./CreatePostButton";
 import MoreDropDown from "./MoreDropDown/MoreDropDown";
@@ -13,7 +12,9 @@ const Sidebar = () => {
     >
       <SidebarLogo />
       <SidebarLinks />
-      <MoreDropDown />
+      <div>
+        <MoreDropDown />
+      </div>
       <CreatePostButton />
       <div className="w-full mb-4">
         <ProfileMenu />

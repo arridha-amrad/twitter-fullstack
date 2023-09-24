@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 const SidebarLinks = () => {
   const pathname = usePathname();
   return (
-    <nav className="flex w-full flex-col items-center xl:items-start">
+    <nav className="flex w-full gap-1 flex-col items-center xl:items-start">
       {sidebarLinks.map((link) => {
         const isActive = pathname === link.link;
         return (

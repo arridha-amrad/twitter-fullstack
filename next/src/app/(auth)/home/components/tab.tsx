@@ -1,21 +1,36 @@
 "use client";
 
 import { Tab } from "@headlessui/react";
-import { ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const tabs = [
-  { name: "For You", content: <div>For You Tweets</div> },
-  { name: "Followings", content: <div>For You Tweets</div> },
+  { name: "For You", param: "for-you" },
+  { name: "Followings", param: "followings" },
 ];
 
-export default function HomeTab({ children }: { children: ReactNode }) {
+export default function HomeTab() {
+  const [tabIndex, setTabIndex] = useState(0);
+
+  const saveTab = (index: number) => {
+    setTabIndex(index);
+    sessionStorage.setItem("home-tab", tabs[index].param);
+    router.push(`?tab=${tabs[index].param}`, { scroll: false });
+  };
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const savedTab = sessionStorage.getItem("home-tab");
+    const index = tabs.findIndex((t) => t.param === savedTab);
+    const idx = index >= 0 ? index : 0;
+    setTabIndex(idx);
+    router.push(`?tab=${tabs[idx].param}`, { scroll: false });
+    // eslint-disable-next-line
+  }, []);
+
   return (
-    <Tab.Group
-      manual
-      onChange={() => {
-        console.log("tab changed");
-      }}
-    >
+    <Tab.Group selectedIndex={tabIndex} onChange={saveTab}>
       <Tab.List className={className.tabList}>
         {tabs.map(({ name }) => (
           <Tab className={className.tab} key={name}>
@@ -34,18 +49,11 @@ export default function HomeTab({ children }: { children: ReactNode }) {
           </Tab>
         ))}
       </Tab.List>
-      {children}
-      <Tab.Panels>
-        <Tab.Panel>Content 1</Tab.Panel>
-        <Tab.Panel>Content 2</Tab.Panel>
-        <Tab.Panel>Content 3</Tab.Panel>
-      </Tab.Panels>
     </Tab.Group>
   );
 }
 
 export const className = {
-  tabList:
-    "flex w-full h-14 sticky top-14 z-10 backdrop-blur border-b border-skin-base",
+  tabList: "flex w-full flex-1 z-10 border-b border-skin-base",
   tab: "flex-1 hover:bg-skin-hover/50 outline-none",
 };

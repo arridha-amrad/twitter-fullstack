@@ -34,9 +34,6 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const bgFromCookie = Cookies.get("background") as Theme;
     const colorFromCookie = Cookies.get("color");
-
-    console.log({ bgFromCookie, colorFromCookie });
-
     if (colorFromCookie) {
       document.documentElement.classList.add(colorFromCookie);
     }
