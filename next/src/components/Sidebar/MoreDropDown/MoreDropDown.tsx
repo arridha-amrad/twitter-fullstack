@@ -36,6 +36,7 @@ const MoreDropDown = () => {
         return createRef<HTMLButtonElement>();
       }) ?? []
     );
+    // eslint-disable-next-line
   }, [LinkGroupTwo]);
 
   function handleClosingOthers(name: string) {

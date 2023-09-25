@@ -1,5 +1,5 @@
-import SignInModal from '@/components/Modals/SigninModal';
+import { redirect } from 'next/navigation';
 
 export default function Page() {
-  return <SignInModal />;
+  redirect("/")
 }

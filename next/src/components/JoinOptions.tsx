@@ -1,9 +1,10 @@
 "use client"
 
-import { useRouter } from "next/navigation";
+import {  useRouter } from "next/navigation";
 
 export default function JoinOptions() {
   const router = useRouter()
+
   const navigateLogin = () => {
     router.push("/i/flow/login")
   }

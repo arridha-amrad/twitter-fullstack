@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 import Toast from "../components/Toast";
+import { Suspense } from "react";
+import { NavigationEvents } from "@/components/NavigationEvent";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +29,9 @@ export default function RootLayout({
         <AppContextProvider>
           <Toast />
           {children}
+          <Suspense fallback={null}>
+            <NavigationEvents/> 
+          </Suspense>
           {modal}
         </AppContextProvider>
       </body>
