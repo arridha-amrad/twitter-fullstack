@@ -25,10 +25,13 @@ export default function SignInForm() {
           Login
         </button>
       </div>
-      <div className='text-sm text-center mt-4'>
-        <span className=''>
-          Don't have an account ?
-          <Link className="text-sm ml-2 text-skin-fill hover:underline" href="/home">
+      <div className="mt-4 text-center text-sm">
+        <span className="">
+          Don&apos;t have an account ?
+          <Link
+            className="ml-2 text-sm text-skin-fill hover:underline"
+            href="/home"
+          >
             SignUp
           </Link>
         </span>

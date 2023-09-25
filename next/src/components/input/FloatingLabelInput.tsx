@@ -21,7 +21,7 @@ const FloatingLabelInput: FC<
         ref={inputRef}
         {...props}
         className={`
-				peer w-full appearance-none rounded-xl border border-skin-base bg-transparent px-[16px] pb-2.5 pt-6 text-sm outline-none focus:border-transparent focus:ring-4 focus:ring-skin-base focus:ring-offset-0 text-skin-base md:text-base
+				peer w-full appearance-none rounded-xl border border-skin-base bg-transparent px-[16px] pb-2.5 pt-6 text-sm text-skin-base outline-none focus:border-transparent focus:ring-4 focus:ring-skin-base focus:ring-offset-0 md:text-base
 				${isPassword && 'pr-16'}
 				`}
         type={`${isPassword ? (show ? 'text' : 'password') : 'text'}`}
