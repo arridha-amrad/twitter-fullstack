@@ -5,18 +5,15 @@ import { Dialog, Transition } from '@headlessui/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Fragment, useState } from 'react';
-import Logo from "@/images/logo.svg"
-import SignInForm from '@/components/Forms/SiginForm';
+import Logo from '@/images/logo.svg';
+import SignUpForm from '@/components/Forms/SignupForm';
 
-export default function MyModal() {
-  const [isOpen, setIsOpen] = useState(true);
+export default function SignUpModal() {
+  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
   function closeModal() {
     setIsOpen(false);
-    setTimeout(() => {
-      router.back()
-    }, 500);
   }
 
   function openModal() {
@@ -25,6 +22,9 @@ export default function MyModal() {
 
   return (
     <>
+      <button onClick={openModal} className="h-[45px] w-full rounded-full bg-blue-500 font-bold text-white">
+        Create Account
+      </button>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog onClose={() => {}} as="div" className="relative z-10">
           <Transition.Child
@@ -50,20 +50,20 @@ export default function MyModal() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <div className='relative w-full max-w-lg'>
-                  <div className="absolute inset-0 bg-skin-shadow blur"/>
-                  <Dialog.Panel className="relative rounded-2xl bg-skin-base text-left w-full h-full p-6">
-                    <div className='flex relative gap-4 items-center mb-6'>
+                <div className="relative w-full max-w-lg">
+                  <div className="absolute inset-0 bg-skin-shadow blur" />
+                  <Dialog.Panel className="relative h-full w-full rounded-2xl bg-skin-base p-6 text-left">
+                    <div className="relative mb-6 flex items-center gap-4">
                       <ButtonClose closeFn={closeModal} />
-                    <Dialog.Title
-                      as="h3"
-                      className="text-2xl font-bold leading-6"
-                    >
-                      Login to Twitter
-                    </Dialog.Title>
-                    <Image width={40} height={40} src={Logo} alt="logo" />
+                      <Dialog.Title
+                        as="h3"
+                        className="text-2xl font-bold leading-6"
+                      >
+                        Create An Account
+                      </Dialog.Title>
+                      <Image width={40} height={40} src={Logo} alt="logo" />
                     </div>
-                    <SignInForm/>
+                    <SignUpForm />
                   </Dialog.Panel>
                 </div>
               </Transition.Child>

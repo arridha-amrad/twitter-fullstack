@@ -1,6 +1,7 @@
 "use client"
 
 import {  useRouter } from "next/navigation";
+import SignUpModal from "./Modals/SignupModal";
 
 export default function JoinOptions() {
   const router = useRouter()
@@ -46,9 +47,7 @@ export default function JoinOptions() {
               or
             </span>
           </div>
-          <button className="h-[45px] font-bold w-full rounded-full bg-blue-500 text-white">
-            Create Account
-          </button>
+          <SignUpModal/>
           <div className="w-full leading-3">
             <small className="text-xs">
               By signing up, you agree to the <a className="text-blue-500 no-underline" href="https://twitter.com/id/tos">Terms of Service</a> and <a className="text-blue-500 no-underline" href="">Privacy
