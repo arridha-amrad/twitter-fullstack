@@ -43,10 +43,10 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     } else {
       if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
         setBg("light-out");
-        setAppBackground("light-out");
+        document.documentElement.classList.add("light-out");
       } else {
         setBg("light");
-        setAppBackground("light");
+        document.documentElement.classList.add("light");
       }
     }
   }, []);

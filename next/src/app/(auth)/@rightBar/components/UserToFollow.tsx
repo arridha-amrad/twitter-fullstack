@@ -1,4 +1,4 @@
-import Avatar from "@/app/components/Avatar";
+import Avatar from "@/components/Avatar";
 
 const UserToFollowCard = () => {
   const users = [

@@ -11,7 +11,7 @@ import ImageView from "../../CreateTweetFeatures/components/ImageView";
 import TextArea from "../../CreateTweetFeatures/components/TextArea";
 import ButtonAudience from "./ButtonAudience";
 import ButtonRepliers from "./ButtonRepliers";
-import Avatar from "@/app/components/Avatar";
+import Avatar from "@/components/Avatar";
 
 type Props = {
   onSubmit: (e: FormEvent) => void;

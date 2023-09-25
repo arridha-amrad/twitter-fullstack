@@ -1,7 +1,7 @@
-import Footer from "../../../components/footer";
-import TrendsCard from "../components/TrendsCard";
-import UserToFollowCard from "../components/UserToFollow";
-import VerificationCard from "../components/VerificationCard";
+import Footer from '@/components/footer';
+import TrendsCard from '../components/TrendsCard';
+import UserToFollowCard from '../components/UserToFollow';
+import VerificationCard from '../components/VerificationCard';
 
 export default function Page() {
   return (

@@ -1,48 +1,69 @@
-"use client";
+'use client';
 
-import { Disclosure, Menu } from "@headlessui/react";
-import EllipsisHorizontalCircleIcon from "@heroicons/react/24/outline/EllipsisHorizontalCircleIcon";
-import Link from "next/link";
-import { useState } from "react";
-import { createPortal } from "react-dom";
-import { usePopper } from "react-popper";
-import ChevronDownIcon from "@heroicons/react/24/outline/ChevronDownIcon";
-import LinkGroupOne from "./LinkGroupOne";
-import { LinkGroupTwo } from "./LinkGroupTwo";
+import { Disclosure, Menu } from '@headlessui/react';
+import EllipsisHorizontalCircleIcon from '@heroicons/react/24/outline/EllipsisHorizontalCircleIcon';
+import Link from 'next/link';
+import { createRef, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { usePopper } from 'react-popper';
+import ChevronDownIcon from '@heroicons/react/24/outline/ChevronDownIcon';
+import LinkGroupOne from './LinkGroupOne';
+import { LinkGroupTwo } from './LinkGroupTwo';
 
 const MoreDropDown = () => {
   const [referenceElement, setReferenceElement] = useState<any | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
-    null
+    null,
   );
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    placement: "right",
+    placement: 'right',
     modifiers: [
       {
-        name: "offset",
+        name: 'offset',
         options: {
           offset: [-180, -0],
         },
       },
       {
-        name: "flip",
+        name: 'flip',
       },
     ],
   });
+
+  const refs = useMemo(() => {
+    return (
+      LinkGroupTwo.map(() => {
+        return createRef<HTMLButtonElement>();
+      }) ?? []
+    );
+  }, [LinkGroupTwo]);
+
+  function handleClosingOthers(name: string) {
+    const otherRefs = refs.filter((ref) => {
+      return ref.current?.getAttribute("data-id") !== name;
+    });
+    otherRefs.forEach((ref) => {
+      const isOpen = ref.current?.getAttribute("data-open") === "true";
+      if (isOpen) {
+        ref.current?.click();
+      }
+    });
+  }
+
   return (
     <Menu>
       {({ open }) => (
         <>
           <Menu.Button
             ref={setReferenceElement}
-            className="h-[50px] gap-4 hover:bg-skin-hover flex items-center justify-center xl:px-4 aspect-square xl:aspect-auto rounded-full"
+            className="flex aspect-square h-[50px] items-center justify-center gap-4 rounded-full hover:bg-skin-hover xl:aspect-auto xl:px-4"
           >
-            <div className="w-7 h-7 flex">
-              <EllipsisHorizontalCircleIcon className="w-full h-full" />
+            <div className="flex h-7 w-7">
+              <EllipsisHorizontalCircleIcon className="h-full w-full" />
             </div>
-            <span className="hidden xl:block text-xl">More</span>
+            <span className="hidden text-xl xl:block">More</span>
           </Menu.Button>
-          {typeof window === "object"
+          {typeof window === 'object'
             ? open &&
               createPortal(
                 <>
@@ -52,27 +73,27 @@ const MoreDropDown = () => {
                     style={styles.popper}
                     {...attributes.popper}
                     ref={setPopperElement}
-                    className="relative z-20 outline-none w-[300px]"
+                    className="relative z-20 w-[300px] outline-none"
                   >
-                    <div className="absolute  inset-0 -z-10 blur bg-skin-shadow" />
-                    <div className="bg-skin-base overflow-hidden rounded-lg border-skin-base">
+                    <div className="absolute  inset-0 -z-10 bg-skin-shadow blur" />
+                    <div className="overflow-hidden rounded-lg border-skin-base bg-skin-base">
                       {LinkGroupOne.map((data, i) => (
                         <Menu.Item key={i}>
                           {({ active }) => (
                             <Link
-                              className={`flex text-lg text-skin-base font-semibold h-[55px] px-4 py-3 items-center gap-4 ${
-                                active ? "bg-skin-hover" : ""
+                              className={`flex h-[55px] items-center gap-4 px-4 py-3 text-lg font-semibold text-skin-base ${
+                                active ? 'bg-skin-hover' : ''
                               }`}
                               href={data.url}
                               key={data.name}
                             >
-                              <div className="w-7 h-7">{data.icon}</div>
+                              <div className="h-7 w-7">{data.icon}</div>
                               <span>{data.name}</span>
                             </Link>
                           )}
                         </Menu.Item>
                       ))}
-                      <hr className="w-[90%] mx-auto my-1 border-skin-base" />
+                      <hr className="mx-auto my-1 w-[90%] border-skin-base" />
                       {LinkGroupTwo.map((data, i) => (
                         <Menu.Item key={i}>
                           {({ close, active }) => (
@@ -84,23 +105,27 @@ const MoreDropDown = () => {
                               {({ open }) => (
                                 <>
                                   <Disclosure.Button
-                                    className={`py-2 inline-flex h-[50px] w-full px-4 items-center justify-between ${
-                                      active ? "bg-skin-hover" : ""
+                                    ref={refs[i]}
+                                    data-id={data.name}
+                                    data-open={open}
+                                    onClick={() => handleClosingOthers(data.name)}
+                                    className={`inline-flex h-[50px] w-full items-center justify-between px-4 py-2 ${
+                                      active ? 'bg-skin-hover' : ''
                                     }`}
                                   >
                                     <span className="font-semibold">
                                       {data.name}
                                     </span>
                                     <ChevronDownIcon
-                                      className={`w-5 h-5 stroke-[2px] transition-transform duration-200 ease-in ${
-                                        open ? "rotate-180 text-skin-fill" : ""
+                                      className={`h-5 w-5 stroke-[2px] transition-transform duration-200 ease-in ${
+                                        open ? 'rotate-180 text-skin-fill' : ''
                                       }`}
                                     />
                                   </Disclosure.Button>
                                   {data.links.map((link) => (
                                     <Disclosure.Panel
                                       key={link.name}
-                                      className="hover:bg-skin-hover cursor-pointer px-4 space-x-2"
+                                      className="cursor-pointer space-x-2 px-4 hover:bg-skin-hover"
                                     >
                                       <Link
                                         onClick={close}
@@ -123,7 +148,7 @@ const MoreDropDown = () => {
                     </div>
                   </Menu.Items>
                 </>,
-                document.body
+                document.body,
               )
             : null}
         </>

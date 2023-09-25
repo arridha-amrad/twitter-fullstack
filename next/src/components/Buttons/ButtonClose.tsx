@@ -1,5 +1,5 @@
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
-import ButtonIcon from '../ButtonIcon';
+import ButtonIcon from './ButtonIcon';
 
 type Props = {
   closeFn: () => void;
@@ -10,8 +10,8 @@ export default function ButtonClose({ closeFn }: Props) {
     <div className="h-8">
       <ButtonIcon
         onClick={closeFn}
-        className="hover:dark:bg-gray-800 hover:bg-gray-200"
-        icon={<XMarkIcon className="w-6 stroke-2 stroke-gray-400" />}
+        className="hover:bg-skin-hover"
+        icon={<XMarkIcon className="w-6 stroke-2 text-skin-base" />}
         tooltip="Close"
       />
     </div>

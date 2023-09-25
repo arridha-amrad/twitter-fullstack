@@ -9,9 +9,9 @@ import Divider from "./components/Divider";
 import ImageView from "./components/ImageView";
 import Indicator from "./components/Indicator";
 import TextArea from "./components/TextArea";
-import Avatar from "@/app/components/Avatar";
-import ButtonFilesPickers from "@/app/components/Buttons/ButtonFilesPickers";
-import ButtonTweetComposer from "@/app/components/Buttons/ButtonTweetComposer";
+import Avatar from "@/components/Avatar";
+import ButtonFilesPickers from "@/components/Buttons/ButtonFilesPickers";
+import ButtonTweetComposer from "@/components/Buttons/ButtonTweetComposer";
 import useFormData from "@/app/hooks/useFormData";
 
 type Props = {

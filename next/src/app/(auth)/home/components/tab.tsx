@@ -42,7 +42,7 @@ export default function HomeTab() {
               >
                 {name}
                 {selected && (
-                  <span className="absolute -bottom-5 left-0 right-0 h-1 rounded-full bg-skin-fill" />
+                  <span className={className.indicator} />
                 )}
               </span>
             )}
@@ -56,4 +56,5 @@ export default function HomeTab() {
 export const className = {
   tabList: "flex w-full flex-1 z-10 border-b border-skin-base",
   tab: "flex-1 hover:bg-skin-hover/50 outline-none",
+  indicator: "absolute -bottom-5 left-0 right-0 h-1 rounded-full bg-skin-fill"
 };

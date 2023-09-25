@@ -1,10 +1,10 @@
-import ChartBarSquareIcon from "@heroicons/react/24/outline/ChartBarSquareIcon";
-import FaceSmileIcon from "@heroicons/react/24/outline/FaceSmileIcon";
-import GifIcon from "@heroicons/react/24/outline/GifIcon";
-import MapPinIcon from "@heroicons/react/24/outline/MapPinIcon";
-import PhotoIcon from "@heroicons/react/24/outline/PhotoIcon";
-import { ChangeEvent, useRef } from "react";
-import IconButton from "../iconButton";
+import ChartBarSquareIcon from '@heroicons/react/24/outline/ChartBarSquareIcon';
+import FaceSmileIcon from '@heroicons/react/24/outline/FaceSmileIcon';
+import GifIcon from '@heroicons/react/24/outline/GifIcon';
+import MapPinIcon from '@heroicons/react/24/outline/MapPinIcon';
+import PhotoIcon from '@heroicons/react/24/outline/PhotoIcon';
+import { ChangeEvent, useRef } from 'react';
+import IconButton from '../iconButton';
 
 type Props = {
   onFileChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -52,8 +52,8 @@ const ButtonFilesPickers = ({ onFileChange }: Props) => {
 };
 
 const className = {
-  button: "hover:bg-skin-fill/20",
-  icon: "w-5 stroke-skin-base",
+  button: 'hover:bg-skin-fill/20',
+  icon: 'w-5 stroke-skin-base',
 };
 
 export default ButtonFilesPickers;

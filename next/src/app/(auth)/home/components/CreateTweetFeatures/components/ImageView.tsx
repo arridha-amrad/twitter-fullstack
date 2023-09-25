@@ -1,4 +1,4 @@
-import IconButton from "@/app/components/iconButton";
+import IconButton from "@/components/iconButton";
 import XMarkIcon from "@heroicons/react/24/outline/XMarkIcon";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";

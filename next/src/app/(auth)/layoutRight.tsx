@@ -2,7 +2,7 @@
 
 import { ReactNode } from "react";
 import useMeasure from "react-use-measure";
-import SearchInput from "../components/input/SearchInput";
+import SearchInput from "../../components/input/SearchInput";
 
 export default function LayoutRight({ children }: { children: ReactNode }) {
   const [ref, { height }] = useMeasure();
