@@ -5,52 +5,52 @@ import {
   PencilSquareIcon,
   QuestionMarkCircleIcon,
   UserCircleIcon,
-} from "@heroicons/react/24/outline";
+} from '@heroicons/react/24/outline';
 
-export const className = "w-5 h-5";
+export const className = 'w-5 h-5';
 
 export const LinkGroupTwo = [
   {
-    name: "Creator Studio",
+    name: 'Creator Studio',
     links: [
       {
-        name: "Analytics",
-        url: "/analytics",
+        name: 'Analytics',
+        url: '/analytics',
         icon: <ChartBarSquareIcon className={className} />,
       },
     ],
   },
   {
-    name: "Professional Tools",
+    name: 'Professional Tools',
     links: [
       {
-        name: "Ads",
-        url: "/ads",
+        name: 'Ads',
+        url: '/ads',
         icon: <ArrowDownRightIcon className={className} />,
       },
     ],
   },
   {
-    name: "Settings and Support",
+    name: 'Settings and Support',
     links: [
       {
-        name: "Settings and Privacy",
-        url: "/home",
+        name: 'Settings and Privacy',
+        url: '/home',
         icon: <Cog6ToothIcon className={className} />,
       },
       {
-        name: "Help Center",
-        url: "/home",
+        name: 'Help Center',
+        url: '/home',
         icon: <QuestionMarkCircleIcon className={className} />,
       },
       {
-        name: "Display",
-        url: "/display",
+        name: 'Display',
+        url: '/i/display',
         icon: <PencilSquareIcon className={className} />,
       },
       {
-        name: "Keyboard Shortcuts",
-        url: "/home",
+        name: 'Keyboard Shortcuts',
+        url: '/home',
         icon: <UserCircleIcon className={className} />,
       },
     ],

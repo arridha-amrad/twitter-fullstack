@@ -70,9 +70,7 @@ export default function SignUpForm() {
   return (
     <form onSubmit={onSubmit} className="flex flex-col">
       <motion.div
-        key={step}
-        initial={{ opacity: 0.5, height }}
-        animate={{ opacity: 1, height: 'auto' }}
+        animate={{ height }}
         transition={{
           type: 'spring',
           damping: 25,

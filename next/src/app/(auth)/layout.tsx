@@ -1,7 +1,7 @@
-import { FC, ReactNode } from "react";
-import Sidebar from "../../components/Sidebar/Sidebar";
+import { FC, ReactNode } from 'react';
+import Sidebar from '../../components/Sidebar/Sidebar';
 
-import LayoutRight from "./layoutRight";
+import LayoutRight from './layoutRight';
 
 type Props = {
   children: ReactNode;
@@ -10,10 +10,10 @@ type Props = {
 
 const Layout: FC<Props> = ({ children, rightBar }) => {
   return (
-    <div className="xl:max-w-[1265px] lg:max-w-[1090px] md:max-w-[700px] mx-auto">
+    <div className="mx-auto md:max-w-[700px] lg:max-w-[1090px] xl:max-w-[1265px]">
       <div className="flex">
         <Sidebar />
-        <div className="max-w-[598px] w-full border-skin-base border-x overflow-x-clip">
+        <div className="w-full max-w-[598px] overflow-x-clip border-x border-skin-base">
           {children}
         </div>
         <LayoutRight>{rightBar}</LayoutRight>

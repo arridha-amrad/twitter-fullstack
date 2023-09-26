@@ -1,5 +1,7 @@
+import ExplorePageCompositions from './compositions';
+
 const ExplorePage = () => {
-  return <div>ExplorePage</div>;
+  return <ExplorePageCompositions />;
 };
 
 export default ExplorePage;
