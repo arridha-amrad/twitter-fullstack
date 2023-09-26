@@ -2,13 +2,12 @@
 
 import {  useRouter } from "next/navigation";
 import SignUpModal from "./Modals/SignupModal";
+import SignInModal from "./Modals/SigninModal";
 
 export default function JoinOptions() {
   const router = useRouter()
 
-  const navigateLogin = () => {
-    router.push("/i/flow/login")
-  }
+
   return (
     <div className="flex flex-1 flex-shrink-0 items-center justify-center px-4 sm:px-0">
       <div className="item-center flex w-full flex-col justify-between gap-4 sm:w-2/3 lg:w-[90%]">
@@ -55,9 +54,7 @@ export default function JoinOptions() {
             </small>
           </div>
           <h5 className="text-xl font-extrabold">Have an account?</h5>
-          <button onClick={navigateLogin} className="h-[45px] w-full rounded-full border border-blue-500 bg-transparent text-blue-500">
-            Login
-          </button>
+          <SignInModal/>
         </div>
       </div>
     </div>

@@ -1,54 +1,19 @@
 'use client';
 
 import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
-import FloatingLabelInput from '../input/FloatingLabelInput';
+import FloatingLabelInput from '../../input/FloatingLabelInput';
 import Link from 'next/link';
-import SelectInput from '../input/SelectInput';
+import SelectInput from '../../input/SelectInput';
 import ChevronRightIcon from '@heroicons/react/24/outline/ChevronRightIcon';
 import { ChevronLeftIcon, PlusIcon } from '@heroicons/react/24/outline';
-import ButtonIcon from '../Buttons/ButtonIcon';
+import ButtonIcon from '../../Buttons/ButtonIcon';
 import { motion } from 'framer-motion';
 import useMeasure from 'react-use-measure';
-import Switch from '../Switch';
-import Spinner from '../Spinner';
-import Avatar from '../Avatar';
+import Switch from '../../Switch';
+import Spinner from '../../Spinner';
+import Avatar from '../../Avatar';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-
-const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'Mei',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-
-const days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-const loopYear = (isLeap: boolean = false) => {
-  const startYear = new Date().getFullYear();
-  const endYear = 1920;
-  const result: string[] = [];
-  if (isLeap) {
-    for (let i = startYear; i >= endYear; i--) {
-      if (i % 4 === 0) {
-        result.push(i.toString());
-      }
-    }
-  } else {
-    for (let i = startYear; i >= endYear; i--) {
-      result.push(i.toString());
-    }
-  }
-  return result;
-};
+import { days, loopYear, months } from './data';
 
 export default function SignUpForm() {
   const [month, setMonth] = useState(months[0]);
@@ -91,8 +56,6 @@ export default function SignUpForm() {
   };
 
   const [ref, { height }] = useMeasure();
-
-  console.log({ height });
 
   const [step, setStep] = useState(1);
   const [enabled, setEnabled] = useState(false);
@@ -226,7 +189,7 @@ export default function SignUpForm() {
               Welcome to Twitter
             </h1>
             <div onClick={navigateHome} className="group relative mx-auto">
-              <div className="animate-tilt absolute -inset-0.5 bg-skin-fill bg-gradient-to-r from-blue-500 to-green-500 opacity-75 blur transition-all duration-1000 ease-linear group-hover:opacity-100 group-hover:blur-xl group-hover:duration-500" />
+              <div className="absolute -inset-0.5 animate-tilt bg-skin-fill bg-gradient-to-r from-blue-500 to-green-500 opacity-75 blur transition-all duration-1000 ease-linear group-hover:opacity-100 group-hover:blur-xl group-hover:duration-500" />
               <div className="relative flex w-max cursor-pointer items-start justify-center gap-4 rounded-2xl border border-skin-base bg-skin-base px-8 py-4 group-hover:brightness-110">
                 <Avatar />
                 <div>

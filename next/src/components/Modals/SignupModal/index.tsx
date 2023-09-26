@@ -10,7 +10,6 @@ import SignUpForm from '@/components/Forms/SignupForm';
 
 export default function SignUpModal() {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
 
   function closeModal() {
     setIsOpen(false);

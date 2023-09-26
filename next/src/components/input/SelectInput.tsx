@@ -15,7 +15,7 @@ export default function SelectInput({options, selected, setSelected, label}: Pro
   return (
     <Listbox as="div" className="border p-1 rounded-xl w-full border-skin-base" value={selected} onChange={setSelected}>
       <div className="relative">
-        <Listbox.Button className="relative w-full cursor-pointer rounded-lg bg-skin-base pl-4 pr-10 py-1 text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-skin-base focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent sm:text-sm">
+        <Listbox.Button className="relative w-full cursor-pointer rounded-lg bg-skin-base pl-4 pr-10 py-1 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-skin-base focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent sm:text-sm">
           <span className='flex flex-col'>
           <span className="block truncate text-skin-accent">{label}</span>
           <span className="block truncate text-base">{selected}</span>
