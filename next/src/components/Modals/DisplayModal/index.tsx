@@ -1,9 +1,9 @@
 'use client';
 
-import { Dialog } from '@headlessui/react';
+import { Dialog, Transition } from '@headlessui/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import DefaultAvatar from '@/images/default.png';
 import { CheckBadgeIcon, CheckIcon } from '@heroicons/react/24/solid';
 import { backgrounds, colors } from '@/components/Modals/DisplayModal/colors';
@@ -24,8 +24,8 @@ const DisplayModal = () => {
 
   return (
     <Dialog
-      className="relative z-50"
       open={isOpen}
+      className="relative z-50"
       onClose={() => setIsOpen(false)}
     >
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />

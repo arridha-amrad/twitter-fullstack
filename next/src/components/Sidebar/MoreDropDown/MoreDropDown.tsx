@@ -41,10 +41,10 @@ const MoreDropDown = () => {
 
   function handleClosingOthers(name: string) {
     const otherRefs = refs.filter((ref) => {
-      return ref.current?.getAttribute("data-id") !== name;
+      return ref.current?.getAttribute('data-id') !== name;
     });
     otherRefs.forEach((ref) => {
-      const isOpen = ref.current?.getAttribute("data-open") === "true";
+      const isOpen = ref.current?.getAttribute('data-open') === 'true';
       if (isOpen) {
         ref.current?.click();
       }
@@ -109,7 +109,9 @@ const MoreDropDown = () => {
                                     ref={refs[i]}
                                     data-id={data.name}
                                     data-open={open}
-                                    onClick={() => handleClosingOthers(data.name)}
+                                    onClick={() =>
+                                      handleClosingOthers(data.name)
+                                    }
                                     className={`inline-flex h-[50px] w-full items-center justify-between px-4 py-2 ${
                                       active ? 'bg-skin-hover' : ''
                                     }`}
@@ -132,6 +134,7 @@ const MoreDropDown = () => {
                                         onClick={close}
                                         className="flex h-[50px] items-center gap-2"
                                         href={link.url}
+                                        scroll={false}
                                       >
                                         {link.icon}
                                         <span className="font-semibold">
