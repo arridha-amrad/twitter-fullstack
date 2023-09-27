@@ -16,17 +16,17 @@ export default function ButtonIcon({ icon, tooltip, ...props }: Props) {
   const [referenceElement, setReferenceElement] =
     useState<HTMLButtonElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
-    null
+    null,
   );
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     modifiers: [
       {
         name: 'offset',
         options: {
-          offset: [0, 15]
-        }
-      }
-    ]
+          offset: [0, 15],
+        },
+      },
+    ],
   });
   const [show, setShow] = useState(false);
   return (
@@ -42,28 +42,34 @@ export default function ButtonIcon({ icon, tooltip, ...props }: Props) {
       >
         {icon}
       </button>
-      {createPortal(
-        <AnimatePresence initial={false}>
-          {show && (
-            <div
-              ref={setPopperElement}
-              style={styles.popper}
-              className="z-[999]"
-              {...attributes.popper}
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1, transition: { delay: 0.5 } }}
-                exit={{ opacity: 0 }}
-                className="w-max rounded bg-black/80 px-2 py-0.5 text-xs font-medium text-white shadow-sm dark:bg-slate-600"
-              >
-                {tooltip}
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>,
-        document.body
-      )}
+      {typeof window === 'object'
+        ? createPortal(
+            <AnimatePresence initial={false}>
+              {show && (
+                <div
+                  ref={setPopperElement}
+                  style={styles.popper}
+                  className="z-[999]"
+                  {...attributes.popper}
+                >
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{
+                      opacity: 1,
+                      scale: 1,
+                      transition: { delay: 0.5 },
+                    }}
+                    exit={{ opacity: 0 }}
+                    className="w-max rounded bg-skin-accent px-2 py-0.5 text-xs font-medium text-skin-base shadow-sm"
+                  >
+                    {tooltip}
+                  </motion.div>
+                </div>
+              )}
+            </AnimatePresence>,
+            document.body,
+          )
+        : null}
     </>
   );
 }

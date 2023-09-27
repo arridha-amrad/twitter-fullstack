@@ -1,18 +1,23 @@
 import { Metadata } from 'next';
-import HomeTab from './components/tab';
+import HomeTab from '../../../components/Tab';
 import CreateTweetFeature from './components/CreateTweetFeatures/CreateTweetFeature';
 import Tweets from './components/Tweets';
 import LayoutRight from '../RightBar';
-import VerificationCard from './components/VerificationCard';
-import TrendsCard from './components/TrendsCard';
-import UserToFollowCard from './components/UserToFollow';
-import Footer from '@/components/footer';
+import Footer from '@/components/RightBar/Footer';
+import VerificationCard from '@/components/RightBar/VerificationCard';
+import TrendsCard from '@/components/RightBar/TrendsCard';
+import UserToFollowCard from '@/components/RightBar/UserToFollow';
 
 export const metadata: Metadata = {
   title: 'Home / X',
 };
 
 export default async function HomePage() {
+  const tabs = [
+    { name: 'For You', param: 'for-you' },
+    { name: 'Followings', param: 'followings' },
+  ];
+
   return (
     <>
       <main className="min-h-screen w-full max-w-[598px] overflow-x-clip border-x border-skin-base">
@@ -20,7 +25,7 @@ export default async function HomePage() {
           <div className="z-10 flex flex-1 items-center px-5 text-xl font-semibold">
             Home
           </div>
-          <HomeTab />
+          <HomeTab tabs={tabs} type="home-tab" />
         </div>
         <CreateTweetFeature />
         <Tweets />

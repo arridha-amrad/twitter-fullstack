@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import useMeasure from 'react-use-measure';
 import SearchInput from '../../components/input/SearchInput';
 
-export default function LayoutRight({ children }: { children: ReactNode }) {
+function RightBar({ children }: { children: ReactNode }) {
   const [ref, { height }] = useMeasure();
 
   return (
@@ -20,3 +20,5 @@ export default function LayoutRight({ children }: { children: ReactNode }) {
     </div>
   );
 }
+
+export default RightBar;
