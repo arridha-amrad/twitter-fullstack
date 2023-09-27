@@ -1,24 +1,14 @@
 import DisplayModal from '@/components/Modals/DisplayModal';
 import { cookies } from 'next/headers';
-import HomePage from '../../home/page';
-import ExplorePage from '../../explore/page';
+import { findPage } from '../routes';
 
 export default function DisplayPage() {
   const url = cookies().get('prev-url')?.value;
-  const children = () => {
-    switch (url) {
-      case '/home?':
-        return <HomePage />;
-      case '/explore?':
-        return <ExplorePage />;
-      default:
-        return null;
-    }
-  };
+  const page = findPage(url ?? "")
   return (
     <>
       <DisplayModal />
-      {children()}
+      {page}
     </>
   );
 }

@@ -3,16 +3,16 @@
 import { ElementRef, FC, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import useMeasure from "react-use-measure";
-import ButtonAudience from "./components/ButtonAudience";
-import ButtonRepliers from "./components/ButtonRepliers";
-import Divider from "./components/Divider";
+import ButtonAudience from "../../../../../components/Buttons/ButtonAudience";
+import ButtonRepliers from "../../../../../components/Buttons/ButtonRepliers";
+import Divider from "../../../../../components/Divider";
 import ImageView from "./components/ImageView";
-import Indicator from "./components/Indicator";
+import Indicator from "../../../../../components/CircleTextLengthIndicator";
 import TextArea from "./components/TextArea";
 import Avatar from "@/components/Avatar";
 import ButtonFilesPickers from "@/components/Buttons/ButtonFilesPickers";
 import ButtonTweetComposer from "@/components/Buttons/ButtonTweetComposer";
-import useFormData from "@/app/hooks/useFormData";
+import useFormData from "@/hooks/useFormData";
 
 type Props = {
   closeModal?: VoidFunction;

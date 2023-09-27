@@ -15,7 +15,7 @@ type Props = {
   spinnerSpeed?: number;
 };
 
-const Indicator = (props: Props) => {
+const CircleTextLengthIndicator = (props: Props) => {
   let { size = 150, progress = 0, text } = props;
 
   const center = size / 2;
@@ -80,4 +80,4 @@ const Indicator = (props: Props) => {
   );
 };
 
-export default Indicator;
+export default CircleTextLengthIndicator;

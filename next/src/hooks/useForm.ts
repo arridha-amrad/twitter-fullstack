@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { TAlert } from "../../components/Alert";
+import { TAlert } from "../components/Alert";
 
 const useForm = <T>(initState: T, submitFunction: () => Promise<void>) => {
   const [isLoading, setIsLoading] = useState(false);

@@ -3,7 +3,6 @@
 import ButtonClose from '@/components/Buttons/ButtonClose';
 import { Dialog, Transition } from '@headlessui/react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { Fragment, useState } from 'react';
 import Logo from '@/images/logo.svg';
 import SignUpForm from '@/components/Forms/SignupForm';
@@ -21,7 +20,10 @@ export default function SignUpModal() {
 
   return (
     <>
-      <button onClick={openModal} className="h-[45px] w-full rounded-full bg-blue-500 font-bold text-white">
+      <button
+        onClick={openModal}
+        className="h-[45px] w-full rounded-full bg-blue-500 font-bold text-white"
+      >
         Create Account
       </button>
       <Transition appear show={isOpen} as={Fragment}>

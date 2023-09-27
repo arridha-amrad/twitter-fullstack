@@ -6,12 +6,13 @@ import {
   forwardRef,
   useImperativeHandle,
   useRef,
-} from "react";
-import ImageView from "../../CreateTweetFeatures/components/ImageView";
-import TextArea from "../../CreateTweetFeatures/components/TextArea";
-import ButtonAudience from "../../../../../../components/Buttons/ButtonAudience";
-import ButtonRepliers from "../../../../../../components/Buttons/ButtonRepliers";
-import Avatar from "@/components/Avatar";
+} from 'react';
+
+import TextArea from '@/components/input/TextArea';
+import Avatar from '@/components/Avatar';
+import ButtonAudience from '@/components/Buttons/ButtonAudience';
+import ButtonRepliers from '@/components/Buttons/ButtonRepliers';
+import ImageView from '@/components/ImageView';
 
 type Props = {
   onSubmit: (e: FormEvent) => void;
@@ -27,7 +28,7 @@ type Handler = {
 
 const CreateForm: ForwardRefRenderFunction<Handler, Props> = (
   { filesToPreview, onChange, onSubmit, removeFiles, state },
-  ref
+  ref,
 ) => {
   const btnFormRef = useRef<HTMLButtonElement>(null);
   const textAreaRef = useRef<ElementRef<typeof TextArea>>(null);
@@ -38,7 +39,7 @@ const CreateForm: ForwardRefRenderFunction<Handler, Props> = (
         btnFormRef.current?.click();
       },
     }),
-    []
+    [],
   );
 
   return (

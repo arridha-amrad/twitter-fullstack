@@ -10,7 +10,7 @@ export function NavigationEvents() {
 
   useEffect(() => {
     return () => {
-      const url = `${pathname}?${searchParams}`;
+      const url = `${pathname}`;
       const urlArr = url.split('/');
       if (!urlArr.includes('i')) {
         Cookies.set('prev-url', url, { domain: 'localhost', path: '/' });
