@@ -36,8 +36,8 @@ export default {
       },
       fill: {
         skin: {
-          base: withOpacity("var(--color-fill)")
-        }
+          base: withOpacity('var(--color-fill)'),
+        },
       },
 
       stroke: {
@@ -51,6 +51,13 @@ export default {
           base: withOpacity('var(--color-fill)'),
         },
       },
+
+      ringOffsetColor: {
+        skin: {
+          base: withOpacity('var(--color-bg)'),
+        },
+      },
+
       borderColor: {
         skin: {
           base: withOpacity('var(--color-border)'),

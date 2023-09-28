@@ -1,44 +1,45 @@
-"use client";
+'use client';
 
-import { Menu } from "@headlessui/react";
-import DefaultAvatar from "@/images/default.png";
-import Image from "next/image";
-import EllipsisHorizontalIcon from "@heroicons/react/20/solid/EllipsisHorizontalIcon";
+import { Menu } from '@headlessui/react';
+import DefaultAvatar from '@/images/default.png';
+import Image from 'next/image';
+import EllipsisHorizontalIcon from '@heroicons/react/20/solid/EllipsisHorizontalIcon';
 
-import { createPortal } from "react-dom";
-import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
-import { usePopper } from "react-popper";
-import useMeasure from "react-use-measure";
-import SunIcon from "@heroicons/react/24/solid/SunIcon";
-import MoonIcon from "@heroicons/react/24/solid/MoonIcon";
-import LogoutIcon from "@heroicons/react/24/solid/ArrowLeftOnRectangleIcon";
-import { mergeRefs } from "react-merge-refs";
+import { createPortal } from 'react-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
+import { usePopper } from 'react-popper';
+import useMeasure from 'react-use-measure';
+import SunIcon from '@heroicons/react/24/solid/SunIcon';
+import MoonIcon from '@heroicons/react/24/solid/MoonIcon';
+import LogoutIcon from '@heroicons/react/24/solid/ArrowLeftOnRectangleIcon';
+import { mergeRefs } from 'react-merge-refs';
+import { useRouter } from 'next/navigation';
 
 const ProfileMenu = () => {
   const [ref, { width }] = useMeasure();
 
   const [referenceElement, setReferenceElement] = useState<any | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
-    null
+    null,
   );
   const [arrowElement, setArrowElement] = useState<HTMLElement | null>(null);
 
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    strategy: "fixed",
-    placement: width <= 228 ? "top-start" : "top",
+    strategy: 'fixed',
+    placement: width <= 228 ? 'top-start' : 'top',
     modifiers: [
       {
-        name: "offset",
+        name: 'offset',
         options: {
           offset: [0, 10],
         },
       },
       {
-        name: "flip",
+        name: 'flip',
       },
       {
-        name: "arrow",
+        name: 'arrow',
         options: {
           element: arrowElement,
         },
@@ -46,13 +47,17 @@ const ProfileMenu = () => {
     ],
   });
 
+  const router = useRouter();
+
   const menu = [
     {
       label: `Logout @arridhaamrad`,
-      fn: () => {},
+      fn: () => {
+        router.push('/logout', { scroll: false });
+      },
     },
     {
-      label: "Switch Theme",
+      label: 'Switch Theme',
       fn: () => {},
     },
   ];
@@ -68,7 +73,7 @@ const ProfileMenu = () => {
           >
             <ProfileCard />
           </Menu.Button>
-          {typeof window === "object" ? (
+          {typeof window === 'object' ? (
             createPortal(
               <AnimatePresence initial={false}>
                 {open && (
@@ -81,10 +86,10 @@ const ProfileMenu = () => {
                       ref={setPopperElement}
                       className="relative z-20 outline-none"
                     >
-                      <div className="absolute inset-0 -z-10 blur bg-skin-shadow" />
+                      <div className="absolute inset-0 -z-10 bg-skin-shadow blur" />
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
+                        animate={{ opacity: 1, height: 'auto' }}
                         exit={{
                           opacity: 0,
                           height: 0,
@@ -93,7 +98,7 @@ const ProfileMenu = () => {
                       >
                         <div
                           style={{
-                            minWidth: width < 228 ? "max-content" : width,
+                            minWidth: width < 228 ? 'max-content' : width,
                           }}
                           className="p2 overflow-hidden rounded-lg"
                         >
@@ -103,17 +108,17 @@ const ProfileMenu = () => {
                                 <button
                                   className={`flex h-14 min-w-full cursor-pointer items-center justify-start gap-3 px-5 ${
                                     active
-                                      ? "bg-skin-hover text-skin-base"
-                                      : "bg-skin-base text-skin-base"
+                                      ? 'bg-skin-hover text-skin-base'
+                                      : 'bg-skin-base text-skin-base'
                                   }`}
                                   onClick={() => {
                                     item.fn();
                                   }}
                                 >
-                                  {item.label.includes("Logout") && (
+                                  {item.label.includes('Logout') && (
                                     <LogoutIcon className="h-5 w-5" />
                                   )}
-                                  {item.label === "Switch Theme" && (
+                                  {item.label === 'Switch Theme' && (
                                     <>
                                       <SunIcon className="hidden h-5 w-5 dark:block" />
                                       <MoonIcon className="block h-5 w-5 dark:hidden" />
@@ -127,8 +132,8 @@ const ProfileMenu = () => {
                         </div>
                         <div
                           ref={setArrowElement}
-                          className={`absolute -bottom-2 -z-10 h-5 w-5 rotate-45 bg-skin-base shadow-sm shadow-skin-base ${
-                            width < 228 ? "left-5" : "left-1/2 -translate-x-1/2"
+                          className={`shadow-skin-base absolute -bottom-2 -z-10 h-5 w-5 rotate-45 bg-skin-base shadow-sm ${
+                            width < 228 ? 'left-5' : 'left-1/2 -translate-x-1/2'
                           }`}
                         />
                       </motion.div>
@@ -136,7 +141,7 @@ const ProfileMenu = () => {
                   </>
                 )}
               </AnimatePresence>,
-              document.body
+              document.body,
             )
           ) : (
             <></>
@@ -151,12 +156,12 @@ export default ProfileMenu;
 
 const ProfileCard = () => {
   const data = {
-    fullname: "arridha amrad",
-    username: "arridhaamrad",
+    fullname: 'arridha amrad',
+    username: 'arridhaamrad',
   };
   return (
-    <div className="flex h-full bg-skin-base w-full aspect-square xl:aspect-auto justify-center items-center overflow-hidden xl:p-2 hover:bg-skin-hover rounded-full">
-      <div className="flex flex-1 justify-center xl:justify-normal items-center gap-2">
+    <div className="flex aspect-square h-full w-full items-center justify-center overflow-hidden rounded-full bg-skin-base hover:bg-skin-hover xl:aspect-auto xl:p-2">
+      <div className="flex flex-1 items-center justify-center gap-2 xl:justify-normal">
         <div className="h-11 w-11 overflow-hidden rounded-full">
           <Image
             className="h-full w-full object-cover object-center"

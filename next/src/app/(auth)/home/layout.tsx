@@ -17,11 +17,19 @@ type Props = {
 };
 
 export default function HomeLayout({ followingTweets, children }: Props) {
+  const [content, setContent] = useState<ReactNode>(null);
   const params = useSearchParams();
   const paramTab = params.get('tab');
 
-  const content =
-    paramTab === 'for-you' || paramTab === '' ? children : followingTweets;
+  useEffect(() => {
+    if (paramTab === null) {
+      const savedTab = sessionStorage.getItem('home-tab') ?? 'for-you';
+      setContent(savedTab === 'for-you' ? children : followingTweets);
+    } else {
+      setContent(paramTab === 'for-you' ? children : followingTweets);
+    }
+    // eslint-disable-next-line
+  }, [paramTab]);
 
   return (
     <>

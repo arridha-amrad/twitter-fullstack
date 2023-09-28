@@ -27,6 +27,7 @@ export default function SettingsProfileModal() {
     if (!isOpen) {
       router.back();
     }
+    // eslint-disable-next-line
   }, [isOpen]);
   return (
     <Dialog
@@ -40,7 +41,11 @@ export default function SettingsProfileModal() {
         <div className="flex h-full items-center justify-center p-4 text-center">
           <div className="relative h-[80%] w-full max-w-xl">
             <div className="absolute inset-0 bg-skin-shadow blur" />
-            <Dialog.Panel className="relative h-full w-full overflow-y-auto rounded-2xl bg-skin-base pb-10 text-left">
+            <Dialog.Panel
+              as="div"
+              id="modal"
+              className="relative h-full w-full overflow-y-auto rounded-2xl bg-skin-base pb-10 text-left"
+            >
               <div className="sticky top-0 z-20 flex h-16 items-center gap-4 bg-skin-base px-4">
                 <ButtonClose closeFn={closeModal} />
                 <Dialog.Title
