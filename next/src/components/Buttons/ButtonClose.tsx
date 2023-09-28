@@ -10,7 +10,6 @@ export default function ButtonClose({ closeFn }: Props) {
     <div className="h-8">
       <ButtonIcon
         onClick={closeFn}
-        className="hover:bg-skin-hover"
         icon={<XMarkIcon className="w-6 stroke-2 text-skin-base" />}
         tooltip="Close"
       />

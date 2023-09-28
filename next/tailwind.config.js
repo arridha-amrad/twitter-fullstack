@@ -34,6 +34,11 @@ export default {
           },
         },
       },
+      fill: {
+        skin: {
+          base: withOpacity("var(--color-fill)")
+        }
+      },
 
       stroke: {
         skin: {

@@ -7,7 +7,7 @@ const CircleLoader = (props: SVGAttributes<SVGElement>) => {
       <svg
         aria-hidden="true"
         className={twMerge(
-          'h-6 w-6 animate-spin fill-blue-500 text-blue-500/50',
+          'h-6 w-6 animate-spin fill-skin-base text-white/20',
           props.className
         )}
         viewBox="0 0 100 101"

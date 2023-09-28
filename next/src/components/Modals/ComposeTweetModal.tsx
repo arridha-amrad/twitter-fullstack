@@ -61,7 +61,6 @@ export default function ComposeTweetModal() {
         className="relative z-10"
       >
         <div className="fixed inset-0 bg-skin-base bg-opacity-50" />
-
         <div className="fixed inset-0 overflow-y-auto">
           <div className="flex items-center justify-center p-4 text-center">
             <div className="relative w-full max-w-xl">

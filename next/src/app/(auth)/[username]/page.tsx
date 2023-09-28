@@ -11,7 +11,6 @@ import YouMightLike from '@/components/RightBar/YouMightLike';
 
 type Props = {
   params: { username: string };
-  searchParams: { [key: string]: string | string[] | undefined };
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -23,7 +22,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-const ProfilePage = ({ params, searchParams }: Props) => {
+const ProfilePage = async ({ params }: Props) => {
+  await new Promise((res) => {
+    setTimeout(() => {
+      res("Ok")
+    }, 1000)
+  })
   return (
     <>
       <main className="min-h-screen w-full max-w-[598px] overflow-x-clip border-x border-skin-base">

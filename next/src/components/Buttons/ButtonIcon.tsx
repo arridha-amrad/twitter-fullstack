@@ -10,7 +10,7 @@ type Props = {
 } & HTMLAttributes<HTMLButtonElement>;
 
 const className =
-  'flex aspect-square h-full items-center justify-center rounded-full transition-colors duration-200 ease-in';
+  'flex aspect-square h-full items-center hover:bg-skin-hover justify-center rounded-full transition-colors duration-200 ease-in';
 
 export default function ButtonIcon({ icon, tooltip, ...props }: Props) {
   const [referenceElement, setReferenceElement] =

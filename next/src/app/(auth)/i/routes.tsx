@@ -5,6 +5,7 @@ import MessagesPage from '../messages/page';
 import NotificationsPage from '../notifications/page';
 
 export const routes = [
+  { url: '/**', page: <ProfilePage params={{ username: '' }} /> },
   { url: '/home', page: <HomePage /> },
   { url: '/explore', page: <ExplorePage /> },
   { url: '/notifications', page: <NotificationsPage /> },

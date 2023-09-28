@@ -11,8 +11,6 @@ import CheckBadge from '@heroicons/react/24/outline/CheckBadgeIcon';
 import CheckBadgeFilled from '@heroicons/react/24/solid/CheckBadgeIcon';
 import ListBullet from '@heroicons/react/24/outline/ListBulletIcon';
 import ListBulletFilled from '@heroicons/react/24/solid/ListBulletIcon';
-import Bookmark from '@heroicons/react/24/outline/BookmarkIcon';
-import BookmarkFilled from '@heroicons/react/24/solid/BookmarkIcon';
 
 import UserGroupFilledIcon from '@heroicons/react/24/solid/UserGroupIcon';
 import UserGroupIcon from '@heroicons/react/24/outline/UserGroupIcon';

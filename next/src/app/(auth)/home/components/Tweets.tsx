@@ -3,6 +3,7 @@
 import FollowingTweets from '@/components/Tweets/HomePage/FollowingTweets';
 import ForYouTweets from '@/components/Tweets/HomePage/ForYouTweets';
 import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const tabs = [
   { name: 'for-you', component: <ForYouTweets /> },
@@ -11,10 +12,16 @@ const tabs = [
 
 const Tweets = () => {
   const params = useSearchParams();
-  const tab = params.get('tab') ?? '';
-  const idx = tabs.findIndex((t) => t.name === tab);
-  const tIdx = idx >= 0 ? idx : 0;
-  return tabs[tIdx].component;
+  const paramTab = params.get('tab');
+
+  const [tab, setTab] = useState('');
+
+  useEffect(() => {
+    const savedTab = sessionStorage.getItem('home-tab') ?? 'tweets';
+    setTab(savedTab);
+  }, [paramTab]);
+  
+  return tabs.find((d) => d.name === tab)?.component ?? null;
 };
 
 export default Tweets;
