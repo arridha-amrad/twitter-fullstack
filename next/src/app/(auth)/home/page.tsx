@@ -6,5 +6,10 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  return <ForYouTweets />
+  await new Promise((res) => {
+    setTimeout(() => {
+      res('ok');
+    }, 2000);
+  });
+  return <ForYouTweets />;
 }

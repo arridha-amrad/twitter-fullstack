@@ -1,4 +1,4 @@
-import LayoutRight from '../RightBar';
+import LayoutRight from '../../../components/RightBarContainer';
 
 export default async function ExplorePage() {
   return (

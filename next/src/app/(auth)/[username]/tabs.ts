@@ -1,7 +1,7 @@
-export const tabs = [
-  { name: 'Tweets', param: 'tweets' },
-  { name: 'Replies', param: 'replies' },
-  { name: 'Highlights', param: 'highlights' },
-  { name: 'Media', param: 'media' },
-  { name: 'Likes', param: 'likes' },
+export const tabs = (username: string) => [
+  { name: 'Tweets', url: `/${username}` },
+  { name: 'Replies', url: `/${username}/replies` },
+  { name: 'Highlights', url: `/${username}/highlights` },
+  { name: 'Media', url: `/${username}/media` },
+  { name: 'Likes', url: `/${username}/likes` },
 ];

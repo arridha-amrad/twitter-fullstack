@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { ElementRef, FC, useRef, useState } from "react";
-import { toast } from "react-hot-toast";
-import useMeasure from "react-use-measure";
-import ButtonAudience from "../../../../../components/Buttons/ButtonAudience";
-import ButtonRepliers from "../../../../../components/Buttons/ButtonRepliers";
-import Divider from "../../../../../components/Divider";
-import ImageView from "./components/ImageView";
-import Indicator from "../../../../../components/CircleTextLengthIndicator";
-import TextArea from "./components/TextArea";
-import Avatar from "@/components/Avatar";
-import ButtonFilesPickers from "@/components/Buttons/ButtonFilesPickers";
-import ButtonTweetComposer from "@/components/Buttons/ButtonTweetComposer";
-import useFormData from "@/hooks/useFormData";
+import { ElementRef, FC, useRef, useState } from 'react';
+import { toast } from 'react-hot-toast';
+import useMeasure from 'react-use-measure';
+import Avatar from '@/components/Avatar';
+import ButtonFilesPickers from '@/components/Buttons/ButtonFilesPickers';
+import ButtonTweetComposer from '@/components/Buttons/ButtonTweetComposer';
+import useFormData from '@/hooks/useFormData';
+import TextArea from '@/components/input/TextArea';
+import ImageView from '@/components/ImageView';
+import ButtonAudience from '../Buttons/ButtonAudience';
+import ButtonRepliers from '../Buttons/ButtonRepliers';
+import Divider from '../Divider';
+import Indicator from '../Indicator';
 
 type Props = {
   closeModal?: VoidFunction;
@@ -20,17 +20,17 @@ type Props = {
 
 const CreateTweetFeature: FC<Props> = ({ closeModal }) => {
   const create = async () => {
-    formData.append("description", state.tweet);
+    formData.append('description', state.tweet);
     if (filesToUpload) {
       for (let i = 0; i < filesToUpload.length; i++) {
-        formData.append("files", filesToUpload[i]);
+        formData.append('files', filesToUpload[i]);
       }
     }
     try {
       resetForm();
       closeModal && closeModal();
     } catch (error) {
-      toast.error("failed to create your tweet");
+      toast.error('failed to create your tweet');
     }
   };
 
@@ -44,7 +44,7 @@ const CreateTweetFeature: FC<Props> = ({ closeModal }) => {
     formData,
     state,
     removeFiles,
-  } = useFormData({ initialData: { tweet: "" }, submitFn: create });
+  } = useFormData({ initialData: { tweet: '' }, submitFn: create });
 
   const [ref, { height }] = useMeasure();
 

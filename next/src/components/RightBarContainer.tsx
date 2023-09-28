@@ -1,10 +1,10 @@
 'use client';
 
+import SearchInput from '@/components/input/SearchInput';
 import { ReactNode } from 'react';
 import useMeasure from 'react-use-measure';
-import SearchInput from '../../components/input/SearchInput';
 
-function RightBar({ children }: { children: ReactNode }) {
+function RightBarContainer({ children }: { children: ReactNode }) {
   const [ref, { height }] = useMeasure();
 
   return (
@@ -21,4 +21,4 @@ function RightBar({ children }: { children: ReactNode }) {
   );
 }
 
-export default RightBar;
+export default RightBarContainer;

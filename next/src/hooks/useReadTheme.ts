@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import { backgrounds, colors } from './colors';
+import { backgrounds, colors } from '@/components/Modals/DisplayModal/colors';
 
 export const useReadTheme = () => {
   const [activeColorIndex, setActiveColorIndex] = useState(0);
@@ -36,7 +36,13 @@ export const useReadTheme = () => {
     setBgIndex(index);
     document.documentElement.classList.remove('dim', 'light-out');
     const bg = backgrounds[index].class;
-    Cookies.set('background', bg, { domain: 'localhost', path: '/' });
+    Cookies.set('background', bg, {
+      domain: process.env.NEXT_PUBLIC_DOMAIN,
+      path: '/',
+      expires: 365,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+    });
     document.documentElement.classList.add(bg);
   };
 
@@ -47,13 +53,19 @@ export const useReadTheme = () => {
     document.documentElement.classList.remove(...classColors);
     const color = colors[index].name;
     document.documentElement.classList.add(color);
-    Cookies.set('color', color, { domain: 'localhost', path: '/' });
+    Cookies.set('color', color, {
+      domain: process.env.NEXT_PUBLIC_DOMAIN,
+      path: '/',
+      expires: 365,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+    });
   };
 
   return {
     setColor,
     setBackgroundColor,
     activeColorIndex,
-    bgIndex
-  }
+    bgIndex,
+  };
 };

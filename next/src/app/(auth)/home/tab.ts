@@ -1,4 +1,4 @@
 export const tabs = [
-  { name: 'For You', param: 'for-you' },
-  { name: 'Followings', param: 'followings' },
+  { name: 'For You', url: '/home',  },
+  { name: 'Followings', url: '/home/following-tweets' },
 ];

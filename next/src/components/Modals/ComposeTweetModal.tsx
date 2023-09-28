@@ -47,10 +47,10 @@ export default function ComposeTweetModal() {
   const btnFormRef = useRef<ElementRef<typeof CreateForm>>(null);
 
   useEffect(() => {
-    if (!open) {
+    if (!isOpen) {
       resetForm();
     }
-  }, [open]);
+  }, [isOpen]);
 
   return (
     <>

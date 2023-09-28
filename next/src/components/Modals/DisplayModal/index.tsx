@@ -7,7 +7,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import DefaultAvatar from '@/images/default.png';
 import { CheckBadgeIcon, CheckIcon } from '@heroicons/react/24/solid';
 import { backgrounds, colors } from '@/components/Modals/DisplayModal/colors';
-import { useReadTheme } from '@/components/Modals/DisplayModal/useReadTheme';
+import { useReadTheme } from '@/hooks/useReadTheme';
 
 const DisplayModal = () => {
   let [isOpen, setIsOpen] = useState(true);

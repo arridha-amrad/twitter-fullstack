@@ -20,7 +20,7 @@ const AppContext = createContext<{
   setBg: undefined,
 });
 
-const setAppBackground = (background: string) => {
+const setAppBackground = (background: Theme) => {
   Cookies.set("background", background, {
     path: "/",
     domain: "localhost",
@@ -43,10 +43,10 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     } else {
       if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
         setBg("light-out");
-        document.documentElement.classList.add("light-out");
+        setAppBackground("light-out")
       } else {
         setBg("light");
-        document.documentElement.classList.add("light");
+        setAppBackground("light")
       }
     }
   }, []);

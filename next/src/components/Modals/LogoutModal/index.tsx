@@ -66,7 +66,7 @@ export default function LogoutModal() {
                     />
                     <Dialog.Title
                       as="h3"
-                      className="mt-4 text-xl font-bold leading-6 text-gray-900"
+                      className="mt-4 text-xl font-bold leading-6 text-skin-base"
                     >
                       Log out of Twitter?
                     </Dialog.Title>
@@ -85,7 +85,7 @@ export default function LogoutModal() {
                       </button>
                       <button
                         onClick={closeModal}
-                        className="focus:ring-offset-skin-base rounded-xl border border-skin-base bg-skin-base py-2 font-bold text-black focus:ring-2 focus:ring-skin-base/50 focus:ring-offset-2"
+                        className="focus:ring-offset-skin-base rounded-xl border border-skin-base bg-skin-base py-2 font-bold text-skin-base focus:ring-2 focus:ring-skin-base/50 focus:ring-offset-2"
                       >
                         Cancel
                       </button>

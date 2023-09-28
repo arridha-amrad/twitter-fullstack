@@ -1,45 +1,35 @@
 'use client';
 
 import { Tab } from '@headlessui/react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { HTMLAttributes, useEffect, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 interface ITab {
   name: string;
-  param: string;
+  url: string;
 }
-
-type TabType = 'home-tab' | 'profile-tab';
 
 type Props = {
   tabs: ITab[];
-  type: TabType;
 } & HTMLAttributes<HTMLDivElement>;
 
-const HorizontalTab = ({ tabs, type, ...props }: Props) => {
+const HorizontalTab = ({ tabs, ...props }: Props) => {
   const router = useRouter();
-  const params = useSearchParams();
-  const tab = params.get('tab');
+  const pathName = usePathname();
   const [tabIndex, setTabIndex] = useState(0);
 
   const saveTab = (index: number) => {
     setTabIndex(index);
-    sessionStorage.setItem(type, tabs[index].param);
-    router.push(`?tab=${tabs[index].param}`, { scroll: false });
+    router.push(tabs[index].url);
   };
 
   useEffect(() => {
-    if (tab == null) {
-      const savedTab = sessionStorage.getItem(type) ?? tabs[0].param;
-      const idx = tabs.findIndex((t) => t.param === savedTab);
-      setTabIndex(idx);
-    } else {
-      const idx = tabs.findIndex((t) => t.param === tab);
-      setTabIndex(idx);
+    const index = tabs.findIndex((tab) => tab.url === pathName);
+    if(index >= 0) {
+      setTabIndex(index);
     }
-    // eslint-disable-next-line
-  }, [tab]);
+  }, [pathName]);
 
   return (
     <Tab.Group selectedIndex={tabIndex} onChange={saveTab}>
