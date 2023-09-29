@@ -22,6 +22,7 @@ export default function ComposeTweetModal() {
 
   useEffect(() => {
     if (!isOpen) {
+      // router.replace("/home", {scroll: false})
       router.back();
     }
   }, [isOpen]);

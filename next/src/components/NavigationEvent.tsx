@@ -8,6 +8,10 @@ export function NavigationEvents() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
+    if(searchParams.get("compose-tweet") === "true") {
+      const btn = document.getElementById("btn-post-composer")
+      btn?.click()
+    }
     return () => {
       const url = `${pathname}`;
       const urlArr = url.split('/');

@@ -1,12 +1,17 @@
 'use client';
 
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const CreatePostButton = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const navigate = () => {
-    router.push('/i/compose/tweet', { scroll: false });
+    if (searchParams.get('compose-tweet') === 'true') {
+      router.replace('/i/compose/tweet', { scroll: false });
+    } else {
+      router.push('/i/compose/tweet', { scroll: false });
+    }
   };
   return (
     <div className="my-4 flex w-full flex-1 justify-center xl:justify-start">

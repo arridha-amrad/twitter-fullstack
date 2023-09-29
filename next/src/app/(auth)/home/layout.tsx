@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import RightBar from '../../../components/RightBarContainer';
 import HorizontalTab from '@/components/Tab';
-import { tabs } from './tab';
 import VerificationCard from '@/components/RightBar/VerificationCard';
 import TrendsCard from '@/components/RightBar/TrendsCard';
 import UserToFollowCard from '@/components/RightBar/UserToFollow';
@@ -12,6 +11,11 @@ import Counter from './Counter';
 type Props = {
   children: ReactNode;
 };
+
+const tabs = [
+  { name: 'For You', url: '/home',  },
+  { name: 'Followings', url: '/home/following-tweets' },
+];
 
 export default function HomeLayout({ children }: Props) {
   return (
