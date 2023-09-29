@@ -8,7 +8,7 @@ type Props = {
 
 const Layout: FC<Props> = ({ children, modal }) => {
   return (
-    <div className="mx-auto md:max-w-[700px] lg:max-w-[1090px] xl:max-w-[1265px]">
+    <div id='main-layout' className="mx-auto md:max-w-[700px] lg:max-w-[1090px] xl:max-w-[1265px]">
       <div className="flex">
         <Sidebar />
         {modal}

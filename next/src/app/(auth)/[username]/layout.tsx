@@ -1,18 +1,24 @@
-import Header from './Header';
-
 import TrendsCard from '@/components/RightBar/TrendsCard';
 import Footer from '@/components/RightBar/Footer';
-import Overview from './Overview';
 import HorizontalTab from '@/components/Tab';
-import { tabs } from './tabs';
 import YouMightLike from '@/components/RightBar/YouMightLike';
 import { ReactNode } from 'react';
 import RightBarContainer from '@/components/RightBarContainer';
+import Header from '@/components/Header';
+import Overview from '@/components/Overview';
 
 type Props = {
   children: ReactNode;
   params: { username: string };
 };
+
+const tabs = (username: string) => [
+  { name: 'Tweets', url: `/${username}` },
+  { name: 'Replies', url: `/${username}/replies` },
+  { name: 'Highlights', url: `/${username}/highlights` },
+  { name: 'Media', url: `/${username}/media` },
+  { name: 'Likes', url: `/${username}/likes` },
+];
 
 const ProfilePage = async ({ children, params }: Props) => {
   return (

@@ -11,6 +11,8 @@ export function NavigationEvents() {
     return () => {
       const url = `${pathname}`;
       const urlArr = url.split('/');
+      const el = document.getElementById("main-layout")
+      console.log({el})
     };
   }, [pathname, searchParams]);
 
