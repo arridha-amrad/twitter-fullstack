@@ -14,7 +14,7 @@ const SidebarLinks = () => {
           <Link
             className="flex aspect-square h-[50px] items-center justify-center rounded-full hover:bg-skin-hover xl:aspect-auto xl:px-4"
             key={link.name}
-            href={`${link.link}`}
+            href={link.link}
             scroll={false}
           >
             <span className="flex items-center gap-4">

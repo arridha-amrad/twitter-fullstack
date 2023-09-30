@@ -4,9 +4,16 @@ import HorizontalTab from '@/components/Tab';
 import VerificationCard from '@/components/RightBar/VerificationCard';
 import TrendsCard from '@/components/RightBar/TrendsCard';
 import UserToFollowCard from '@/components/RightBar/UserToFollow';
+
+
+import RightBarContainer from '@/components/RightBarContainer';
+import { Metadata } from 'next';
 import Footer from '@/components/RightBar/Footer';
 import CreateTweetFeature from '@/components/Forms/CreateTweetFeature';
-import Counter from './Counter';
+
+export const metadata: Metadata = {
+  title: 'Home / X',
+};
 
 type Props = {
   children: ReactNode;
@@ -29,19 +36,15 @@ export default function HomeLayout({ children }: Props) {
         </div>
         <CreateTweetFeature />
         {children}
-        <div className='bg-purple-500/50 p-6'>
-          <h1>this is layout</h1>
-        <Counter/>
-        </div>
       </main>
-      <RightBar>
+      <RightBarContainer>
         <div className="mt-2 flex flex-col gap-4">
           <VerificationCard />
           <TrendsCard />
           <UserToFollowCard />
           <Footer />
         </div>
-      </RightBar>
+      </RightBarContainer>
     </>
   );
 }
