@@ -4,16 +4,15 @@ type Props = {
   params: { username: string };
 };
 
-export const metadata: Metadata = {
-  title: 'Profile / X',
-};
+export async function generateMetadata({params}: Props, 
+  ): Promise<Metadata> {
+  const fullname = "Arridha Amrad"
+  return {
+    title: `${fullname} (@${params.username}) / X`
+  }
+}
 
 export default async function TweetsPage(){
-  await new Promise((res) => {
-    setTimeout(() => {
-      res('ok');
-    }, 2000);
-  });
   return (
     <div>Tweets Page</div>
   )

@@ -41,7 +41,7 @@ export default function JoinOptions() {
           <button className="h-[45px] w-full border  rounded-full bg-white font-bold text-black">
             Signup With Facebook
           </button>
-          <div className="relative my-3 w-full border-t">
+          <div className="relative my-3 w-full border-t border-t-skin-base">
             <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-skin-base px-4">
               or
             </span>

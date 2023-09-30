@@ -1,9 +1,19 @@
+import { Metadata } from "next";
+
+type Props = {
+  params: {
+    username: string;
+  };
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const fullname = 'Arridha Amrad';
+  return {
+    title: `${fullname} (@${params.username}) / X`,
+  };
+}
+
 export default async function HighlightsPage(){
-  await new Promise((res) => {
-    setTimeout(() => {
-      res('ok');
-    }, 2000);
-  });
   return (
     <div>Highlights Page</div>
   )

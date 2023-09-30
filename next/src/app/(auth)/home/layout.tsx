@@ -1,17 +1,26 @@
-import { ReactNode } from 'react';
-import RightBar from '../../../components/RightBarContainer';
-import HorizontalTab from '@/components/Tab';
-import { tabs } from './tab';
-import VerificationCard from '@/components/RightBar/VerificationCard';
+import CreateTweetFeature from '@/components/Forms/CreateTweetFeature';
+import Footer from '@/components/RightBar/Footer';
 import TrendsCard from '@/components/RightBar/TrendsCard';
 import UserToFollowCard from '@/components/RightBar/UserToFollow';
-import Footer from '@/components/RightBar/Footer';
-import CreateTweetFeature from '@/components/Forms/CreateTweetFeature';
-import Counter from './Counter';
+import VerificationCard from '@/components/RightBar/VerificationCard';
+import HorizontalTab from '@/components/Tab';
+import { ReactNode } from 'react';
+
+import RightBarContainer from '@/components/RightBarContainer';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Home / X',
+};
 
 type Props = {
   children: ReactNode;
 };
+
+const tabs = [
+  { name: 'For You', url: '/home' },
+  { name: 'Followings', url: '/home/following-tweets' },
+];
 
 export default function HomeLayout({ children }: Props) {
   return (
@@ -25,19 +34,15 @@ export default function HomeLayout({ children }: Props) {
         </div>
         <CreateTweetFeature />
         {children}
-        <div className='bg-purple-500/50 p-6'>
-          <h1>this is layout</h1>
-        <Counter/>
-        </div>
       </main>
-      <RightBar>
+      <RightBarContainer>
         <div className="mt-2 flex flex-col gap-4">
           <VerificationCard />
           <TrendsCard />
           <UserToFollowCard />
           <Footer />
         </div>
-      </RightBar>
+      </RightBarContainer>
     </>
   );
 }
